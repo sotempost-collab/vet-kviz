@@ -52,3 +52,9 @@ prompt
 server.log
 # Skills directory
 /skills/
+# Internal dev scripts and runtime state
+/.zscripts/
+/db/
+/download/
+/worklog.md
+/scripts/
