@@ -2,9 +2,17 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, Award, RotateCcw, Play, Stethoscope, Heart, Activity, Droplet, ChevronRight } from 'lucide-react'
+import { Check, X, Award, RotateCcw, Play, Stethoscope, Heart, Activity, Droplet, ChevronRight, Volume2, VolumeX } from 'lucide-react'
 import { QUIZ_QUESTIONS, QUIZ_TITLE, QUIZ_SUBTITLE, type QuizQuestion } from '@/lib/quiz-data'
-import { playPraise, playOops, playFinish, preloadSounds } from '@/lib/sounds'
+import {
+  playPraise,
+  playOops,
+  playFinish,
+  playNarration,
+  stopNarration,
+  preloadSounds,
+  setMuted,
+} from '@/lib/sounds'
 
 type Phase = 'intro' | 'question' | 'feedback' | 'result'
 type AnswerState = 'unanswered' | 'correct' | 'wrong'
@@ -23,6 +31,7 @@ export default function QuizApp() {
   const [score, setScore] = useState(0)
   const [answers, setAnswers] = useState<AnswerLogEntry[]>([])
   const [showConfetti, setShowConfetti] = useState(false)
+  const [muted, setMutedState] = useState(false)
   // Сюда позже вставим URL видео, когда пользователь пришлёт файл
   const videoUrl = useRef<string | null>(null)
 
@@ -32,6 +41,43 @@ export default function QuizApp() {
   useEffect(() => {
     preloadSounds()
   }, [])
+
+  // Озвучка при входе на интро-экран
+  useEffect(() => {
+    if (phase === 'intro') {
+      // Небольшая задержка чтобы пользователь успел увидеть карточку
+      const t = setTimeout(() => playNarration('intro'), 600)
+      return () => {
+        clearTimeout(t)
+        stopNarration()
+      }
+    }
+  }, [phase])
+
+  // Озвучка текста вопроса при переходе к новому вопросу
+  useEffect(() => {
+    if (phase === 'question' && currentQuestion) {
+      const key = `q${currentQuestion.id}-question`
+      const t = setTimeout(() => playNarration(key), 200)
+      return () => {
+        clearTimeout(t)
+        stopNarration()
+      }
+    }
+  }, [phase, currentQuestion])
+
+  // Озвучка пояснения после ответа
+  useEffect(() => {
+    if (phase === 'feedback' && currentQuestion) {
+      const key = `q${currentQuestion.id}-explanation`
+      // Даём отыграть похвалу/«ой», потом через 1.2 сек озвучиваем пояснение
+      const t = setTimeout(() => playNarration(key), 1200)
+      return () => {
+        clearTimeout(t)
+        stopNarration()
+      }
+    }
+  }, [phase, currentQuestion])
 
   const handleStart = useCallback(() => {
     setPhase('question')
@@ -47,6 +93,9 @@ export default function QuizApp() {
       if (phase !== 'question' || !currentQuestion) return
       const option = currentQuestion.options.find((o) => o.letter === letter)
       if (!option) return
+
+      // Останавливаем озвучку вопроса — начинаем реакцию
+      stopNarration()
 
       setSelectedLetter(letter)
       const isCorrect = option.correct
@@ -73,11 +122,13 @@ export default function QuizApp() {
 
   const handleNext = useCallback(() => {
     if (!currentQuestion) return
+    stopNarration()
     const isLast = currentIndex + 1 >= totalQuestions
     if (isLast) {
-      const finalScore = score // score is current state at this point
-      playFinish(finalScore === totalQuestions || finalScore >= Math.ceil(totalQuestions / 2))
+      const finalScore = score
       setPhase('result')
+      // Финальную озвучку проигрываем с задержкой, чтобы экран успел появиться
+      setTimeout(() => playFinish(finalScore, totalQuestions), 500)
     } else {
       setCurrentIndex((i) => i + 1)
       setSelectedLetter(null)
@@ -87,6 +138,7 @@ export default function QuizApp() {
   }, [currentIndex, totalQuestions, score, currentQuestion])
 
   const handleRestart = useCallback(() => {
+    stopNarration()
     setPhase('intro')
     setCurrentIndex(0)
     setScore(0)
@@ -94,6 +146,13 @@ export default function QuizApp() {
     setSelectedLetter(null)
     setAnswerState('unanswered')
   }, [])
+
+  const toggleMute = useCallback(() => {
+    const next = !muted
+    setMutedState(next)
+    setMuted(next)
+    if (next) stopNarration()
+  }, [muted])
 
   const progress = (currentIndex + (phase === 'feedback' || phase === 'result' ? 1 : 0)) / totalQuestions
 
@@ -121,14 +180,29 @@ export default function QuizApp() {
               <p className="text-xs font-medium text-blue-700/70 sm:text-sm">{QUIZ_SUBTITLE}</p>
             </div>
           </div>
-          {/* Score chip */}
-          {(phase === 'question' || phase === 'feedback' || phase === 'result') && (
-            <div className="flex items-center gap-2 rounded-full border border-sky-200 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur">
-              <Award className="h-4 w-4 text-amber-500" />
-              <span className="text-sm font-bold text-blue-900">{score}</span>
-              <span className="text-xs text-blue-700/60">/ {totalQuestions}</span>
-            </div>
-          )}
+          {/* Score chip + mute toggle */}
+          <div className="flex items-center gap-2">
+            {(phase === 'question' || phase === 'feedback' || phase === 'result') && (
+              <div className="flex items-center gap-2 rounded-full border border-sky-200 bg-white/80 px-3 py-1.5 shadow-sm backdrop-blur">
+                <Award className="h-4 w-4 text-amber-500" />
+                <span className="text-sm font-bold text-blue-900">{score}</span>
+                <span className="text-xs text-blue-700/60">/ {totalQuestions}</span>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={toggleMute}
+              title={muted ? 'Включить звук' : 'Выключить звук'}
+              aria-label={muted ? 'Включить звук' : 'Выключить звук'}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border shadow-sm backdrop-blur transition-colors ${
+                muted
+                  ? 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'
+                  : 'border-sky-200 bg-white/80 text-sky-600 hover:bg-sky-50'
+              }`}
+            >
+              {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+            </button>
+          </div>
         </header>
 
         {/* Progress bar */}
@@ -249,7 +323,7 @@ function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQues
             Начать квиз
           </button>
           <p className="mt-3 text-center text-xs text-blue-700/50">
-            Совет: можно отвечать с клавиатуры — клавиши 1, 2, 3 для выбора варианта
+            🔊 Со звуком • клавиши 1, 2, 3 для выбора • выключить звук — кнопкой в правом верхнем углу
           </p>
         </div>
       </div>
