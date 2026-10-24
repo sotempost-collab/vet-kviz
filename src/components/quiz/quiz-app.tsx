@@ -7,11 +7,9 @@ import { QUIZ_QUESTIONS, QUIZ_TITLE, QUIZ_SUBTITLE, type QuizQuestion } from '@/
 import {
   playPraise,
   playOops,
-  playFinish,
-  playNarration,
-  stopNarration,
   preloadSounds,
   setMuted,
+  stopNarration,
 } from '@/lib/sounds'
 
 type Phase = 'intro' | 'question' | 'feedback' | 'result'
@@ -41,43 +39,6 @@ export default function QuizApp() {
   useEffect(() => {
     preloadSounds()
   }, [])
-
-  // Озвучка при входе на интро-экран
-  useEffect(() => {
-    if (phase === 'intro') {
-      // Небольшая задержка чтобы пользователь успел увидеть карточку
-      const t = setTimeout(() => playNarration('intro'), 600)
-      return () => {
-        clearTimeout(t)
-        stopNarration()
-      }
-    }
-  }, [phase])
-
-  // Озвучка текста вопроса при переходе к новому вопросу
-  useEffect(() => {
-    if (phase === 'question' && currentQuestion) {
-      const key = `q${currentQuestion.id}-question`
-      const t = setTimeout(() => playNarration(key), 200)
-      return () => {
-        clearTimeout(t)
-        stopNarration()
-      }
-    }
-  }, [phase, currentQuestion])
-
-  // Озвучка пояснения после ответа
-  useEffect(() => {
-    if (phase === 'feedback' && currentQuestion) {
-      const key = `q${currentQuestion.id}-explanation`
-      // Даём отыграть похвалу/«ой», потом через 1.2 сек озвучиваем пояснение
-      const t = setTimeout(() => playNarration(key), 1200)
-      return () => {
-        clearTimeout(t)
-        stopNarration()
-      }
-    }
-  }, [phase, currentQuestion])
 
   const handleStart = useCallback(() => {
     setPhase('question')
@@ -125,17 +86,14 @@ export default function QuizApp() {
     stopNarration()
     const isLast = currentIndex + 1 >= totalQuestions
     if (isLast) {
-      const finalScore = score
       setPhase('result')
-      // Финальную озвучку проигрываем с задержкой, чтобы экран успел появиться
-      setTimeout(() => playFinish(finalScore, totalQuestions), 500)
     } else {
       setCurrentIndex((i) => i + 1)
       setSelectedLetter(null)
       setAnswerState('unanswered')
       setPhase('question')
     }
-  }, [currentIndex, totalQuestions, score, currentQuestion])
+  }, [currentIndex, totalQuestions, currentQuestion])
 
   const handleRestart = useCallback(() => {
     stopNarration()
@@ -323,7 +281,7 @@ function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQues
             Начать квиз
           </button>
           <p className="mt-3 text-center text-xs text-blue-700/50">
-            🔊 Со звуком • клавиши 1, 2, 3 для выбора • выключить звук — кнопкой в правом верхнем углу
+            🐱 Правильный ответ — кошачье мяуканье • 🐶 неправильный — собачий рык • клавиши 1, 2, 3 • звук выключается кнопкой в правом верхнем углу
           </p>
         </div>
       </div>
