@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Check, X, Award, RotateCcw, Play, Stethoscope, Heart, Activity, Droplet, ChevronRight, Volume2, VolumeX } from 'lucide-react'
-import { QUIZ_QUESTIONS, QUIZ_TITLE, QUIZ_SUBTITLE, type QuizQuestion } from '@/lib/quiz-data'
+import { Check, X, Award, RotateCcw, Play, Stethoscope, Heart, Activity, ChevronRight, Volume2, VolumeX } from 'lucide-react'
+import { QUIZ_QUESTIONS, QUIZ_TITLE, QUIZ_SUBTITLE, type QuizQuestion, pickShuffledQuestions } from '@/lib/quiz-data'
 import {
   playPraise,
   playOops,
@@ -30,17 +30,22 @@ export default function QuizApp() {
   const [answers, setAnswers] = useState<AnswerLogEntry[]>([])
   const [showConfetti, setShowConfetti] = useState(false)
   const [muted, setMutedState] = useState(false)
+  // Активная сессия вопросов — перемешивается при старте
+  const [activeQuestions, setActiveQuestions] = useState<QuizQuestion[]>([])
   // Сюда позже вставим URL видео, когда пользователь пришлёт файл
   const videoUrl = useRef<string | null>(null)
 
-  const totalQuestions = QUIZ_QUESTIONS.length
-  const currentQuestion: QuizQuestion | undefined = QUIZ_QUESTIONS[currentIndex]
+  const totalQuestions = activeQuestions.length || QUIZ_QUESTIONS.length
+  const currentQuestion: QuizQuestion | undefined = activeQuestions[currentIndex]
 
   useEffect(() => {
     preloadSounds()
   }, [])
 
-  const handleStart = useCallback(() => {
+  const handleStart = useCallback((mode: 'quick' | 'full') => {
+    const count = mode === 'quick' ? 10 : QUIZ_QUESTIONS.length
+    const picked = pickShuffledQuestions(count)
+    setActiveQuestions(picked)
     setPhase('question')
     setCurrentIndex(0)
     setScore(0)
@@ -97,6 +102,7 @@ export default function QuizApp() {
 
   const handleRestart = useCallback(() => {
     stopNarration()
+    setActiveQuestions([])
     setPhase('intro')
     setCurrentIndex(0)
     setScore(0)
@@ -225,7 +231,7 @@ export default function QuizApp() {
 }
 
 /* ============== INTRO ============== */
-function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQuestions: number }) {
+function IntroCard({ onStart, totalQuestions }: { onStart: (mode: 'quick' | 'full') => void; totalQuestions: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -248,8 +254,7 @@ function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQues
               Квиз на понимание
             </h2>
             <p className="mt-2 max-w-md text-sm text-sky-50 sm:text-base">
-              Проверь, насколько хорошо ты понимаешь осмотр слизистых оболочек и
-              интерпретацию ВКН. Каждый ответ озвучен — будь внимателен!
+              {totalQuestions} вопросов по осмотру слизистых оболочек, интерпретации ВКН, цветам и дефектам. Выбери режим и проверь свои знания.
             </p>
           </div>
         </div>
@@ -258,9 +263,9 @@ function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQues
         <div className="px-6 py-6 sm:px-10 sm:py-8">
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             {[
-              { icon: Stethoscope, label: `${totalQuestions} вопроса`, sub: 'по теме' },
-              { icon: Droplet, label: 'Голосовая', sub: 'обратная связь' },
-              { icon: Award, label: 'Счёт очков', sub: 'в реальном времени' },
+              { icon: Stethoscope, label: `${totalQuestions}`, sub: 'всего вопросов' },
+              { icon: Activity, label: '21', sub: 'тема' },
+              { icon: Award, label: 'Счёт', sub: 'в реальном времени' },
             ].map(({ icon: Icon, label, sub }) => (
               <div
                 key={label}
@@ -273,15 +278,25 @@ function IntroCard({ onStart, totalQuestions }: { onStart: () => void; totalQues
             ))}
           </div>
 
-          <button
-            onClick={onStart}
-            className="group mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:from-sky-600 hover:to-blue-700 hover:shadow-blue-500/40 active:scale-[0.98]"
-          >
-            <Play className="h-5 w-5 transition-transform group-hover:scale-110" />
-            Начать квиз
-          </button>
+          {/* Mode selector */}
+          <div className="mt-6 space-y-3">
+            <button
+              onClick={() => onStart('quick')}
+              className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:from-sky-600 hover:to-blue-700 hover:shadow-blue-500/40 active:scale-[0.98]"
+            >
+              <Play className="h-5 w-5 transition-transform group-hover:scale-110" />
+              Быстрый режим — 10 случайных вопросов
+            </button>
+            <button
+              onClick={() => onStart('full')}
+              className="group flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-sky-300 bg-white px-6 py-3 text-sm font-bold text-sky-700 shadow-sm transition-all hover:border-sky-400 hover:bg-sky-50 active:scale-[0.98]"
+            >
+              <Activity className="h-4 w-4 transition-transform group-hover:scale-110" />
+              Полный режим — все {totalQuestions} вопросов
+            </button>
+          </div>
           <p className="mt-3 text-center text-xs text-blue-700/50">
-            🐱 Правильный ответ — кошачье мяуканье • 🐶 неправильный — собачий рык • клавиши 1, 2, 3 • звук выключается кнопкой в правом верхнем углу
+            🎲 Порядок вопросов и вариантов перемешивается при каждом старте • 🐱 верно — кошачье мяуканье • 🐶 неверно — собачий рык • клавиши 1, 2, 3
           </p>
         </div>
       </div>
