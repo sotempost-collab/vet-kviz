@@ -112,8 +112,8 @@ export default function VetKvizApp() {
               questions={MUCOUS_QUESTIONS}
               title={MUCOUS_TITLE}
               subtitle={MUCOUS_SUBTITLE}
-              introDescription="78 вопросов по осмотру слизистых, интерпретации ВКН, цветам и дефектам. Выбери режим и проверь свои знания."
-              topicsCount={21}
+              introDescription="81 вопрос по осмотру слизистых, интерпретации ВКН, цветам и дефектам. Выбери режим и проверь свои знания."
+              topicsCount={22}
             />
           )}
           {mode === 'temperature-info' && <TemperatureApp />}

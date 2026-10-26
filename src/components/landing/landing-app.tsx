@@ -45,9 +45,9 @@ const FEATURES: FeatureCard[] = [
     id: 'quiz-mucous',
     icon: HelpCircle,
     title: 'Слизистые — проверь себя',
-    subtitle: '78 вопросов по 21 теме',
-    description: 'Самый объёмный квиз: клиническое значение осмотра, алгоритм ЦВВД, ВКН, цвета (цианоз, иктеричность, петехии), патологии. Перемешиваются и вопросы, и варианты.',
-    stat: '78',
+    subtitle: '81 вопрос по 22 темам',
+    description: 'Самый объёмный квиз: клиническое значение осмотра, алгоритм ЦВВД, ВКН, цвета (цианоз, иктеричность, петехии), патологии, мышечная пластинка. Перемешиваются и вопросы, и варианты.',
+    stat: '81',
     statLabel: 'вопросов',
     gradient: 'from-cyan-500 to-sky-600',
     glow: 'shadow-cyan-500/30',
@@ -108,7 +108,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={HelpCircle} value="83" label="вопроса в квизах" />
+                <Stat icon={HelpCircle} value="86" label="вопроса в квизах" />
                 <Stat icon={Layers} value="3" label="слоя в пазле" />
                 <Stat icon={Brain} value="5" label="разделов по температуре" />
                 <Stat icon={Activity} value="4" label="интерактивных раздела" />
