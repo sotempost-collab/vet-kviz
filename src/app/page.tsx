@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Layers, HelpCircle } from 'lucide-react'
+import { Layers, HelpCircle, Thermometer } from 'lucide-react'
 import QuizApp from '@/components/quiz/quiz-app'
 import PuzzleApp from '@/components/puzzle/puzzle-app'
+import TemperatureApp from '@/components/temperature/temperature-app'
 
-type Mode = 'puzzle' | 'quiz'
+type Mode = 'puzzle' | 'quiz' | 'temperature'
 
 export default function Home() {
   const [mode, setMode] = useState<Mode>('puzzle')
@@ -40,6 +41,18 @@ export default function Home() {
             <span className="hidden sm:inline">Квиз</span>
             <span className="sm:hidden">❓</span>
           </button>
+          <button
+            onClick={() => setMode('temperature')}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all sm:px-4 sm:py-2 sm:text-sm ${
+              mode === 'temperature'
+                ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-md'
+                : 'text-sky-700 hover:bg-sky-50'
+            }`}
+          >
+            <Thermometer className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Температура</span>
+            <span className="sm:hidden">🌡️</span>
+          </button>
         </div>
       </div>
 
@@ -51,7 +64,13 @@ export default function Home() {
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          {mode === 'puzzle' ? <PuzzleApp /> : <QuizApp />}
+          {mode === 'puzzle' ? (
+            <PuzzleApp />
+          ) : mode === 'quiz' ? (
+            <QuizApp />
+          ) : (
+            <TemperatureApp />
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
