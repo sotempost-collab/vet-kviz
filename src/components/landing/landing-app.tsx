@@ -11,14 +11,15 @@ import {
   Sparkles,
   Activity,
   Award,
+  Heart,
 } from 'lucide-react'
 
 interface LandingProps {
-  onNavigate: (mode: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature') => void
+  onNavigate: (mode: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio') => void
 }
 
 interface FeatureCard {
-  id: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature'
+  id: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
   icon: typeof Layers
   title: string
   subtitle: string
@@ -74,6 +75,17 @@ const FEATURES: FeatureCard[] = [
     gradient: 'from-violet-500 to-purple-600',
     glow: 'shadow-violet-500/30',
   },
+  {
+    id: 'cardio',
+    icon: Heart,
+    title: 'Сердечно-сосудистая система',
+    subtitle: '3D-модель сердца собаки',
+    description: 'Интерактивная 3D-модель сердца собаки с главными артериями и венами. Вращай мышкой, кликай по сосудам — получай название и описание.',
+    stat: '8',
+    statLabel: 'сосудов',
+    gradient: 'from-rose-500 to-red-600',
+    glow: 'shadow-rose-500/30',
+  },
 ]
 
 export default function LandingApp({ onNavigate }: LandingProps) {
@@ -111,7 +123,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 <Stat icon={HelpCircle} value="86" label="вопроса в квизах" />
                 <Stat icon={Layers} value="3" label="слоя в пазле" />
                 <Stat icon={Brain} value="5" label="разделов по температуре" />
-                <Stat icon={Activity} value="4" label="интерактивных раздела" />
+                <Stat icon={Activity} value="5" label="интерактивных разделов" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">

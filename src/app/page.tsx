@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Layers, HelpCircle, Thermometer, Brain, Home } from 'lucide-react'
+import { Layers, HelpCircle, Thermometer, Brain, Home, Heart } from 'lucide-react'
 import QuizApp from '@/components/quiz/quiz-app'
 import PuzzleApp from '@/components/puzzle/puzzle-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
+import CardioApp from '@/components/cardio/cardio-app'
 import LandingApp from '@/components/landing/landing-app'
 import {
   MUCOUS_QUESTIONS,
@@ -16,7 +17,7 @@ import {
   TEMPERATURE_SUBTITLE,
 } from '@/lib/quiz-data'
 
-type Mode = 'landing' | 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature'
+type Mode = 'landing' | 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
 
 interface NavItem {
   id: Mode
@@ -61,6 +62,13 @@ const NAV_ITEMS: NavItem[] = [
     shortLabel: '🧠',
     icon: Brain,
     color: 'from-violet-500 to-purple-600',
+  },
+  {
+    id: 'cardio',
+    label: 'Сердце',
+    shortLabel: '🫀',
+    icon: Heart,
+    color: 'from-rose-500 to-red-600',
   },
 ]
 
@@ -126,6 +134,7 @@ export default function VetKvizApp() {
               topicsCount={5}
             />
           )}
+          {mode === 'cardio' && <CardioApp />}
         </motion.div>
       </AnimatePresence>
     </div>
