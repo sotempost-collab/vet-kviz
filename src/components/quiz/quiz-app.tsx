@@ -226,6 +226,7 @@ export default function QuizApp({ questions: sourceQuestions, title, subtitle, i
                 total={totalQuestions}
                 answers={answers}
                 onRestart={handleRestart}
+                questions={sourceQuestions}
               />
             )}
           </AnimatePresence>
@@ -278,7 +279,7 @@ function IntroCard({ onStart, totalQuestions, title, introDescription, topicsCou
               { icon: Award, label: 'Счёт', sub: 'в реальном времени' },
             ].map(({ icon: Icon, label, sub }) => (
               <div
-                key={label}
+                key={sub}
                 className="rounded-2xl border border-sky-100 bg-sky-50/60 px-3 py-3 text-center sm:px-4 sm:py-4"
               >
                 <Icon className="mx-auto h-5 w-5 text-sky-600 sm:h-6 sm:w-6" />
@@ -532,11 +533,13 @@ function ResultCard({
   total,
   answers,
   onRestart,
+  questions,
 }: {
   score: number
   total: number
   answers: AnswerLogEntry[]
   onRestart: () => void
+  questions: QuizQuestion[]
 }) {
   const percentage = Math.round((score / total) * 100)
   const allCorrect = score === total
@@ -603,7 +606,7 @@ function ResultCard({
           </h3>
           <div className="space-y-2">
             {answers.map((a) => {
-              const q = sourceQuestions.find((x) => x.id === a.questionId)
+              const q = questions.find((x) => x.id === a.questionId)
               if (!q) return null
               return (
                 <div
