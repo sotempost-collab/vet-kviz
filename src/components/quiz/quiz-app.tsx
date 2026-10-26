@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, Award, RotateCcw, Play, Stethoscope, Heart, Activity, ChevronRight, Volume2, VolumeX } from 'lucide-react'
-import { QUIZ_QUESTIONS, QUIZ_TITLE, QUIZ_SUBTITLE, type QuizQuestion, pickShuffledQuestions } from '@/lib/quiz-data'
+import { type QuizQuestion, pickShuffledQuestions } from '@/lib/quiz-data'
 import {
   playPraise,
   playOops,
@@ -21,7 +21,15 @@ interface AnswerLogEntry {
   correct: boolean
 }
 
-export default function QuizApp() {
+interface QuizAppProps {
+  questions: QuizQuestion[]
+  title: string
+  subtitle: string
+  introDescription?: string
+  topicsCount?: number
+}
+
+export default function QuizApp({ questions: sourceQuestions, title, subtitle, introDescription, topicsCount }: QuizAppProps) {
   const [phase, setPhase] = useState<Phase>('intro')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null)
@@ -35,7 +43,7 @@ export default function QuizApp() {
   // Сюда позже вставим URL видео, когда пользователь пришлёт файл
   const videoUrl = useRef<string | null>(null)
 
-  const totalQuestions = activeQuestions.length || QUIZ_QUESTIONS.length
+  const totalQuestions = activeQuestions.length || sourceQuestions.length
   const currentQuestion: QuizQuestion | undefined = activeQuestions[currentIndex]
 
   useEffect(() => {
@@ -43,8 +51,8 @@ export default function QuizApp() {
   }, [])
 
   const handleStart = useCallback((mode: 'quick' | 'full') => {
-    const count = mode === 'quick' ? 10 : QUIZ_QUESTIONS.length
-    const picked = pickShuffledQuestions(count)
+    const count = mode === 'quick' ? Math.min(10, sourceQuestions.length) : sourceQuestions.length
+    const picked = pickShuffledQuestions(count, sourceQuestions)
     setActiveQuestions(picked)
     setPhase('question')
     setCurrentIndex(0)
@@ -52,7 +60,7 @@ export default function QuizApp() {
     setAnswers([])
     setSelectedLetter(null)
     setAnswerState('unanswered')
-  }, [])
+  }, [sourceQuestions])
 
   const handleSelectAnswer = useCallback(
     (letter: string) => {
@@ -120,6 +128,8 @@ export default function QuizApp() {
 
   const progress = (currentIndex + (phase === 'feedback' || phase === 'result' ? 1 : 0)) / totalQuestions
 
+  // Описание для финального экрана в зависимости от результата
+  // Render: header, progress, content, footer
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
       {/* Animated background bubbles */}
@@ -139,9 +149,9 @@ export default function QuizApp() {
             </div>
             <div>
               <h1 className="text-lg font-extrabold tracking-tight text-blue-950 sm:text-xl">
-                {QUIZ_TITLE}
+                {title}
               </h1>
-              <p className="text-xs font-medium text-blue-700/70 sm:text-sm">{QUIZ_SUBTITLE}</p>
+              <p className="text-xs font-medium text-blue-700/70 sm:text-sm">{subtitle}</p>
             </div>
           </div>
           {/* Score chip + mute toggle */}
@@ -193,7 +203,7 @@ export default function QuizApp() {
         <div className="flex flex-1 items-center justify-center">
           <AnimatePresence mode="wait">
             {phase === 'intro' && (
-              <IntroCard key="intro" onStart={handleStart} totalQuestions={totalQuestions} />
+              <IntroCard key="intro" onStart={handleStart} totalQuestions={totalQuestions} title={title} introDescription={introDescription} topicsCount={topicsCount} />
             )}
 
             {(phase === 'question' || phase === 'feedback') && currentQuestion && (
@@ -231,7 +241,7 @@ export default function QuizApp() {
 }
 
 /* ============== INTRO ============== */
-function IntroCard({ onStart, totalQuestions }: { onStart: (mode: 'quick' | 'full') => void; totalQuestions: number }) {
+function IntroCard({ onStart, totalQuestions, title, introDescription, topicsCount }: { onStart: (mode: 'quick' | 'full') => void; totalQuestions: number; title: string; introDescription?: string; topicsCount?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -251,10 +261,10 @@ function IntroCard({ onStart, totalQuestions }: { onStart: (mode: 'quick' | 'ful
               <Activity className="h-3.5 w-3.5" /> Клиническая диагностика
             </span>
             <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              Квиз на понимание
+              {title}
             </h2>
             <p className="mt-2 max-w-md text-sm text-sky-50 sm:text-base">
-              {totalQuestions} вопросов по осмотру слизистых оболочек, интерпретации ВКН, цветам и дефектам. Выбери режим и проверь свои знания.
+              {introDescription ?? `${totalQuestions} вопросов по теме. Выбери режим и проверь свои знания.`}
             </p>
           </div>
         </div>
@@ -264,7 +274,7 @@ function IntroCard({ onStart, totalQuestions }: { onStart: (mode: 'quick' | 'ful
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             {[
               { icon: Stethoscope, label: `${totalQuestions}`, sub: 'всего вопросов' },
-              { icon: Activity, label: '21', sub: 'тема' },
+              { icon: Activity, label: topicsCount ? String(topicsCount) : '—', sub: 'тема' },
               { icon: Award, label: 'Счёт', sub: 'в реальном времени' },
             ].map(({ icon: Icon, label, sub }) => (
               <div
@@ -285,7 +295,7 @@ function IntroCard({ onStart, totalQuestions }: { onStart: (mode: 'quick' | 'ful
               className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:from-sky-600 hover:to-blue-700 hover:shadow-blue-500/40 active:scale-[0.98]"
             >
               <Play className="h-5 w-5 transition-transform group-hover:scale-110" />
-              Быстрый режим — 10 случайных вопросов
+              Быстрый режим — {Math.min(10, totalQuestions)} случайных вопросов
             </button>
             <button
               onClick={() => onStart('full')}
@@ -593,7 +603,7 @@ function ResultCard({
           </h3>
           <div className="space-y-2">
             {answers.map((a) => {
-              const q = QUIZ_QUESTIONS.find((x) => x.id === a.questionId)
+              const q = sourceQuestions.find((x) => x.id === a.questionId)
               if (!q) return null
               return (
                 <div
