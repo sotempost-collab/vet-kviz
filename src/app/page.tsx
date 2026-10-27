@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Layers, HelpCircle, Thermometer, Brain, Home, Heart } from 'lucide-react'
+import { Layers, HelpCircle, Thermometer, Brain, Home, Heart, BookOpen } from 'lucide-react'
 import QuizApp from '@/components/quiz/quiz-app'
 import PuzzleApp from '@/components/puzzle/puzzle-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
 import CardioApp from '@/components/cardio/cardio-app'
+import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import LandingApp from '@/components/landing/landing-app'
 import {
   MUCOUS_QUESTIONS,
@@ -17,7 +18,7 @@ import {
   TEMPERATURE_SUBTITLE,
 } from '@/lib/quiz-data'
 
-type Mode = 'landing' | 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
+type Mode = 'landing' | 'puzzle' | 'mucous-info' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
 
 interface NavItem {
   id: Mode
@@ -48,6 +49,13 @@ const NAV_ITEMS: NavItem[] = [
     shortLabel: '🩸',
     icon: HelpCircle,
     color: 'from-cyan-500 to-sky-600',
+  },
+  {
+    id: 'mucous-info',
+    label: 'Слизистые гайд',
+    shortLabel: '📖',
+    icon: BookOpen,
+    color: 'from-blue-500 to-indigo-600',
   },
   {
     id: 'temperature-info',
@@ -124,6 +132,7 @@ export default function VetKvizApp() {
               topicsCount={22}
             />
           )}
+          {mode === 'mucous-info' && <MucousInfoApp />}
           {mode === 'temperature-info' && <TemperatureApp />}
           {mode === 'quiz-temperature' && (
             <QuizApp

@@ -12,14 +12,15 @@ import {
   Activity,
   Award,
   Heart,
+  BookOpen,
 } from 'lucide-react'
 
 interface LandingProps {
-  onNavigate: (mode: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio') => void
+  onNavigate: (mode: 'puzzle' | 'mucous-info' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio') => void
 }
 
 interface FeatureCard {
-  id: 'puzzle' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
+  id: 'puzzle' | 'mucous-info' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
   icon: typeof Layers
   title: string
   subtitle: string
@@ -52,6 +53,17 @@ const FEATURES: FeatureCard[] = [
     statLabel: 'вопросов',
     gradient: 'from-cyan-500 to-sky-600',
     glow: 'shadow-cyan-500/30',
+  },
+  {
+    id: 'mucous-info',
+    icon: BookOpen,
+    title: 'Гайд по слизистым',
+    subtitle: 'Строение и клиническая оценка',
+    description: 'Подробный гайд: формулы «Покрывает-защищает-сообщает» и БАРС, три слоя слизистой (ЭПМ), алгоритм ЦВВД, 7 типов изменений слизистых, карта памяти.',
+    stat: '15',
+    statLabel: 'разделов',
+    gradient: 'from-blue-500 to-indigo-600',
+    glow: 'shadow-blue-500/30',
   },
   {
     id: 'temperature-info',
@@ -123,7 +135,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 <Stat icon={HelpCircle} value="86" label="вопроса в квизах" />
                 <Stat icon={Layers} value="3" label="слоя в пазле" />
                 <Stat icon={Brain} value="5" label="разделов по температуре" />
-                <Stat icon={Activity} value="5" label="интерактивных разделов" />
+                <Stat icon={Activity} value="6" label="интерактивных разделов" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
