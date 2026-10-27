@@ -25,7 +25,7 @@ import {
   ArrowRight,
 } from 'lucide-react'
 
-export default function MucousInfoApp() {
+export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: () => void }) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
       <BackgroundBubbles />
@@ -617,27 +617,28 @@ export default function MucousInfoApp() {
         </motion.section>
 
         {/* CTA */}
-        <motion.div
+        <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.85 }}
-          className="mb-8 rounded-3xl border-2 border-blue-300 bg-white p-6 text-center shadow-lg"
+          onClick={onNavigateToQuiz}
+          disabled={!onNavigateToQuiz}
+          className="group mb-8 w-full rounded-3xl border-2 border-blue-300 bg-white p-6 text-center shadow-lg transition-all hover:border-blue-400 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-lg"
         >
-          <Stethoscope className="mx-auto h-10 w-10 text-blue-600" />
+          <Stethoscope className="mx-auto h-10 w-10 text-blue-600 transition-transform group-hover:scale-110" />
           <h3 className="mt-3 text-xl font-black uppercase text-blue-700">
             Готов проверить себя?
           </h3>
           <p className="mt-2 text-sm text-blue-900/80">
-            81 вопрос по слизистым оболочкам — на закрепление материала. Включи вкладку
-            <strong className="text-blue-700"> «Слизистые — проверь себя» </strong>
-            в верхней навигации.
+            81 вопрос по слизистым оболочкам — на закрепление материала. Нажми, чтобы пройти тест
+            <strong className="text-blue-700"> «Слизистые — проверь себя»</strong>.
           </p>
-          <div className="mt-3 flex items-center justify-center gap-1 text-blue-700">
-            <ArrowRight className="h-4 w-4" />
-            <span className="text-xs font-bold uppercase">Перейти к тесту</span>
-            <ArrowRight className="h-4 w-4" />
+          <div className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-3 text-sm font-bold text-white shadow-md transition-all group-hover:from-blue-600 group-hover:to-cyan-600 group-hover:shadow-lg">
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <span className="uppercase tracking-wide">Перейти к тесту</span>
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </div>
-        </motion.div>
+        </motion.button>
 
         {/* Footer */}
         <footer className="mt-6 text-center text-xs text-blue-700/60">

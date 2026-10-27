@@ -132,8 +132,8 @@ export default function VetKvizApp() {
               topicsCount={22}
             />
           )}
-          {mode === 'mucous-info' && <MucousInfoApp />}
-          {mode === 'temperature-info' && <TemperatureApp />}
+          {mode === 'mucous-info' && <MucousInfoApp onNavigateToQuiz={() => handleNavigate('quiz-mucous')} />}
+          {mode === 'temperature-info' && <TemperatureApp onNavigateToQuiz={() => handleNavigate('quiz-temperature')} />}
           {mode === 'quiz-temperature' && (
             <QuizApp
               questions={TEMPERATURE_QUESTIONS}
