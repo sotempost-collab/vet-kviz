@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import {
   Shield,
   Layers,
@@ -23,6 +24,10 @@ import {
   Award,
   CheckCircle2,
   ArrowRight,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
 } from 'lucide-react'
 
 export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: () => void }) {
@@ -31,6 +36,13 @@ export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
       <BackgroundBubbles />
 
       <main className="relative z-10 mx-auto max-w-4xl px-4 py-6 pt-16 sm:py-8 sm:pt-20">
+        {/* ============= AUDIO PLAYER (вверху гайда) ============= */}
+        <AudioPlayer
+          src="/audio/mucous-guide-narration.mp3"
+          title="Аудио-гайд по слизистым оболочкам"
+          subtitle="Прослушайте озвучку материала перед чтением"
+        />
+
         {/* ============= HERO ============= */}
         <motion.section
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -647,6 +659,216 @@ export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
         </footer>
       </main>
     </div>
+  )
+}
+
+/* ============= AUDIO PLAYER ============= */
+interface AudioPlayerProps {
+  src: string
+  title: string
+  subtitle?: string
+}
+
+function AudioPlayer({ src, title, subtitle }: AudioPlayerProps) {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [isMuted, setIsMuted] = useState(false)
+  const [volume, setVolume] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Загрузка метаданных (длительность)
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration || 0)
+      setIsLoading(false)
+    }
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime)
+    const handleEnded = () => setIsPlaying(false)
+    const handleCanPlay = () => setIsLoading(false)
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata)
+    audio.addEventListener('timeupdate', handleTimeUpdate)
+    audio.addEventListener('ended', handleEnded)
+    audio.addEventListener('canplay', handleCanPlay)
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      audio.removeEventListener('timeupdate', handleTimeUpdate)
+      audio.removeEventListener('ended', handleEnded)
+      audio.removeEventListener('canplay', handleCanPlay)
+    }
+  }, [])
+
+  const togglePlay = useCallback(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    if (isPlaying) {
+      audio.pause()
+      setIsPlaying(false)
+    } else {
+      void audio.play().then(() => setIsPlaying(true)).catch(() => {
+        // Браузер может блокировать автоплей — молча игнорируем
+      })
+    }
+  }, [isPlaying])
+
+  const toggleMute = useCallback(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const newMuted = !isMuted
+    audio.muted = newMuted
+    setIsMuted(newMuted)
+  }, [isMuted])
+
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current
+    if (!audio) return
+    const v = Number(e.target.value)
+    audio.volume = v
+    setVolume(v)
+    if (v === 0) setIsMuted(true)
+    else if (isMuted) setIsMuted(false)
+  }, [isMuted])
+
+  // Прогресс-бар: клик = перемотка
+  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current
+    const bar = progressRef.current
+    if (!audio || !bar || !duration) return
+    const rect = bar.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const ratio = Math.max(0, Math.min(1, x / rect.width))
+    audio.currentTime = ratio * duration
+    setCurrentTime(ratio * duration)
+  }, [duration])
+
+  const formatTime = (s: number) => {
+    if (!s || !isFinite(s)) return '0:00'
+    const m = Math.floor(s / 60)
+    const sec = Math.floor(s % 60)
+    return `${m}:${sec.toString().padStart(2, '0')}`
+  }
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mb-6 overflow-hidden rounded-3xl border-2 border-blue-400 bg-white/95 shadow-xl shadow-blue-500/20 backdrop-blur"
+    >
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-500 px-4 py-3 text-white sm:px-5">
+        <div className="flex items-center gap-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
+            <Volume2 className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-black uppercase tracking-tight sm:text-base">
+              {title}
+            </div>
+            {subtitle && (
+              <div className="text-[10px] font-medium text-white/80 sm:text-xs">
+                {subtitle}
+              </div>
+            )}
+          </div>
+          {isLoading && (
+            <div className="text-[10px] font-bold uppercase tracking-wide text-white/80">
+              загрузка...
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Player body */}
+      <div className="p-3 sm:p-4">
+        <audio ref={audioRef} src={src} preload="metadata" />
+
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* Play/Pause button */}
+          <button
+            onClick={togglePlay}
+            disabled={isLoading}
+            className="group flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-cyan-600 hover:shadow-xl active:scale-95 disabled:opacity-50 sm:h-14 sm:w-14"
+            aria-label={isPlaying ? 'Пауза' : 'Воспроизвести'}
+          >
+            {isPlaying ? (
+              <Pause className="h-6 w-6 sm:h-7 sm:w-7" />
+            ) : (
+              <Play className="ml-0.5 h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover:scale-110" />
+            )}
+          </button>
+
+          {/* Right column: time + progress + volume */}
+          <div className="flex-1 min-w-0">
+            {/* Time + progress */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="text-xs font-bold tabular-nums text-blue-700 sm:text-sm">
+                {formatTime(currentTime)}
+              </span>
+              <div
+                ref={progressRef}
+                onClick={handleProgressClick}
+                className="group relative h-2 flex-1 cursor-pointer overflow-hidden rounded-full bg-blue-100"
+              >
+                <motion.div
+                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                  initial={false}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ duration: 0.1, ease: 'linear' }}
+                />
+                {/* Кружок-индикатор на прогресс-баре */}
+                <div
+                  className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 rounded-full bg-white shadow-md ring-2 ring-blue-500 transition-transform group-hover:scale-125"
+                  style={{ left: `calc(${progress}% - 7px)` }}
+                />
+              </div>
+              <span className="text-xs font-medium tabular-nums text-blue-700/70 sm:text-sm">
+                {formatTime(duration)}
+              </span>
+            </div>
+
+            {/* Volume + label */}
+            <div className="mt-2 flex items-center gap-2 sm:gap-3">
+              <button
+                onClick={toggleMute}
+                className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-blue-600 hover:bg-blue-50"
+                aria-label={isMuted ? 'Включить звук' : 'Выключить звук'}
+              >
+                {isMuted || volume === 0 ? (
+                  <VolumeX className="h-4 w-4" />
+                ) : (
+                  <Volume2 className="h-4 w-4" />
+                )}
+              </button>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.05}
+                value={isMuted ? 0 : volume}
+                onChange={handleVolumeChange}
+                className="h-1 w-16 cursor-pointer appearance-none rounded-full bg-blue-200 accent-blue-500 sm:w-24"
+                aria-label="Громкость"
+              />
+              <div className="ml-auto flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-blue-700/70">
+                <BookOpen className="h-3 w-3" />
+                <span className="hidden sm:inline">Слушайте и читайте</span>
+                <span className="sm:hidden">Аудио</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   )
 }
 
