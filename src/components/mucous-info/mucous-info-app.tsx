@@ -214,6 +214,34 @@ export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
               <LayerCard icon={Wind} name="Мышечная пластинка" image="Движение" desc="Сокращение, складки, секреция желёз" />
             </div>
 
+            {/* Таблица классификации эпителиев */}
+            <motion.figure
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-lg"
+            >
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-2 text-white">
+                <div className="flex items-center gap-2">
+                  <Layers className="h-4 w-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider">
+                    Классификация эпителиев — типы по локализации
+                  </span>
+                </div>
+              </div>
+              <img
+                src="/images/epithelium-classification.webp"
+                alt="Таблица классификации эпителиев:口腔/пищевод/влагалище — многослойный плоский неороговевающий; язык кошки — многослойный плоский ороговевающий; желудок/кишечник — однослойный цилиндрический; трахея/бронхи — многорядный реснитчатый; мочевой пузырь — переходный"
+                className="w-full"
+                loading="lazy"
+              />
+              <figcaption className="border-t border-blue-100 bg-blue-50/60 px-4 py-2 text-xs text-blue-900">
+                <strong className="uppercase text-blue-700">Тип эпителия соответствует функции органа:</strong>{' '}
+                где трение — многослойный плоский; где всасывание — однослойный цилиндрический;
+                где очищение воздуха — реснитчатый; где растяжение — переходный.
+              </figcaption>
+            </motion.figure>
+
             <Callout variant="info" emoji="🧱" title="Мини-заключение">
               Не путайте слизистую с одним эпителием: это всё равно что назвать клинику только входной дверью.
               Внутри ещё есть персонал, коммуникации и работающий мотор.
