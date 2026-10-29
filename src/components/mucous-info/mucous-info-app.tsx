@@ -630,7 +630,7 @@ export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
             Готов проверить себя?
           </h3>
           <p className="mt-2 text-sm text-blue-900/80">
-            81 вопрос по слизистым оболочкам — на закрепление материала. Нажми, чтобы пройти тест
+            5 вопросов по слизистым — на закрепление материала. Нажми, чтобы пройти тест
             <strong className="text-blue-700"> «Слизистые — проверь себя»</strong>.
           </p>
           <div className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-3 text-sm font-bold text-white shadow-md transition-all group-hover:from-blue-600 group-hover:to-cyan-600 group-hover:shadow-lg">

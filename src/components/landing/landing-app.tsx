@@ -2,101 +2,80 @@
 
 import { motion } from 'framer-motion'
 import {
-  Layers,
-  HelpCircle,
+  Shield,
   Thermometer,
-  Brain,
+  Heart,
   Stethoscope,
   ArrowRight,
   Sparkles,
   Activity,
   Award,
-  Heart,
   BookOpen,
+  HelpCircle,
+  Brain,
+  Puzzle,
 } from 'lucide-react'
 
 interface LandingProps {
-  onNavigate: (mode: 'puzzle' | 'mucous-info' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio') => void
+  onNavigate: (mode: string) => void
 }
 
-interface FeatureCard {
-  id: 'puzzle' | 'mucous-info' | 'quiz-mucous' | 'temperature-info' | 'quiz-temperature' | 'cardio'
-  icon: typeof Layers
-  title: string
-  subtitle: string
+type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
+
+interface BlockFeature {
+  id: 'mucous' | 'temperature' | 'heart'
+  blockLabel: string
+  icon: typeof Shield
   description: string
-  stat: string
-  statLabel: string
   gradient: string
   glow: string
+  defaultMode: string
+  sections: { id: Section; label: string; mode: string; icon: typeof BookOpen }[]
 }
 
-const FEATURES: FeatureCard[] = [
+const BLOCKS: BlockFeature[] = [
   {
-    id: 'puzzle',
-    icon: Layers,
-    title: 'Пазл ткани',
-    subtitle: 'Собери слои слизистой',
-    description: 'Перетащи 3 кусочка гистологического среза (эпителий / собственная пластинка / мышца) в правильном порядке. Звуковая обратная связь: кошка на верный, собака на неверный.',
-    stat: '3',
-    statLabel: 'слоя',
-    gradient: 'from-sky-500 to-blue-600',
-    glow: 'shadow-sky-500/30',
-  },
-  {
-    id: 'quiz-mucous',
-    icon: HelpCircle,
-    title: 'Слизистые — проверь себя',
-    subtitle: '81 вопрос по 22 темам',
-    description: 'Самый объёмный квиз: клиническое значение осмотра, алгоритм ЦВВД, ВКН, цвета (цианоз, иктеричность, петехии), патологии, мышечная пластинка. Перемешиваются и вопросы, и варианты.',
-    stat: '81',
-    statLabel: 'вопросов',
-    gradient: 'from-cyan-500 to-sky-600',
-    glow: 'shadow-cyan-500/30',
-  },
-  {
-    id: 'mucous-info',
-    icon: BookOpen,
-    title: 'Гайд по слизистым',
-    subtitle: 'Строение и клиническая оценка',
-    description: 'Подробный гайд: формулы «Покрывает-защищает-сообщает» и БАРС, три слоя слизистой (ЭПМ), алгоритм ЦВВД, 7 типов изменений слизистых, карта памяти.',
-    stat: '15',
-    statLabel: 'разделов',
-    gradient: 'from-blue-500 to-indigo-600',
+    id: 'mucous',
+    blockLabel: 'Слизистые',
+    icon: Shield,
+    description: 'Строение слизистой оболочки (формулы Покрывает-защищает-сообщает, БАРС, ЭПМ), алгоритм ЦВВД клинического осмотра, 7 типов изменений слизистых и карта памяти.',
+    gradient: 'from-blue-500 to-cyan-600',
     glow: 'shadow-blue-500/30',
+    defaultMode: 'mucous-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'mucous-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'mucous-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'mucous-glossary', icon: Brain },
+      { id: 'puzzle', label: 'Пазл', mode: 'mucous-puzzle', icon: Puzzle },
+    ],
   },
   {
-    id: 'temperature-info',
+    id: 'temperature',
+    blockLabel: 'Температура',
     icon: Thermometer,
-    title: 'Температура тела',
-    subtitle: 'Гайд для ветеринара',
-    description: '5 разделов: определение, физиология терморегуляции, методы измерения, патологии (лихорадка vs гипертермия), словарь. С картинками и пиктограммами.',
-    stat: '5',
-    statLabel: 'разделов',
+    description: 'Терморегуляция (гипоталамус, бурая жировая ткань, термогенин UCP1), методы измерения, лихорадка vs гипертермия, гипотермия, словарь терминов.',
     gradient: 'from-orange-500 to-rose-600',
     glow: 'shadow-orange-500/30',
+    defaultMode: 'temperature-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'temperature-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'temperature-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'temperature-glossary', icon: Brain },
+    ],
   },
   {
-    id: 'quiz-temperature',
-    icon: Brain,
-    title: 'Температура — проверь себя',
-    subtitle: '5 ключевых вопросов',
-    description: 'Закрепи материал по терморегуляции: лихорадка vs гипертермия, термогенин UCP1, стадии лихорадки, методы измерения, полипноэ.',
-    stat: '5',
-    statLabel: 'вопросов',
-    gradient: 'from-violet-500 to-purple-600',
-    glow: 'shadow-violet-500/30',
-  },
-  {
-    id: 'cardio',
+    id: 'heart',
+    blockLabel: 'Сердце',
     icon: Heart,
-    title: 'Сердечно-сосудистая система',
-    subtitle: '3D-модель сердца собаки',
-    description: 'Интерактивная 3D-модель сердца собаки с главными артериями и венами. Вращай мышкой, кликай по сосудам — получай название и описание.',
-    stat: '8',
-    statLabel: 'сосудов',
+    description: 'Интерактивная 3D-модель сердца собаки с 4 камерами, 8 сосудами, 4 клапанами и M-mode. Пульсация синхронна с ЧСС, клапаны анимированы.',
     gradient: 'from-rose-500 to-red-600',
     glow: 'shadow-rose-500/30',
+    defaultMode: 'heart-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'heart-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'heart-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'heart-glossary', icon: Brain },
+    ],
   },
 ]
 
@@ -113,57 +92,96 @@ export default function LandingApp({ onNavigate }: LandingProps) {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="mb-10 overflow-hidden rounded-3xl border-2 border-blue-300 bg-white/95 shadow-2xl shadow-blue-500/20 backdrop-blur"
         >
-          <div className="relative bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 px-6 py-12 text-white sm:px-12 sm:py-16">
+          <div className="relative bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 px-6 py-12 text-white sm:px-12 sm:py-14">
             <div className="absolute right-6 top-6 opacity-15">
               <Stethoscope className="h-40 w-40" />
             </div>
             <div className="relative z-10 max-w-3xl">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur">
-                <Sparkles className="h-3.5 w-3.5" /> Интерактивный учебный лендинг
+                <Sparkles className="h-3.5 w-3.5" /> Ветеринарный учебный лендинг
               </span>
               <h1 className="mt-4 text-4xl font-black uppercase tracking-tight sm:text-6xl">
                 Вет-Квиз
               </h1>
               <p className="mt-3 text-base font-medium text-blue-50 sm:text-xl">
-                Все клинические темы ветеринарной медицины в одном месте:
-                <strong className="uppercase"> слизистые, терморегуляция, гистология</strong>.
-                Учись через игру — собирай пазлы, проходи тесты, читай гайды.
+                Три основных блока — <strong className="uppercase">Слизистые, Температура, Сердце</strong>.
+                Каждый блок: <strong className="uppercase">Урок → Тест → Глоссарий</strong>.
               </p>
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={HelpCircle} value="86" label="вопроса в квизах" />
-                <Stat icon={Layers} value="3" label="слоя в пазле" />
-                <Stat icon={Brain} value="5" label="разделов по температуре" />
-                <Stat icon={Activity} value="6" label="интерактивных разделов" />
+                <Stat icon={Shield} value="3" label="основных блока" />
+                <Stat icon={BookOpen} value="3" label="урока" />
+                <Stat icon={HelpCircle} value="10" label="вопросов в тестах" />
+                <Stat icon={Brain} value="3" label="глоссария" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
                 <button
-                  onClick={() => onNavigate('quiz-mucous')}
+                  onClick={() => onNavigate('mucous-lesson')}
                   className="group inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-bold text-blue-700 shadow-xl transition-all hover:bg-blue-50 active:scale-95 sm:text-base"
                 >
-                  <HelpCircle className="h-5 w-5 transition-transform group-hover:scale-110" />
-                  Начать с квиза
+                  <Shield className="h-5 w-5 transition-transform group-hover:scale-110" />
+                  Начать со слизистых
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </button>
                 <button
-                  onClick={() => onNavigate('temperature-info')}
+                  onClick={() => onNavigate('heart-lesson')}
                   className="group inline-flex items-center gap-2 rounded-2xl border-2 border-white/40 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition-all hover:bg-white/20 active:scale-95 sm:text-base"
                 >
-                  <Thermometer className="h-5 w-5 transition-transform group-hover:scale-110" />
-                  Читать про температуру
+                  <Heart className="h-5 w-5 transition-transform group-hover:scale-110" />
+                  Открыть 3D-сердце
                 </button>
               </div>
             </div>
           </div>
         </motion.section>
 
-        {/* SECTION: Choose your mode */}
+        {/* METHODOLOGY — Learn → Test → Consolidate */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1 }}
+          className="mb-8 overflow-hidden rounded-3xl border-2 border-violet-300 bg-white/95 shadow-lg backdrop-blur"
+        >
+          <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-5 py-3 text-white">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              <span className="text-xs font-bold uppercase tracking-wider sm:text-sm">
+                Структура каждого блока — учись → проверяй → закрепляй
+              </span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-3 sm:p-5">
+            <MethodologyStep
+              num="1"
+              title="Урок"
+              desc="Изучите материал урока"
+              icon={BookOpen}
+              color="from-blue-500 to-cyan-600"
+            />
+            <MethodologyStep
+              num="2"
+              title="Тест"
+              desc="Проверьте свои знания"
+              icon={HelpCircle}
+              color="from-emerald-500 to-teal-600"
+            />
+            <MethodologyStep
+              num="3"
+              title="Глоссарий"
+              desc="Закрепите термины"
+              icon={Brain}
+              color="from-violet-500 to-purple-600"
+            />
+          </div>
+        </motion.section>
+
+        {/* 3 BLOCKS */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
           className="mb-6"
         >
           <div className="mb-4 flex items-center gap-2 px-1">
@@ -172,66 +190,71 @@ export default function LandingApp({ onNavigate }: LandingProps) {
             </div>
             <div>
               <h2 className="text-lg font-black uppercase tracking-tight text-blue-700 sm:text-xl">
-                Выбери раздел
+                Выбери блок
               </h2>
               <p className="text-xs text-blue-700/70">
-                Четыре интерактивных модуля — выбирай, что интересно
+                Три основных направления изучения
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {FEATURES.map((f, i) => (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {BLOCKS.map((block, i) => (
               <motion.button
-                key={f.id}
+                key={block.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: 0.15 + i * 0.08 }}
+                transition={{ duration: 0.35, delay: 0.2 + i * 0.1 }}
                 whileHover={{ y: -4 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate(f.id)}
-                className={`group relative overflow-hidden rounded-3xl border-2 border-blue-100 bg-white/90 p-5 text-left shadow-lg ${f.glow} transition-shadow hover:shadow-2xl`}
+                onClick={() => onNavigate(block.defaultMode)}
+                className={`group relative overflow-hidden rounded-3xl border-2 border-slate-200 bg-white p-5 text-left shadow-lg ${block.glow} transition-shadow hover:shadow-2xl`}
               >
-                <div className="flex items-start gap-4">
-                  {/* Icon with gradient bg */}
-                  <div className={`flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${f.gradient} text-white shadow-lg`}>
-                    <f.icon className="h-7 w-7" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-baseline gap-2">
-                      <h3 className="text-lg font-black uppercase tracking-tight text-blue-900">
-                        {f.title}
-                      </h3>
-                    </div>
-                    <p className="text-xs font-medium text-blue-700">{f.subtitle}</p>
-                  </div>
-                  {/* Stat */}
-                  <div className="text-right">
-                    <div className="text-2xl font-black text-blue-700">{f.stat}</div>
-                    <div className="text-[10px] uppercase tracking-wide text-blue-700/60">
-                      {f.statLabel}
-                    </div>
-                  </div>
+                {/* Block icon */}
+                <div className={`mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${block.gradient} text-white shadow-lg`}>
+                  <block.icon className="h-7 w-7" />
                 </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-blue-900/80">
-                  {f.description}
+                {/* Block name */}
+                <h3 className="text-xl font-black uppercase tracking-tight text-slate-900">
+                  {block.blockLabel}
+                </h3>
+
+                {/* Description */}
+                <p className="mt-1.5 text-xs leading-relaxed text-slate-700">
+                  {block.description}
                 </p>
 
-                <div className="mt-3 flex items-center gap-1 text-blue-700">
-                  <span className="text-xs font-bold uppercase tracking-wide">Открыть</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                {/* Sections chips */}
+                <div className="mt-3 flex flex-wrap gap-1">
+                  {block.sections.map(s => (
+                    <span
+                      key={s.id}
+                      className={`inline-flex items-center gap-0.5 rounded-full bg-gradient-to-r ${block.gradient} px-2 py-0.5 text-[10px] font-bold uppercase text-white shadow-sm`}
+                    >
+                      <s.icon className="h-2.5 w-2.5" />
+                      {s.label}
+                    </span>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <div className={`mt-4 flex items-center gap-1 bg-gradient-to-r ${block.gradient} bg-clip-text text-transparent`}>
+                  <span className="text-xs font-bold uppercase tracking-wide">
+                    Открыть блок
+                  </span>
+                  <ArrowRight className={`h-4 w-4 bg-gradient-to-r ${block.gradient} bg-clip-text text-transparent transition-transform group-hover:translate-x-1`} />
                 </div>
               </motion.button>
             ))}
           </div>
         </motion.section>
 
-        {/* SECTION: Why our app is cool */}
+        {/* FEATURES */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
           className="mb-8 rounded-3xl border-2 border-blue-300 bg-white/95 p-5 shadow-lg sm:p-7"
         >
           <div className="mb-4 flex items-center gap-2">
@@ -251,17 +274,17 @@ export default function LandingApp({ onNavigate }: LandingProps) {
               {
                 icon: Brain,
                 title: 'Адаптивная сложность',
-                desc: 'Квиз «Слизистые» — 78 вопросов с выбором 10 случайных или полного режима. Каждый раз новый порядок.',
-              },
-              {
-                icon: Layers,
-                title: 'Визуальное обучение',
-                desc: 'Пазл с гистологическим срезом и подробные иллюстрации в гайде по температуре.',
+                desc: 'Тесты «Проверь себя» — по 5 ключевых вопросов на блок. Перемешиваются и вопросы, и варианты.',
               },
               {
                 icon: Activity,
+                title: '3D-визуализация',
+                desc: 'Интерактивная 3D-модель сердца с пульсацией, клапанами и M-mode. Перетаскивание в пазле слизистой.',
+              },
+              {
+                icon: Brain,
                 title: 'Мгновенная обратная связь',
-                desc: 'Кошачье мяуканье на верный ответ, собачий рык на неверный. Без занудства.',
+                desc: 'Кошачье мяуканье на верный ответ, собачий рык на неверный. Кликовые CTA-кнопки в гайдах.',
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div
@@ -278,20 +301,51 @@ export default function LandingApp({ onNavigate }: LandingProps) {
 
         {/* FOOTER */}
         <footer className="mt-6 text-center text-xs text-blue-700/60">
-          Вет-Квиз — обучающий лендинг для ветеринарных специалистов и студентов •
-          Гистология • Клинический осмотр • Терморегуляция
+          Вет-Квиз — ветеринарный обучающий лендинг •
+          Слизистые • Температура • Сердце • Урок → Тест → Глоссарий
         </footer>
       </main>
     </div>
   )
 }
 
-function Stat({ icon: Icon, value, label }: { icon: typeof Layers; value: string; label: string }) {
+function Stat({ icon: Icon, value, label }: { icon: typeof Shield; value: string; label: string }) {
   return (
     <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur">
       <Icon className="h-4 w-4 text-blue-50" />
       <span className="text-base font-black text-white">{value}</span>
       <span className="text-xs text-blue-50/80">{label}</span>
+    </div>
+  )
+}
+
+function MethodologyStep({
+  num,
+  title,
+  desc,
+  icon: Icon,
+  color,
+}: {
+  num: string
+  title: string
+  desc: string
+  icon: typeof BookOpen
+  color: string
+}) {
+  return (
+    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${color} p-0.5 shadow-md`}>
+      <div className="rounded-[14px] bg-white p-3 text-center">
+        <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${color} text-sm font-black text-white shadow`}>
+          {num}
+        </div>
+        <div className="flex items-center justify-center gap-1.5">
+          <Icon className={`h-4 w-4 bg-gradient-to-br ${color} bg-clip-text text-transparent`} />
+          <h3 className={`text-sm font-black uppercase tracking-wide bg-gradient-to-br ${color} bg-clip-text text-transparent`}>
+            {title}
+          </h3>
+        </div>
+        <div className="mt-1 text-xs text-slate-700">{desc}</div>
+      </div>
     </div>
   )
 }
