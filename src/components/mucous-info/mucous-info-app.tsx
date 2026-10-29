@@ -29,6 +29,7 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react'
+import { VIDEOS } from '@/lib/videos'
 
 export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: () => void }) {
   return (
@@ -38,9 +39,9 @@ export default function MucousInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
       <main className="relative z-10 mx-auto max-w-4xl px-4 py-6 pt-16 sm:py-8 sm:pt-20">
         {/* ============= VIDEO PLAYER (вверху гайда) ============= */}
         <VideoPlayer
-          src="/video/mucous-guide-intro.mp4"
-          title="Видео-вступление к гайду"
-          subtitle="Ольга представляет материал по слизистым оболочкам"
+          src={VIDEOS['mucous-intro'].src}
+          title={VIDEOS['mucous-intro'].title}
+          subtitle={VIDEOS['mucous-intro'].subtitle}
         />
 
         {/* ============= HERO ============= */}
