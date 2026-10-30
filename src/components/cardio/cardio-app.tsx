@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo, useCallback, Suspense } from 'react'
 import { Canvas, useFrame, type ThreeEvent } from '@react-three/fiber'
-import { OrbitControls, Html, Line, ContactShadows } from '@react-three/drei'
+import { OrbitControls, Html, Line, ContactShadows, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, RotateCw, MousePointerClick, BookOpen, Activity, ArrowRight, X, Pause, Play, Gauge } from 'lucide-react'
@@ -184,6 +184,34 @@ function ValveMesh({ valve, heartRateHz, isPlaying, isSelected, isFaded, onSelec
   )
 }
 
+// ============== GLB 3D MODEL LOADER ==============
+useGLTF.preload('/models/heart.glb')
+
+function HeartGLBModel({ heartRateHz, isPlaying }: { heartRateHz: number; isPlaying: boolean }) {
+  const { scene } = useGLTF('/models/heart.glb', true)
+  const ref = useRef<THREE.Group>(null)
+  const tRef = useRef(0)
+
+  useFrame((_, delta) => {
+    if (!ref.current) return
+    if (isPlaying) tRef.current += delta
+    const phase = (tRef.current * heartRateHz) % 1
+    let s = 1
+    if (phase < 0.4) {
+      s = 1 - 0.05 * Math.sin((phase / 0.4) * Math.PI)
+    } else {
+      s = 1 + 0.02 * Math.sin(((phase - 0.4) / 0.6) * Math.PI)
+    }
+    ref.current.scale.setScalar(s)
+  })
+
+  return (
+    <group ref={ref} scale={0.5} position={[0.2, 0.3, 0]}>
+      <primitive object={scene} />
+    </group>
+  )
+}
+
 // ============== HEART MODEL ==============
 function HeartModel({
   selectedId,
@@ -204,8 +232,12 @@ function HeartModel({
       <directionalLight position={[3, 5, 4]} intensity={1.0} castShadow />
       <directionalLight position={[-3, 2, -3]} intensity={0.4} />
 
-      {/* Камеры сердца с пульсацией */}
+      {/* Реалистичная 3D-модель сердца (GLB) + стилизованные камеры */}
       <group>
+        <Suspense fallback={null}>
+          <HeartGLBModel heartRateHz={heartRateHz} isPlaying={isPlaying} />
+        </Suspense>
+        {/* Стилизованные камеры (кликабельные) — оставлены для интерактивности */}
         <HeartChamber
           position={HEART_VENTRICLES.left.position}
           scale={HEART_VENTRICLES.left.scale}
