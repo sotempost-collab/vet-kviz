@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Brain,
   Puzzle,
+  Droplets,
 } from 'lucide-react'
 
 interface LandingProps {
@@ -77,6 +78,20 @@ const BLOCKS: BlockFeature[] = [
       { id: 'glossary', label: 'Глоссарий', mode: 'heart-glossary', icon: Brain },
     ],
   },
+  {
+    id: 'hydration',
+    blockLabel: 'Гидратация',
+    icon: Droplets,
+    description: 'Водный баланс, электролиты (Na+, K+, Cl-), классификация дегидратации (изо/гипер/гипотоническая), степени тяжести, жидкостная терапия.',
+    gradient: 'from-cyan-500 to-blue-600',
+    glow: 'shadow-cyan-500/30',
+    defaultMode: 'hydration-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'hydration-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'hydration-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'hydration-glossary', icon: Brain },
+    ],
+  },
 ]
 
 export default function LandingApp({ onNavigate }: LandingProps) {
@@ -104,16 +119,16 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Вет-Квиз
               </h1>
               <p className="mt-3 text-base font-medium text-blue-50 sm:text-xl">
-                Три основных блока — <strong className="uppercase">Слизистые, Температура, Сердце</strong>.
+                Четыре основных блока — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация</strong>.
                 Каждый блок: <strong className="uppercase">Урок → Тест → Глоссарий</strong>.
               </p>
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={Shield} value="3" label="основных блока" />
-                <Stat icon={BookOpen} value="3" label="урока" />
-                <Stat icon={HelpCircle} value="10" label="вопросов в тестах" />
-                <Stat icon={Brain} value="3" label="глоссария" />
+                <Stat icon={Shield} value="4" label="основных блока" />
+                <Stat icon={BookOpen} value="4" label="урока" />
+                <Stat icon={HelpCircle} value="15" label="вопросов в тестах" />
+                <Stat icon={Brain} value="4" label="глоссария" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
@@ -198,7 +213,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {BLOCKS.map((block, i) => (
               <motion.button
                 key={block.id}
