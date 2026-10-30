@@ -17,6 +17,7 @@ import {
   Zap,
 } from 'lucide-react'
 import VideoPlayer from '@/components/shared/video-player'
+import { VIDEOS } from '@/lib/videos'
 
 // Картинка «Гидратация и электролиты» (ICF/ECF, раствор Рингера, баланс ионов)
 const HYDRATION_ELECTROLYTES_IMG = '/images/hydration-electrolytes.webp'
@@ -30,6 +31,13 @@ export default function HydrationInfoApp({ onNavigateToQuiz }: { onNavigateToQui
       <BackgroundBubbles />
 
       <main className="relative z-10 mx-auto max-w-4xl px-4 py-6 pt-16 sm:py-8 sm:pt-20">
+        {/* ============= VIDEO PLAYER (вверху гайда) ============= */}
+        <VideoPlayer
+          src={VIDEOS['hydration-intro'].src}
+          title={VIDEOS['hydration-intro'].title}
+          subtitle={VIDEOS['hydration-intro'].subtitle}
+        />
+
         {/* ============= HERO ============= */}
         <motion.section
           initial={{ opacity: 0, y: 30, scale: 0.95 }}

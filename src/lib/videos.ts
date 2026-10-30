@@ -28,6 +28,13 @@ export const VIDEOS: Record<string, VideoConfig> = {
     subtitle: 'Терморегуляция и клиническая оценка температуры',
   },
 
+  // ============ БЛОК «ГИДРАТАЦИЯ» ============
+  'hydration-intro': {
+    src: 'https://cdn.relaxdev.ru/users/cmuqidv0d00fspn018pp2xupe/vet-kviz/_1080p_gidrodazia.mp4',
+    title: 'Видео-вступление к гайду',
+    subtitle: 'Гидратация и водный баланс собак и кошек',
+  },
+
   // ============ БЛОК «СЕРДЦЕ» ============
   // 'heart-intro': {
   //   src: 'https://cdn.relaxdev.ru/users/.../heart-intro.mp4',
