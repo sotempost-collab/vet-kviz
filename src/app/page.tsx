@@ -2,13 +2,14 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets } from 'lucide-react'
+import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical } from 'lucide-react'
 import QuizApp from '@/components/quiz/quiz-app'
 import PuzzleApp from '@/components/puzzle/puzzle-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
 import CardioApp from '@/components/cardio/cardio-app'
 import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import HydrationInfoApp from '@/components/hydration/hydration-info-app'
+import LymphInfoApp from '@/components/lymph/lymph-info-app'
 import GlossaryApp from '@/components/glossary/glossary-app'
 import ComingSoonApp from '@/components/placeholder/coming-soon-app'
 import LandingApp from '@/components/landing/landing-app'
@@ -22,16 +23,20 @@ import {
   HYDRATION_QUESTIONS,
   HYDRATION_TITLE,
   HYDRATION_SUBTITLE,
+  LYMPH_QUESTIONS,
+  LYMPH_TITLE,
+  LYMPH_SUBTITLE,
 } from '@/lib/quiz-data'
 import {
   MUCOUS_GLOSSARY_TERMS,
   TEMPERATURE_GLOSSARY_TERMS,
   HEART_GLOSSARY_TERMS,
   HYDRATION_GLOSSARY_TERMS,
+  LYMPH_GLOSSARY_TERMS,
 } from '@/lib/glossary-data'
 
 // ============= Mode definitions =============
-type Block = 'mucous' | 'temperature' | 'heart' | 'hydration'
+type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph'
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 type Mode = 'landing' | `${Block}-${Section}`
 
@@ -96,6 +101,15 @@ const BLOCKS: BlockMeta[] = [
     icon: Droplets,
     color: 'from-cyan-500 to-blue-600',
     defaultMode: 'hydration-lesson',
+    sections: ['lesson', 'quiz', 'glossary'],
+  },
+  {
+    id: 'lymph',
+    label: 'Лимфосистема',
+    shortLabel: '🛡️',
+    icon: FlaskConical,
+    color: 'from-indigo-500 to-blue-700',
+    defaultMode: 'lymph-lesson',
     sections: ['lesson', 'quiz', 'glossary'],
   },
 ]
@@ -329,6 +343,30 @@ export default function VetKvizApp() {
               accentColor="blue"
               onNavigateToQuiz={() => handleNavigate('hydration-quiz')}
               quizLabel="5 вопросов по гидратации"
+            />
+          )}
+
+          {/* LYMPH BLOCK */}
+          {mode === 'lymph-lesson' && (
+            <LymphInfoApp onNavigateToQuiz={() => handleNavigate('lymph-quiz')} />
+          )}
+          {mode === 'lymph-quiz' && (
+            <QuizApp
+              questions={LYMPH_QUESTIONS}
+              title={LYMPH_TITLE}
+              subtitle={LYMPH_SUBTITLE}
+              introDescription="5 вопросов по лимфатической системе: функции, топография узлов, гистология, патологии, пальпация. Выбери режим и проверь свои знания."
+              topicsCount={5}
+            />
+          )}
+          {mode === 'lymph-glossary' && (
+            <GlossaryApp
+              title="Глоссарий по лимфосистеме"
+              subtitle="Словарь терминов по лимфатической системе"
+              terms={LYMPH_GLOSSARY_TERMS}
+              accentColor="blue"
+              onNavigateToQuiz={() => handleNavigate('lymph-quiz')}
+              quizLabel="5 вопросов по лимфосистеме"
             />
           )}
         </motion.div>
