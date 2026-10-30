@@ -3,10 +3,34 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import QuizApp from '@/components/quiz/quiz-app'
-import PuzzleApp from '@/components/puzzle/puzzle-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
-import CardioApp from '@/components/cardio/cardio-app'
+
+// Тяжёлые компоненты загружаются лениво — Three.js и dnd-kit не грузятся на главной
+const CardioApp = dynamic(() => import('@/components/cardio/cardio-app'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-[400px] items-center justify-center bg-gradient-to-br from-rose-50 to-red-100">
+      <div className="text-center">
+        <div className="mx-auto mb-3 h-10 w-10 animate-spin rounded-full border-4 border-rose-200 border-t-rose-500" />
+        <p className="text-sm font-bold uppercase text-rose-600">Загрузка 3D-модели...</p>
+      </div>
+    </div>
+  ),
+})
+
+const PuzzleApp = dynamic(() => import('@/components/puzzle/puzzle-app'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex min-h-[400px] items-center justify-center bg-gradient-to-br from-sky-50 to-blue-100">
+      <div className="text-center">
+        <div className="mx-auto mb-3 h-10 w-10 animate-spin rounded-full border-4 border-sky-200 border-t-sky-500" />
+        <p className="text-sm font-bold uppercase text-sky-600">Загрузка пазла...</p>
+      </div>
+    </div>
+  ),
+})
 import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import HydrationInfoApp from '@/components/hydration/hydration-info-app'
 import LymphInfoApp from '@/components/lymph/lymph-info-app'
