@@ -22,6 +22,8 @@ import {
   ArrowRight,
   Layers,
 } from 'lucide-react'
+import VideoPlayer from '@/components/shared/video-player'
+import { VIDEOS } from '@/lib/videos'
 
 // Картинка «Лихорадка vs Гипертермия»
 const FEVER_HYPERTHERMIA_IMG = '/images/fever-vs-hyperthermia.webp'
@@ -32,6 +34,13 @@ export default function TemperatureApp({ onNavigateToQuiz }: { onNavigateToQuiz?
       <BackgroundBubbles />
 
       <main className="relative z-10 mx-auto max-w-4xl px-4 py-6 pt-16 sm:py-8 sm:pt-20">
+        {/* ============= VIDEO PLAYER (вверху гайда) ============= */}
+        <VideoPlayer
+          src={VIDEOS['temperature-intro'].src}
+          title={VIDEOS['temperature-intro'].title}
+          subtitle={VIDEOS['temperature-intro'].subtitle}
+        />
+
         {/* ============= HERO ============= */}
         <motion.section
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
