@@ -9,7 +9,6 @@ import { Heart, RotateCw, MousePointerClick, BookOpen, Activity, ArrowRight, X, 
 import {
   ARTERIES,
   VALVES,
-  HEART_VENTRICLES,
   createArteryCurve,
   HEART_RATE_HZ,
   CARDIO_TITLE,
@@ -17,80 +16,6 @@ import {
   type Artery,
   type Valve,
 } from '@/lib/cardio-data'
-import MModeCanvas from './mmode-canvas'
-
-// ============== ANIMATED HEART VENTRICLE ==============
-interface VentricleProps {
-  position: [number, number, number]
-  scale: [number, number, number]
-  color: string
-  heartRateHz: number
-  isPlaying: boolean
-  chamberId: string
-  name: string
-  latinName: string
-  description: string
-  func: string
-  clinical: string
-  onSelect: (a: Artery) => void
-}
-
-function HeartChamber({ position, scale, color, heartRateHz, isPlaying, chamberId, name, latinName, description, func, clinical, onSelect }: VentricleProps) {
-  const ref = useRef<THREE.Mesh>(null)
-  const tRef = useRef(0)
-
-  useFrame((_, delta) => {
-    if (!ref.current) return
-    if (isPlaying) {
-      tRef.current += delta
-    }
-    const t = tRef.current
-    // Фаза сердечного цикла (0-1)
-    const phase = (t * heartRateHz) % 1
-
-    // Систола (0-0.4): желудочки сжимаются → scale уменьшается
-    // Диастола (0.4-1.0): расслабление → scale нормальный или чуть больше
-    let scaleMul = 1
-    if (phase < 0.4) {
-      // Систола — пиковое сокращение в середине фазы
-      const sysPhase = phase / 0.4
-      scaleMul = 1 - 0.12 * Math.sin(sysPhase * Math.PI)
-    } else {
-      // Диастола — медленное наполнение
-      const diaPhase = (phase - 0.4) / 0.6
-      scaleMul = 1 + 0.04 * Math.sin(diaPhase * Math.PI)
-    }
-
-    ref.current.scale.set(scale[0] * scaleMul, scale[1] * scaleMul, scale[2] * scaleMul)
-  })
-
-  return (
-    <mesh
-      ref={ref}
-      position={position}
-      scale={scale}
-      castShadow
-      onClick={(e: ThreeEvent<MouseEvent>) => {
-        e.stopPropagation()
-        onSelect({
-          id: chamberId,
-          name,
-          latinName,
-          category: 'heart',
-          description,
-          function: func,
-          clinical,
-          points: [],
-          radius: 0,
-          color: '',
-        })
-      }}
-    >
-      <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial color={color} roughness={0.6} metalness={0.05} />
-    </mesh>
-  )
-}
 
 // ============== ANIMATED VALVE ==============
 interface ValveMeshProps {
@@ -236,68 +161,11 @@ function HeartModel({
       <directionalLight position={[3, 5, 4]} intensity={1.0} castShadow />
       <directionalLight position={[-3, 2, -3]} intensity={0.4} />
 
-      {/* Реалистичная 3D-модель сердца (GLB) + стилизованные камеры */}
+      {/* Реалистичная 3D-модель сердца (GLB) */}
       <group>
         <Suspense fallback={null}>
           <HeartGLBModel heartRateHz={heartRateHz} isPlaying={isPlaying} modelNumber={modelNumber} />
         </Suspense>
-        {/* Стилизованные камеры (кликабельные) — оставлены для интерактивности */}
-        <HeartChamber
-          position={HEART_VENTRICLES.left.position}
-          scale={HEART_VENTRICLES.left.scale}
-          color={HEART_VENTRICLES.left.color}
-          heartRateHz={heartRateHz}
-          isPlaying={isPlaying}
-          chamberId="left-ventricle"
-          name="Левый желудочек"
-          latinName="Ventriculus sinister"
-          description="Самая мощная камера сердца. Стенка толщиной 1-1.5 см. Здесь начинается большой круг кровообращения."
-          func="Выбрасывает артериальную кровь в аорту под высоким давлением (~120 мм рт. ст.)."
-          clinical="Гипертрофия при стенозе аорты; дилатация при ДКМ (дилатационной кардиомиопатии)."
-          onSelect={onSelect}
-        />
-        <HeartChamber
-          position={HEART_VENTRICLES.right.position}
-          scale={HEART_VENTRICLES.right.scale}
-          color={HEART_VENTRICLES.right.color}
-          heartRateHz={heartRateHz}
-          isPlaying={isPlaying}
-          chamberId="right-ventricle"
-          name="Правый желудочек"
-          latinName="Ventriculus dexter"
-          description="Стенка тоньше (3-5 мм), чем у левого — нужно меньшее давление для малого круга."
-          func="Выбрасывает венозную кровь в лёгочный ствол (~25 мм рт. ст. — низкое давление)."
-          clinical="Гипертрофия при стенозе лёгочной артерии или лёгочной гипертензии."
-          onSelect={onSelect}
-        />
-        <HeartChamber
-          position={HEART_VENTRICLES.leftAtrium.position}
-          scale={HEART_VENTRICLES.leftAtrium.scale}
-          color={HEART_VENTRICLES.leftAtrium.color}
-          heartRateHz={heartRateHz}
-          isPlaying={isPlaying}
-          chamberId="left-atrium"
-          name="Левое предсердие"
-          latinName="Atrium sinistrum"
-          description="Принимает оксигенированную кровь из 4 лёгочных вен. Находится кзади от левого желудочка."
-          func="Резервуар перед левым желудочком. Объём ~30-40 мл у собаки."
-          clinical="Дилатация при митральной недостаточности — самый частый признак ХСН у собак мелких пород."
-          onSelect={onSelect}
-        />
-        <HeartChamber
-          position={HEART_VENTRICLES.rightAtrium.position}
-          scale={HEART_VENTRICLES.rightAtrium.scale}
-          color={HEART_VENTRICLES.rightAtrium.color}
-          heartRateHz={heartRateHz}
-          isPlaying={isPlaying}
-          chamberId="right-atrium"
-          name="Правое предсердие"
-          latinName="Atrium dextrum"
-          description="Принимает кровь из краниальной и каудальной полых вен. Здесь находится синусно-предсердный узел."
-          func="Резервуар венозной крови перед правым желудочком. Содержит водитель ритма (СА-узел)."
-          clinical="Дилатация при трикуспидальной недостаточности. Здесь генерируется импульс при ЭИТ."
-          onSelect={onSelect}
-        />
       </group>
 
       {/* Клапаны с анимацией открытия/закрытия */}
@@ -360,8 +228,6 @@ function HeartModel({
         )
       })}
 
-      {/* Контур грудной клетки */}
-      <RibsOutline />
 
       {/* Тень под сердцем */}
       <ContactShadows
@@ -408,41 +274,6 @@ function HeartModel({
           </Html>
         )
       })()}
-    </group>
-  )
-}
-
-function RibsOutline() {
-  const ribs = useMemo(() => {
-    const ribPairs: [number, number, number][][] = []
-    for (let i = 0; i < 6; i++) {
-      const y = -0.5 + i * 0.4
-      for (const side of [-1, 1]) {
-        const points: [number, number, number][] = []
-        for (let t = 0; t <= 1; t += 0.1) {
-          const angle = t * Math.PI - Math.PI / 2
-          const x = side * (0.8 + Math.sin(angle) * 0.3 + 0.8)
-          const z = Math.cos(angle) * 0.8 - 0.5
-          points.push([x, y, z])
-        }
-        ribPairs.push(points)
-      }
-    }
-    return ribPairs
-  }, [])
-
-  return (
-    <group>
-      {ribs.map((points, i) => (
-        <Line
-          key={i}
-          points={points}
-          color="#94a3b8"
-          lineWidth={1.5}
-          transparent
-          opacity={0.35}
-        />
-      ))}
     </group>
   )
 }
@@ -728,100 +559,9 @@ export default function CardioApp() {
           </motion.aside>
         </div>
 
-        {/* M-MODE PANEL */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]"
-        >
-          <MModeCanvas heartRateHz={heartRateHz} isPlaying={isPlaying} />
-
-          <div className="rounded-2xl border-2 border-rose-200 bg-white/95 p-4 shadow-lg backdrop-blur">
-            <div className="mb-2 flex items-center gap-2 text-rose-700">
-              <Activity className="h-5 w-5" />
-              <h3 className="text-sm font-black uppercase tracking-wide">
-                Что это?
-              </h3>
-            </div>
-            <p className="text-xs leading-relaxed text-rose-900/80">
-              <strong className="uppercase text-rose-700">M-mode</strong> (Motion-mode) — режим одномерного УЗИ,
-              показывающий движение структур сердца во времени. По оси X — время, по оси Y — глубина.
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-rose-900/80">
-              Тёмные полосы — это <strong>просветы</strong> желудочков и предсердий.
-              Яркие линии — <strong>стенки</strong> (перегородка, передняя и задняя стенки ЛЖ, перикард).
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-rose-900/80">
-              В <strong>систолу</strong> стенки сближаются, просвет ЛЖ сужается.
-              В <strong>диастолу</strong> — расходятся, ЛЖ расширяется для наполнения.
-            </p>
-            <div className="mt-3 rounded-xl bg-rose-50/60 p-2 text-[10px] text-rose-900">
-              <strong className="uppercase text-rose-700">Подсказка:</strong> Меняй ЧСС слайдером —
-              пульсация и M-mode синхронно ускоряются/замедляются.
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Educational summary */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-5 rounded-3xl border-2 border-rose-200 bg-white/95 p-5 shadow-lg sm:p-7"
-        >
-          <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-red-600 text-white shadow-md">
-              <BookOpen className="h-5 w-5" />
-            </div>
-            <div>
-              <h2 className="text-lg font-black uppercase tracking-tight text-rose-700 sm:text-xl">
-                Сердечный цикл
-              </h2>
-              <p className="text-xs text-rose-700/70">Фазы и движение клапанов</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <PhaseCard
-              num="1"
-              title="Систола желудочков"
-              duration="0–0.4 цикла"
-              color="from-rose-500 to-red-600"
-              avState="Закрыты"
-              slState="Открыты (0.1–0.4)"
-            />
-            <PhaseCard
-              num="2"
-              title="Изгнание"
-              duration="0.1–0.4 цикла"
-              color="from-red-500 to-rose-700"
-              avState="Закрыты"
-              slState="Открыты"
-            />
-            <PhaseCard
-              num="3"
-              title="Изоволюм. расслабление"
-              duration="0.4–0.5 цикла"
-              color="from-purple-500 to-pink-600"
-              avState="Закрыты"
-              slState="Закрыты"
-            />
-            <PhaseCard
-              num="4"
-              title="Диастола (наполнение)"
-              duration="0.5–1.0 цикла"
-              color="from-sky-500 to-blue-600"
-              avState="Открыты"
-              slState="Закрыты"
-            />
-          </div>
-        </motion.section>
-
         {/* Footer */}
         <footer className="mt-6 text-center text-xs text-rose-700/60">
-          3D-модель сердца собаки с пульсацией, клапанами и M-mode •
-          Для ветеринарных специалистов и студентов
+          3D-модель сердца собаки • Для ветеринарных специалистов и студентов
         </footer>
       </main>
     </div>
@@ -841,41 +581,6 @@ function Detail({ label, value, accent = 'rose' }: { label: string; value: strin
   )
 }
 
-function PhaseCard({
-  num,
-  title,
-  duration,
-  color,
-  avState,
-  slState,
-}: {
-  num: string
-  title: string
-  duration: string
-  color: string
-  avState: string
-  slState: string
-}) {
-  return (
-    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${color} p-0.5 shadow-lg`}>
-      <div className="rounded-[14px] bg-white p-3">
-        <div className="mb-2 flex items-center gap-2">
-          <div className={`flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br ${color} text-xs font-black text-white`}>
-            {num}
-          </div>
-          <h3 className="text-xs font-black uppercase leading-tight text-rose-950">
-            {title}
-          </h3>
-        </div>
-        <div className="text-[10px] text-rose-700/70">{duration}</div>
-        <div className="mt-2 space-y-0.5 text-[10px] text-slate-700">
-          <div>🚪 <strong>AV-клапаны:</strong> {avState}</div>
-          <div>🚪 <strong>Полулунные:</strong> {slState}</div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 function CanvasFallback() {
   return (
