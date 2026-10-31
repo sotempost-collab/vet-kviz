@@ -185,10 +185,12 @@ function ValveMesh({ valve, heartRateHz, isPlaying, isSelected, isFaded, onSelec
 }
 
 // ============== GLB 3D MODEL LOADER ==============
-useGLTF.preload('/models/heart.glb')
+useGLTF.preload('/models/heart1.glb')
+useGLTF.preload('/models/heart2.glb')
 
-function HeartGLBModel({ heartRateHz, isPlaying }: { heartRateHz: number; isPlaying: boolean }) {
-  const { scene } = useGLTF('/models/heart.glb', true)
+function HeartGLBModel({ heartRateHz, isPlaying, modelNumber }: { heartRateHz: number; isPlaying: boolean; modelNumber: 1 | 2 }) {
+  const url = modelNumber === 1 ? '/models/heart1.glb' : '/models/heart2.glb'
+  const { scene } = useGLTF(url, true)
   const ref = useRef<THREE.Group>(null)
   const tRef = useRef(0)
 
@@ -218,11 +220,13 @@ function HeartModel({
   onSelect,
   heartRateHz,
   isPlaying,
+  modelNumber,
 }: {
   selectedId: string | null
   onSelect: (a: Artery) => void
   heartRateHz: number
   isPlaying: boolean
+  modelNumber: 1 | 2
 }) {
   const arteryCurves = useMemo(() => ARTERIES.map(a => ({ artery: a, curve: createArteryCurve(a) })), [])
 
@@ -235,7 +239,7 @@ function HeartModel({
       {/* Реалистичная 3D-модель сердца (GLB) + стилизованные камеры */}
       <group>
         <Suspense fallback={null}>
-          <HeartGLBModel heartRateHz={heartRateHz} isPlaying={isPlaying} />
+          <HeartGLBModel heartRateHz={heartRateHz} isPlaying={isPlaying} modelNumber={modelNumber} />
         </Suspense>
         {/* Стилизованные камеры (кликабельные) — оставлены для интерактивности */}
         <HeartChamber
@@ -449,6 +453,7 @@ export default function CardioApp() {
   const [showInfo, setShowInfo] = useState(true)
   const [heartRateBpm, setHeartRateBpm] = useState(90)
   const [isPlaying, setIsPlaying] = useState(true)
+  const [modelNumber, setModelNumber] = useState<1 | 2>(1)
 
   const heartRateHz = heartRateBpm / 60
 
@@ -551,6 +556,7 @@ export default function CardioApp() {
                   onSelect={handleSelect}
                   heartRateHz={heartRateHz}
                   isPlaying={isPlaying}
+                  modelNumber={modelNumber}
                 />
                 <OrbitControls
                   enablePan={false}
@@ -561,6 +567,30 @@ export default function CardioApp() {
                 />
               </Canvas>
             </Suspense>
+
+            {/* Model toggle — переключатель между двумя 3D-моделями */}
+            <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full border border-rose-200 bg-white/95 p-1 shadow-md backdrop-blur">
+              <button
+                onClick={() => setModelNumber(1)}
+                className={`rounded-full px-3 py-1 text-xs font-bold transition-all ${
+                  modelNumber === 1
+                    ? 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-sm'
+                    : 'text-rose-700 hover:bg-rose-50'
+                }`}
+              >
+                Вид 1
+              </button>
+              <button
+                onClick={() => setModelNumber(2)}
+                className={`rounded-full px-3 py-1 text-xs font-bold transition-all ${
+                  modelNumber === 2
+                    ? 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-sm'
+                    : 'text-rose-700 hover:bg-rose-50'
+                }`}
+              >
+                Вид 2
+              </button>
+            </div>
 
             {/* Heart rate controls — bottom right of canvas */}
             <div className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full border border-rose-200 bg-white/95 px-3 py-1.5 shadow-md backdrop-blur">
