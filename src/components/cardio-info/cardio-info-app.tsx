@@ -23,6 +23,17 @@ import {
   FlaskConical,
   Gauge,
   Waves,
+  Hand,
+  Search,
+  Sparkles,
+  ScrollText,
+  ListChecks,
+  Compass,
+  CheckCircle,
+  HelpCircle,
+  PenTool,
+  Bone,
+  Repeat,
 } from 'lucide-react'
 
 export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { onNavigateToQuiz?: () => void; onNavigateTo3D?: () => void }) {
@@ -184,6 +195,78 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
               аорту. И всё это — за одну секунду.
             </InfoBox>
 
+            {/* ПОЛНАЯ ВЕРСИЯ ЭКСКУРСИИ — шаг за шагом через все 4 камеры */}
+            <div className="overflow-hidden rounded-2xl border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50 shadow-lg">
+              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Compass className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Полная экскурсия по сердцу — маршрут эритроцита
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-blue-50/90">
+                  Дюйм за дюймом пройди путь капли крови. Каждый «Тук!» — это закрытый
+                  клапан. После прохождения ты больше никогда не запутаешься в кругах
+                  кровообращения.
+                </p>
+              </div>
+              <div className="space-y-2 p-4">
+                <StepCard
+                  step="1"
+                  title="Вход в правое предсердие (через полые вены)"
+                  body="Ты — эритроцит, уставший, тёмно-вишнёвый. Возвращаешься из тела через кавальные вены. Попадаешь в правое предсердие: стенки тонкие, как шёлковый мешок, в нём много места — чтобы принять ВСЮ венозную кровь разом."
+                  color="from-slate-500 to-slate-700"
+                />
+                <StepCard
+                  step="2"
+                  title="Через трёхстворчатый клапан в правый желудочек"
+                  body="Предсердие сжимается — открываются три створки трёхстворчатого клапана. Ты проваливаешься в правый желудочек. Стенки здесь уже толще — им предстоит вытолкнуть кровь в лёгкие."
+                  sound="Тук! → S1 закрывается трёхстворчатый"
+                  color="from-cyan-500 to-sky-600"
+                />
+                <StepCard
+                  step="3"
+                  title="Через лёгочный клапан в лёгочную артерию"
+                  body="Правый желудочек резко сокращается — лёгочный клапан открывается, и ты вылетаешь в лёгочную артерию. Мчишься в лёгкие — отдаёшь CO₂, забираешь O₂. Цвет меняется: из тёмно-вишнёвого ты становишься ярко-алым."
+                  sound="Тук! → S2 закрывается лёгочный"
+                  color="from-teal-500 to-emerald-600"
+                />
+                <StepCard
+                  step="4"
+                  title="Возврат в левое предсердие (через лёгочные вены)"
+                  body="Свежий, насыщенный кислородом, ты возвращаешься по лёгочным венам в левое предсердие. Стенки снова тонкие — это просто «приёмная», куда кровь собирается перед главным ударом."
+                  color="from-rose-500 to-red-600"
+                />
+                <StepCard
+                  step="5"
+                  title="Через митральный клапан в левый желудочек"
+                  body="Левое предсердие сжимается — митральный клапан открывается (две створки, как митра епископа). Ты падаешь в левый желудочек. Стенки здесь — как крепостная стена, самые толстые во всём сердце: им предстоит вытолкнуть кровь ВО ВСЁ ТЕЛО."
+                  sound="Тук! → S1 закрывается митральный"
+                  color="from-rose-600 to-orange-600"
+                />
+                <StepCard
+                  step="6"
+                  title="Через аортальный клапан в аорту"
+                  body="Левый желудочек сокращается со всей силы — аортальный клапан открывается, и ты вылетаешь в аорту под огромным давлением. Это самый мощный толчок во всём маршруте — ты полетишь ко всем органам тела."
+                  sound="Тук! → S2 закрывается аортальный"
+                  color="from-amber-500 to-orange-600"
+                />
+                <StepCard
+                  step="7"
+                  title="К органам — и обратно"
+                  body="Ты мчишься по аорте, разносишь кислород по мышцам, мозгу, почкам, печени. Отдаёшь O₂, забираешь CO₂. Снова становишься тёмно-вишнёвым и уставшим. По полым венам возвращаешься в правое предсердие."
+                  color="from-violet-500 to-purple-600"
+                />
+                <StepCard
+                  step="✓"
+                  title="Круг замкнулся!"
+                  body="Ты прошёл оба круга кровообращения — малый (через лёгкие) и большой (через тело) — за одну секунду. И так миллионы раз за жизнь пациента. Запомни этот маршрут телом — и любая схема кровообращения будет у тебя перед глазами."
+                  color="from-emerald-500 to-teal-600"
+                  isFinal
+                />
+              </div>
+            </div>
+
             <FormulaBox title="Маршрут крови" formula="Пред-желудок-клапан-артерия" accent="blue" />
 
             <InfoBox color="amber" title="Метафора «Насосная станция»">
@@ -304,6 +387,225 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
           </div>
         </SectionWrapper>
 
+        {/* ============= РАЗДЕЛ 4.1: КИНЕСТЕТИКА — ПОЧУВСТВУЙ КЛАПАНЫ ============= */}
+        <SectionWrapper delay={0.3}>
+          <SectionHeader number="4.1" title="«ПОЧУВСТВУЙ КЛАПАНЫ»" subtitle="Кинестетический якорь — клапан = кулак" icon={Hand} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Чтобы <strong className="text-blue-700">тело запомнило</strong> клапаны навсегда,
+              сделай простое движение. Клапан — это дверь. Открылась — кровь прошла. Закрылась —
+              кровь осталась в той камере, где должна. Когда закрывается — слышен «Тук!».
+            </p>
+
+            <InfoBox color="amber" title="Упражнение — кулак-клапан">
+              <ol className="ml-4 list-decimal space-y-1.5">
+                <li><strong className="uppercase text-blue-700">Сожми кулак</strong> — это закрытый клапан. Кровь снаружи стоять не может.</li>
+                <li><strong className="text-blue-700">Разожми кулак</strong> на команду «систола» — это открытие клапана, кровь пошла дальше.</li>
+                <li><strong className="text-blue-700">Снова сожми резко</strong> на команду «диастола» — клапан закрылся, слышен «Тук!»</li>
+                <li>Повтори 5–6 раз подряд: «закрыт — открыт — закрыт — открыт». Внутри закрепится ощущение клапана как двери.</li>
+              </ol>
+            </InfoBox>
+
+            <FormulaBox title="Якорь клапана" formula="Клапан = дверь. Закрылся → «Тук!» (S1 или S2)" accent="blue" />
+
+            <KeyPhrase>
+              <strong className="uppercase text-blue-700">Каждый клапан — это дверь с одной задачей:</strong>{' '}
+              пустить кровь только в одну сторону. Если дверь сломана — кровь течёт назад.
+              Это и есть порок. Запомни движение «сжал-разжал» — и каждый шум будет
+              понятен твоему телу, а не только голове.
+            </KeyPhrase>
+          </div>
+        </SectionWrapper>
+
+        {/* ============= РАЗДЕЛ 4.2: КИНЕСТЕТИКА — СТАНЬ КАРДИОМИОЦИТОМ ============= */}
+        <SectionWrapper delay={0.35}>
+          <SectionHeader number="4.2" title="«СТАНЬ КАРДИОМИОЦИТОМ»" subtitle="Якорь сокращения + ЭКГ в теле" icon={Activity} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Кардиомиоцит — это мышечная клетка сердца. Она умеет одно: сокращаться и
+              расслабляться. Проживи секунду жизни этой клетки — и ритм сердца станет
+              твоим собственным.
+            </p>
+
+            <InfoBox color="blue" title="Упражнение «Я — кардиомиоцит»">
+              <ol className="ml-4 list-decimal space-y-1.5">
+                <li><strong className="uppercase text-blue-700">Встань прямо</strong>, ноги на ширине плеч, руки вдоль тела.</li>
+                <li>На сигнал «<strong className="text-blue-700">СИСТОЛА!</strong>» — резко напряги <strong className="text-blue-700">все мышцы тела</strong> разом: ноги, руки, пресс, спину. Замирание в напряжении 2 секунды.</li>
+                <li>На сигнал «<strong className="text-blue-700">ДИАСТОЛА!</strong>» — полностью расслабься, обмякни, выдохни.</li>
+                <li>Повтори 5 раз: «напрягся — расслабился — напрягся — расслабился». Это и есть сердце.</li>
+              </ol>
+            </InfoBox>
+
+            <InfoBox color="amber" title="Примени к пациенту — наложи на ЭКГ">
+              <p className="leading-relaxed">
+                Теперь, когда тело знает, что такое систола и диастола, привяжи это к ЭКГ:
+              </p>
+              <ul className="ml-4 mt-2 list-disc space-y-1 text-sm">
+                <li><strong className="text-blue-700">P-волна</strong> → напряглись предсердия (предсердные кардиомиоциты).</li>
+                <li><strong className="text-blue-700">QRS-комплекс</strong> → напряглись желудочки (вот этот удар ты только что сделал!).</li>
+                <li><strong className="text-blue-700">T-волна</strong> → все расслабились (диастола).</li>
+              </ul>
+            </InfoBox>
+
+            <Callout variant="info" emoji="🤪" title="Мини-заключение">
+              Кардиомиоцит не «думает» — он либо сжат, либо расслаблен. Систола — это
+              напряжение всех мышц тела сразу. Диастола — полное обмякание. Когда ты
+              делаешь это сам, ЭКГ перестаёт быть картинкой — она становится твоим
+              собственным движением. P — напряглись предсердия, QRS — ударили желудочки,
+              T — все расслабились.
+            </Callout>
+          </div>
+        </SectionWrapper>
+
+        {/* ============= РАЗДЕЛ 4.3: «СБОРКА СЕРДЦА» — ФИНАЛЬНОЕ УПРАЖНЕНИЕ ============= */}
+        <SectionWrapper delay={0.4}>
+          <SectionHeader number="4.3" title="«СБОРКА СЕРДЦА»" subtitle="Финальное упражнение модуля — нарисуй и собери" icon={PenTool} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Чтобы закрепить всю анатомию разом, возьми лист бумаги и нарисуй сердце
+              по памяти. Без подсказок, без интернета. Только ты, карандаш и то, что
+              осталось в голове. Проверь по чек-листу — если что-то пропустил, дорисуй.
+            </p>
+
+            <div className="overflow-hidden rounded-2xl border-2 border-blue-400 bg-gradient-to-br from-blue-50 to-cyan-50 p-4 shadow-lg">
+              <div className="mb-3 flex items-center gap-2">
+                <PenTool className="h-5 w-5 text-blue-700" />
+                <h4 className="text-sm font-black uppercase tracking-wide text-blue-700">
+                  Что должно быть на рисунке
+                </h4>
+              </div>
+              <ul className="space-y-2 text-sm text-blue-900 sm:text-base">
+                <li className="flex gap-2">
+                  <span className="text-blue-700">▢</span>
+                  <span><strong className="uppercase text-blue-700">4 камеры:</strong> правое/левое предсердия, правый/левый желудочки</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-700">▢</span>
+                  <span><strong className="uppercase text-blue-700">4 клапана:</strong> трёхстворчатый, лёгочный, митральный, аортальный — каждый на своём месте</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-700">▢</span>
+                  <span><strong className="uppercase text-blue-700">PMI-точки:</strong> слева 3 (лёгочный), 4 (аортальный), 5 (митральный), справа 4 (трикуспидальный)</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-700">▢</span>
+                  <span><strong className="uppercase text-blue-700">Слои стенки:</strong> эндокард, миокард, эпикард, перикард</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-blue-700">▢</span>
+                  <span><strong className="uppercase text-blue-700">Проводящая система:</strong> SA → AV → пучок Гиса → волокна Пуркинье</span>
+                </li>
+              </ul>
+            </div>
+
+            <InfoBox color="rose" title="Чек-лист для самопроверки">
+              <ul className="ml-4 list-disc space-y-1 text-sm">
+                <li><strong className="uppercase text-blue-700">Сердце нарисовано слева</strong> — ✓ (3–6 межреберье)</li>
+                <li><strong className="uppercase text-blue-700">Левый желудочек толще правого</strong> — ✓ (он качает во всё тело)</li>
+                <li><strong className="uppercase text-blue-700">У кошки аорта может быть справа</strong> — ✓ (40% случаев)</li>
+                <li><strong className="uppercase text-blue-700">Предсердия сверху, желудочки снизу</strong> — ✓ (кровь течёт сверху вниз)</li>
+                <li><strong className="uppercase text-blue-700">Полулунные клапаны на выходе из желудочков</strong> — ✓ (аорта и лёгочная артерия)</li>
+              </ul>
+            </InfoBox>
+
+            <Callout variant="info" emoji="🎭" title="Мини-заключение">
+              Рисунок — это экзамен. Если ты можешь нарисовать сердце со всеми камерами,
+              клапанами, точками и проводящей системой по памяти — значит, анатомия
+              действительно твоя. Если что-то забыл — это сигнал, что нужно вернуться и
+              повторить именно этот кусок. Не подглядывай, дорисуй сам.
+            </Callout>
+          </div>
+        </SectionWrapper>
+
+        {/* ============= РАЗДЕЛ 4.4: ЯКОРЯ МОДУЛЯ 1 ============= */}
+        <SectionWrapper delay={0.45}>
+          <SectionHeader number="4.4" title="ЯКОРЯ — МОДУЛЬ 1" subtitle="Сводная шпаргалка по анатомии" icon={Sparkles} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Все ключевые якоря первого модуля в одной таблице. Это «выжимка», которую
+              стоит повторить перед практикой и держать в голове всегда.
+            </p>
+
+            <TableGrid
+              title="Таблица — якоря по анатомии сердца"
+              icon={Sparkles}
+              headers={['Вопрос', 'Якорь-ответ']}
+              rows={[
+                ['Где живёт сердце?', '3-4-5-6 — сердце здесь! (3–6 межреберье слева)'],
+                ['Где митральный клапан?', 'Митра — слева, 5-е ребро'],
+                ['Почему ЛЖ толще ПЖ?', 'Левый — для всего тела, правый — только для лёгких'],
+                ['Что генерирует импульс?', 'СА — Сердце Активируется! (SA-узел)'],
+                ['Различие кошки?', 'Кошка — спортсмен, сердце стоит и бьётся быстро'],
+                ['Слои стенки?', 'Обои-Стены-Фасад-Забор (эндо-мио-эпи-перикард)'],
+                ['Проводящая система?', 'SA → AV → Гис → Пуркинье (рубильник → щит → провода → лампочки)'],
+                ['Маршрут крови?', 'Предсердие → клапан → желудочек → клапан → артерия'],
+              ]}
+            />
+
+            {/* НАПУТСТВИЕ */}
+            <div className="overflow-hidden rounded-2xl border-2 border-amber-400 bg-gradient-to-br from-amber-50 to-orange-50 shadow-lg">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <ScrollText className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Напутствие — выпускной первого модуля
+                  </span>
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+                  <strong className="uppercase text-amber-700">Коллеги,</strong> вы только
+                  что совершили путешествие внутрь сердца. Вы прошли путь капли крови
+                  от правого предсердия до аорты и обратно. Вы узнали точный адрес
+                  сердца — «3-4-5-6», узнали, где живёт каждый клапан, поняли, почему
+                  левый желудочек толще правого, и увидели электрику, которая заставляет
+                  этот насос биться. Теперь в вашей голове есть не просто «схема
+                  сердца» — в вашем теле есть ощущения каждого удара.
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-blue-900 sm:text-base">
+                  Запомните главное: <strong className="text-blue-700">сердце — это
+                  квартира с точным адресом, своей электрикой и своей сантехникой.</strong>{' '}
+                  Дальше — патологии. И каждая патология — это поломка конкретной части
+                  квартиры. Кто-то ломает клапан, кто-то — стену, кто-то — электрику.
+                  Но чтобы понять, что сломано, нужно знать, как было целым. Вы знаете.
+                  Двигаемся дальше.
+                </p>
+              </div>
+            </div>
+
+            {/* ДОМАШНЕЕ ЗАДАНИЕ */}
+            <div className="overflow-hidden rounded-2xl border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50 shadow-lg">
+              <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <ListChecks className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Домашнее задание
+                  </span>
+                </div>
+              </div>
+              <div className="p-4">
+                <ol className="ml-4 list-decimal space-y-2 text-sm text-blue-900 sm:text-base">
+                  <li>
+                    <strong className="uppercase text-emerald-700">Найди PMI на себе.</strong>{' '}
+                    Положи пальцы на левую сторону грудной клетки между 3 и 6 ребром. Найди
+                    верхушечный толчок — это митральный клапан. Запомни ощущение.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-emerald-700">Нарисуй схему кровообращения.</strong>{' '}
+                    Большой и малый круг, все 4 камеры и 4 клапана, стрелками покажи
+                    направление крови. Без подсказок.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-emerald-700">Объясни сердце питомцу.</strong>{' '}
+                    Расскажи кошке или собаке вслух, как кровь проходит через сердце.
+                    Если питомец «понял» — значит, и ты понял.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </SectionWrapper>
+
         {/* ============= МОДУЛЬ 2: ФИЗИОЛОГИЯ И ГЕМОДИНАМИКА ============= */}
         <ModuleSeparator title="Модуль 2" subtitle="Физиология и гемодинамика" icon={Activity} />
 
@@ -346,6 +648,112 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
               и ты почувствуешь симфонию сердца.
             </InfoBox>
 
+            {/* СИНХРОНИЗАЦИОННОЕ УПРАЖНЕНИЕ — Pacing and Leading */}
+            <div className="overflow-hidden rounded-2xl border-2 border-violet-400 bg-gradient-to-br from-violet-50 to-purple-50 shadow-lg">
+              <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Repeat className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    Синхронизация — Pacing &amp; Leading
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-violet-50/90">
+                  Настрой тело на ритм сердца — и сложные механизмы начнут укладываться
+                  в голову сами. Это техника «ведь за ритмом».
+                </p>
+              </div>
+              <div className="p-4">
+                <ol className="ml-4 list-decimal space-y-2 text-sm text-blue-900 sm:text-base">
+                  <li>
+                    <strong className="uppercase text-violet-700">Положи два пальца</strong>{' '}
+                    (указательный и средний) на лучевую артерию — у основания большого
+                    пальца противоположной руки. Почувствуй ритм своего пульса.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-violet-700">Подстрой дыхание под пульс:</strong>{' '}
+                    на 3 удара — глубокий вдох, на 4 удара — полный выдох. Дыши «в такт»
+                    своему сердцу 30 секунд.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-violet-700">Произнеси про себя:</strong>{' '}
+                    «Мой мозг легко усваивает сложные механизмы. Каждое сокращение сердца
+                    становится для меня понятным и естественным».
+                  </li>
+                  <li>
+                    <strong className="uppercase text-violet-700">Повтори 3 раза.</strong>{' '}
+                    Когда тело и дыхание синхронизированы с ритмом — информация «впитывается»
+                    в разы быстрее.
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            {/* ТАНЕЦ КЛАПАНОВ — детальная визуализация */}
+            <div className="overflow-hidden rounded-2xl border-2 border-rose-400 bg-gradient-to-br from-rose-50 to-pink-50 shadow-lg">
+              <div className="bg-gradient-to-r from-rose-500 to-pink-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Flame className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «Танец клапанов» — детальная визуализация
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-rose-50/90">
+                  Закрой глаза и представь каждый момент цикла как фильм. Звук «Khlop!» —
+                  это и есть «Ля» или «Дуб».
+                </p>
+              </div>
+              <div className="space-y-3 p-4">
+                <div className="rounded-xl border-2 border-cyan-200 bg-cyan-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-cyan-700">
+                    1. ДИАСТОЛА — «Мягкие губки»
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    Все четыре камеры — как <strong className="text-blue-700">мягкие губки</strong>,
+                    расслабленные, расширенные. Митральный и трёхстворчатый клапаны
+                    <strong className="text-blue-700"> широко открыты</strong>. Кровь спокойно
+                    «стекает» из предсердий в желудочки под действием гравитации. Тихо. Никакого
+                    звука. Это «вдох» сердца.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-2 border-rose-200 bg-rose-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-rose-700">
+                    2. СИСТОЛА — «Мощный удар»
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    Мышца резко и мощно <strong className="text-blue-700">сжимает губку</strong>.
+                    Давление в желудочке подскакивает мгновенно. Митральный и трёхстворчатый
+                    клапаны захлопываются.
+                  </p>
+                  <div className="mt-1.5 rounded bg-amber-200 px-2 py-0.5 text-[11px] font-black uppercase text-amber-900">
+                    🔊 ЗВУК: «Khlop!» → S1 «Ля»
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    Кровь мчится вверх, открывает аортальный и лёгочный клапаны, вылетает в
+                    аорту и лёгочную артерию. Желудочки пустеют.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-2 border-violet-200 bg-violet-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-violet-700">
+                    3. РАССЛАБЛЕНИЕ — «Спад давления»
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    Желудочки расслабляются. Давление в них падает ниже давления в аорте и
+                    лёгочной артерии. Кровь пытается вернуться назад — но аортальный и
+                    лёгочный клапаны захлопываются.
+                  </p>
+                  <div className="mt-1.5 rounded bg-amber-200 px-2 py-0.5 text-[11px] font-black uppercase text-amber-900">
+                    🔊 ЗВУК: «Khlop!» → S2 «Дуб»
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    Снова тишина. Диастола возвращается. Митральный и трёхстворчатый снова
+                    открыты. Кровь снова течёт вниз. Цикл повторяется. «Ля-Дуб. Ля-Дуб.»
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <Callout variant="info" emoji="🤪" title="Мини-заключение">
               Один удар = диастола + систола. Сначала сердце расслабляется и наливается кровью,
               потом сжимается и её выталкивает. При этом створки хлопают дважды: «Ля» в начале
@@ -383,6 +791,67 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
               <strong className="uppercase text-blue-700">P — предсердия. QRS — желудочки. T — тишина (расслабление).</strong>{' '}
               Три буквы расскажут тебе всю историю одного удара.
             </KeyPhrase>
+
+            {/* ЭКГ В ТЕЛЕ — кинестетический якорь */}
+            <div className="overflow-hidden rounded-2xl border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 to-teal-50 shadow-lg">
+              <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «ЭКГ в теле» — кинестетический якорь
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-emerald-50/90">
+                  Сделай ЭКГ своим движением — и P, QRS, T перестанут быть буквами на бумаге.
+                </p>
+              </div>
+              <div className="space-y-3 p-4">
+                <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-emerald-700">
+                    Шаг 1 → P-волна (предсердия сокращаются)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-emerald-700">Подними руки вверх</strong> и
+                    <strong className="text-blue-700"> медленно, плавно сожми ладони вместе</strong>{' '}
+                    перед грудью. Это сокращение предсердий — мягкое, ритмичное, как волна.
+                    Представь, как импульс рождается в SA-узле и пробегает по предсердиям.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-2 border-amber-200 bg-amber-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-amber-700">
+                    Шаг 2 → PR-интервал (пауза в AV-узле)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-amber-700">Замри на мгновение</strong>{' '}
+                    ладони вместе. Это задержка 0.1 секунды в AV-узле — «дайте предсердиям
+                    доиграть». Пауза перед кульминацией.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-2 border-rose-200 bg-rose-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-rose-700">
+                    Шаг 3 → QRS-комплекс (желудочки сокращаются)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-rose-700">Резко, мощно разведи руки
+                    в стороны!</strong> Это выброс — сокращение желудочков. Импульс пролетел
+                    по пучку Гиса и волокнам Пуркинье, и желудочки ударили разом, снизу вверх.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border-2 border-cyan-200 bg-cyan-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-cyan-700">
+                    Шаг 4 → T-волна (расслабление желудочков)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-cyan-700">Расслабь руки, опусти вниз.</strong>{' '}
+                    Это реполяризация — желудочки восстанавливаются перед следующим ударом.
+                    Тишина перед новым циклом.
+                  </p>
+                </div>
+              </div>
+            </div>
 
             <Callout variant="info" emoji="🤪" title="Мини-заключение">
               Электрика сердца — это оркестр с дирижёром. SA-узл — дирижёр с палочкой, AV-узл —
@@ -468,6 +937,55 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
                 </div>
               </div>
             </motion.button>
+
+            {/* ПРОГУЛКА ПО СОСУДАМ — полная интеграция */}
+            <div className="overflow-hidden rounded-2xl border-2 border-cyan-400 bg-gradient-to-br from-cyan-50 to-sky-50 shadow-lg">
+              <div className="bg-gradient-to-r from-cyan-500 to-sky-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Droplets className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «Прогулка по сосудам» — полная интеграция
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-cyan-50/90">
+                  Читай медленно, ярко представляя каждый образ. Это финальная сшивка
+                  всей гемодинамики в одно ощущение.
+                </p>
+              </div>
+              <div className="p-4">
+                <p className="text-sm italic leading-relaxed text-blue-900 sm:text-base">
+                  «Вы — капля крови, богатая кислородом. Вы только что вылетели из{' '}
+                  <strong className="not-italic text-blue-700">левого желудочка собаки</strong>{' '}
+                  через <strong className="not-italic text-blue-700">аортальный клапан</strong>.
+                  Вы чувствуете мощный толчок{' '}
+                  <em className="not-italic text-rose-700">(высокая сократимость)</em>. Вы мчитесь
+                  по широкой аорте, но вдруг сосуды сужаются из-за стресса{' '}
+                  <em className="not-italic text-violet-700">(высокая постнагрузка)</em>. Сердцу
+                  пришлось напрячься сильнее. Вы доставляете кислород в мышцы, становитесь
+                  тёмно-вишнёвой и уставшей. Вы возвращаетесь по венам к{' '}
+                  <strong className="not-italic text-blue-700">правому предсердию</strong>. Вас
+                  много, стенки предсердия приятно растягиваются{' '}
+                  <em className="not-italic text-cyan-700">(высокая преднагрузка)</em>. Вы
+                  проваливаетесь через открытый митральный клапан в тихий, расслабленный
+                  желудочек. Пауза... И снова мощный удар.{' '}
+                  <strong className="not-italic text-blue-700">Ля-Дуб.</strong> Вы снова в пути.»
+                </p>
+                <div className="mt-3 grid grid-cols-1 gap-2 text-xs sm:grid-cols-3">
+                  <div className="rounded-md border border-cyan-200 bg-cyan-50/60 px-2 py-1.5">
+                    <span className="text-[10px] font-bold uppercase text-cyan-700">Преднагрузка</span>
+                    <div className="text-blue-900">Стенки приятно растянулись</div>
+                  </div>
+                  <div className="rounded-md border border-rose-200 bg-rose-50/60 px-2 py-1.5">
+                    <span className="text-[10px] font-bold uppercase text-rose-700">Сократимость</span>
+                    <div className="text-blue-900">Мощный толчок из ЛЖ</div>
+                  </div>
+                  <div className="rounded-md border border-violet-200 bg-violet-50/60 px-2 py-1.5">
+                    <span className="text-[10px] font-bold uppercase text-violet-700">Постнагрузка</span>
+                    <div className="text-blue-900">Сосуды сузились — сердцу тяжелее</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <Callout variant="info" emoji="🤪" title="Мини-заключение">
               Гемодинамика держится на трёх столбах: резинке (preload), педали газа
@@ -605,6 +1123,44 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
           </div>
         </SectionWrapper>
 
+        {/* ============= РАЗДЕЛ 9.1: ШПАРГАЛКА В ТЕЛЕ — ЯКОРЯ МОДУЛЯ 2 ============= */}
+        <SectionWrapper delay={0.35}>
+          <SectionHeader number="9.1" title="ШПАРГАЛКА В ТЕЛЕ" subtitle="Якоря модуля 2 — физиология через движение" icon={Sparkles} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Вся физиология — в одном теле. Сделай движение → вспомни понятие. Эта таблица
+              связывает каждое абстрактное слово с конкретным жестом. Используй её на экзамене
+              и в клинической практике.
+            </p>
+
+            <TableGrid
+              title="Таблица — якоря по физиологии (шпаргалка в теле)"
+              icon={Sparkles}
+              headers={['Понятие', 'Движение-якорь', 'Смысл']}
+              rows={[
+                ['Систола / Диастола', 'Сжать кулак («Ля») / Разжать («Дуб»)', 'Сокращение / Расслабление'],
+                ['Преднагрузка', 'Растянуть резинку', 'Объём крови, входящей в сердце'],
+                ['Сократимость', 'Резко напрячь бицепс', 'Сила удара, «педаль газа»'],
+                ['Постнагрузка', 'Давить рукой на кулак', 'Сопротивление сосудов'],
+                ['РААС', 'Хлопок + «Включился сантехник!»', 'Задержка жидкости и спазм'],
+              ]}
+            />
+
+            <KeyPhrase>
+              <strong className="uppercase text-blue-700">Запомни:</strong>{' '}
+              на экзамене или у пациента, когда забыл термин — сделай движение, привязанное к
+              этому понятию. Тело вспомнит быстрее, чем голова. Это и есть настоящая
+              интеграция знаний.
+            </KeyPhrase>
+
+            <Callout variant="info" emoji="🤪" title="Мини-заключение">
+              Физиология — это не термины, это движения. Сжал кулак → систола. Растянул резинку
+              → преднагрузка. Напряг бицепс → сократимость. Надавил на кулак → постнагрузка.
+              Хлопнул → РААС. Когда тело знает, голова не нужна.
+            </Callout>
+          </div>
+        </SectionWrapper>
+
         {/* ============= МОДУЛЬ 3: ПАТОЛОГИЯ ============= */}
         <ModuleSeparator title="Модуль 3" subtitle="Патология — что ломается в насосе?" icon={AlertTriangle} />
 
@@ -671,10 +1227,118 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
               ]}
             />
 
+            {/* РЕЖИМ ДЕТЕКТИВА — кинестетический якорь */}
+            <div className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-gradient-to-br from-slate-50 to-zinc-100 shadow-lg">
+              <div className="bg-gradient-to-r from-slate-700 to-zinc-800 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Search className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «Режим детектива» — якорь диагноза
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-slate-100/90">
+                  Каждый клинический случай — это головоломка. Создай «якорь детектива» — и
+                  диагноз будет приходить сам, как озарение.
+                </p>
+              </div>
+              <div className="p-4">
+                <ol className="ml-4 list-decimal space-y-2 text-sm text-blue-900 sm:text-base">
+                  <li>
+                    <strong className="uppercase text-slate-700">Сядь удобно</strong>, спина
+                    прямая, ступни на полу. Закрой глаза.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-slate-700">Сделай 3 глубоких вдоха
+                    и выдоха</strong>. С каждым выдохом — всё больше расслабляйся.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-slate-700">Вспомни момент, когда ты
+                    решил сложную головоломку</strong> — почувствуй то удовлетворение, то «Ага!».
+                  </li>
+                  <li>
+                    <strong className="uppercase text-slate-700">Усиль это чувство</strong>{' '}
+                    — пусть оно станет ярче, насыщеннее, заполни всё тело.
+                  </li>
+                  <li>
+                    На пике удовольствия <strong className="text-blue-700">сожми вместе
+                    подушечки указательного и среднего пальцев</strong> той руки, которой
+                    обычно пишешь. Это и есть твой «якорь детектива».
+                  </li>
+                  <li>
+                    <strong className="uppercase text-slate-700">Повтори 3 раза.</strong>{' '}
+                    Теперь каждый раз перед сложным клиническим случаем — сожми пальцы, и
+                    мозг автоматически перейдёт в режим «я могу это решить».
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            {/* ПОЧУВСТВУЙ ПОРОК — кинестетика врождённых дефектов */}
+            <div className="overflow-hidden rounded-2xl border-2 border-violet-400 bg-gradient-to-br from-violet-50 to-purple-50 shadow-lg">
+              <div className="bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Hand className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «Почувствуй порок» — кинестетика врождённых дефектов
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-violet-50/90">
+                  Проживи каждый порок движением рук — и его характер навсегда закрепится
+                  в мышечной памяти.
+                </p>
+              </div>
+              <div className="space-y-3 p-4">
+                <div className="rounded-xl border-2 border-rose-200 bg-rose-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-rose-700">
+                    PDA — «Машинный шум»
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-rose-700">Непрерывно три ладонь о
+                    ладонь</strong> — как работающая машина. Шум не прекращается ни в систолу,
+                    ни в диастолу, потому что кровь течёт из аорты в лёгочную артерию постоянно
+                    (давление в аорте всегда выше).
+                  </p>
+                </div>
+                <div className="rounded-xl border-2 border-amber-200 bg-amber-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-amber-700">
+                    SAS — «Узкая дверь» (субаортальный стеноз)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-amber-700">Сожми один кулак</strong> —
+                    это левый желудочек. Другой рукой сделай кольцо и проталкивай кулак
+                    сквозь него с сопротивлением. Чувствуешь, как тяжело кулаку «пробиться»?
+                    Это и есть SAS — узкое кольцо под аортальным клапаном.
+                  </p>
+                </div>
+                <div className="rounded-xl border-2 border-violet-200 bg-violet-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-violet-700">
+                    PS — «Засор в трубе» (стеноз лёгочной артерии)
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-violet-700">То же самое, но для правого
+                    кулака</strong> — это правый желудочек, который не может протолкнуть кровь
+                    через суженную лёгочную артерию. Правая половина «тужится».
+                  </p>
+                </div>
+                <div className="rounded-xl border-2 border-slate-200 bg-slate-50/70 p-3">
+                  <div className="mb-1 text-xs font-black uppercase text-slate-700">
+                    Дисплазия клапанов — «Течь назад»
+                  </div>
+                  <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                    <strong className="uppercase text-slate-700">Сложи ладони лодочкой</strong>{' '}
+                    и слегка раздвинь пальцы. Вода «утекает» назад через щели. Так и кровь
+                    при дисплазии — створки malformed, не смыкаются герметично, кровь течёт
+                    назад в предсердие.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <Callout variant="info" emoji="🤪" title="Мини-заключение">
               Врождённые пороки — это заводской брак: где-то труба не закрылась (PDA), где-то
               сузилась (SAS, PS), где-то клапан кривой (дисплазия). Каждый шумит по-своему и в
-              своём месте. Знай адреса и характер — узнаешь порок ещё до ЭхоКГ.
+              своём месте. Знай адреса и характер — узнаешь порок ещё до ЭхоКГ. А движение рук
+              поможет вспомнить характер шума, когда голова забудет.
             </Callout>
           </div>
         </SectionWrapper>
@@ -708,11 +1372,112 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
                 возвращается в левое предсердие во время систолы → громкий систолический шум.
                 Стадии A–D: от группы риска до терминальной недостаточности.
               </p>
-              <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                <StagePill stage="A" desc="Группа риска" color="emerald" />
-                <StagePill stage="B" desc="Шум есть, симптомов нет" color="amber" />
-                <StagePill stage="C" desc="Симптомы недостаточности" color="orange" />
-                <StagePill stage="D" desc="Терминальная стадия" color="rose" />
+
+              {/* Расширенные стадии MMVD — A, B1, B2, C, D */}
+              <div className="mt-3 overflow-hidden rounded-xl border-2 border-rose-200 bg-white/80">
+                <div className="bg-gradient-to-r from-rose-500 to-pink-600 px-3 py-2 text-white">
+                  <div className="text-[10px] font-black uppercase tracking-wider">
+                    Стадии MMVD (ACVIM) — детально
+                  </div>
+                </div>
+                <div className="space-y-2 p-3">
+                  <div className="flex gap-2 rounded-lg border border-emerald-200 bg-emerald-50/60 p-2">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-xs font-black text-white shadow">A</div>
+                    <div className="flex-1 text-xs leading-snug text-blue-900">
+                      <strong className="uppercase text-emerald-700">Группа риска.</strong>{' '}
+                      Породистая мелкая собака (кавалер, той-пудель), возраст 4–5 лет, но шума
+                      и симптомов ещё нет. Сердце здорово, но генетика — против нас. Регулярный
+                      аускультативный контроль раз в год.
+                    </div>
+                  </div>
+                  <div className="flex gap-2 rounded-lg border border-amber-200 bg-amber-50/60 p-2">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-yellow-600 text-xs font-black text-white shadow">B1</div>
+                    <div className="flex-1 text-xs leading-snug text-blue-900">
+                      <strong className="uppercase text-amber-700">Шум есть — сердце справляется.</strong>{' '}
+                      Громкий систолический шум слева 5 м/р, но на ЭхоКГ ремоделирования НЕТ.
+                      Левое предсердие нормального размера. Лечения пока не требуется — только
+                      наблюдение раз в 6–12 месяцев.
+                    </div>
+                  </div>
+                  <div className="flex gap-2 rounded-lg border border-orange-200 bg-orange-50/60 p-2">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-600 text-xs font-black text-white shadow">B2</div>
+                    <div className="flex-1 text-xs leading-snug text-blue-900">
+                      <strong className="uppercase text-orange-700">Бессимптомно, НО с ремоделированием.</strong>{' '}
+                      Шум + сердце уже увеличивается. Левое предсердие и желудочек дилатированы.
+                      Симптомов ещё нет, но <strong className="text-rose-700">это ВРЕМЯ НАЧИНАТЬ ЛЕЧЕНИЕ</strong>{' '}
+                      (пимобендан) — отсрочивает сердечную недостаточность на 15+ месяцев.
+                    </div>
+                  </div>
+                  <div className="flex gap-2 rounded-lg border border-rose-300 bg-rose-50/60 p-2">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 text-xs font-black text-white shadow">C</div>
+                    <div className="flex-1 text-xs leading-snug text-blue-900">
+                      <strong className="uppercase text-rose-700">Сердечная недостаточность.</strong>{' '}
+                      Кашель, одышка, возможен отёк лёгких. Сердце уже не справляется. Лечение:
+                      фуросемид + пимобендан + АПФ-ингибитор. Экстренно при отёке.
+                    </div>
+                  </div>
+                  <div className="flex gap-2 rounded-lg border border-slate-300 bg-slate-100/60 p-2">
+                    <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-slate-600 to-zinc-800 text-xs font-black text-white shadow">D</div>
+                    <div className="flex-1 text-xs leading-snug text-blue-900">
+                      <strong className="uppercase text-slate-700">Рефрактерная СН.</strong>{' '}
+                      Стандартные дозы препаратов больше не помогают. Требуются высокие дозы
+                      диуретиков, комбинации. Прогноз осторожный.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Список пород MMVD */}
+              <div className="mt-3 rounded-xl border-2 border-rose-200 bg-white/80 p-3">
+                <div className="mb-2 flex items-center gap-2">
+                  <Bone className="h-4 w-4 text-rose-700" />
+                  <div className="text-[10px] font-black uppercase tracking-wide text-rose-700">Породы группы риска MMVD</div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Кавалер-кинг-чарльз (50% к 5 годам!)', 'Такса', 'Той-пудель', 'Йоркширский терьер', 'Шпиц', 'Чихуахуа'].map((b) => (
+                    <span key={b} className="rounded-md bg-rose-100 px-2 py-0.5 text-[11px] font-bold text-rose-800">{b}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ПОЧУВСТВУЙ РЕГУРГИТАЦИЮ — кинестетическое упражнение */}
+            <div className="overflow-hidden rounded-2xl border-2 border-amber-400 bg-gradient-to-br from-amber-50 to-orange-50 shadow-lg">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <Hand className="h-5 w-5" />
+                  <span className="text-sm font-black uppercase tracking-wider">
+                    «Почувствуй регургитацию» — что происходит в MMVD
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-amber-50/90">
+                  Это упражнение — ключ к пониманию ВСЕХ приобретённых пороков клапанов.
+                  Регургитация = обратный ток крови. Почувствуй это телом.
+                </p>
+              </div>
+              <div className="p-4">
+                <ol className="ml-4 list-decimal space-y-2 text-sm text-blue-900 sm:text-base">
+                  <li>
+                    <strong className="uppercase text-amber-700">Сожми правый кулак</strong> —
+                    это левый желудочек, готовый к мощному удару.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-amber-700">Левой рукой обхвати запястье
+                    правой</strong> — это митральный клапан, который должен удержать кровь в
+                    желудочке во время систолы.
+                  </li>
+                  <li>
+                    <strong className="uppercase text-amber-700">Резко сожми правый кулак</strong>{' '}
+                    изо всех сил — почувствуй, как давление идёт В ОБРАТНУЮ сторону, в левую
+                    руку. Кровь «убегает» обратно в левое предсердие, потому что клапан
+                    неплотно закрыт.
+                  </li>
+                  <li>
+                    Это и есть <strong className="text-rose-700">регургитация</strong> —
+                    обратный ток крови. Чем сильнее «течь назад» — тем громче шум и тем
+                    больше страдает предсердие (растягивается, давит на бронхи → кашель).
+                  </li>
+                </ol>
               </div>
             </div>
 
@@ -732,6 +1497,19 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
                 гигантских пород. Сердце растягивается, стенки истончаются, насос слабеет.
                 Шума часто нет вообще — зато есть аритмии, слабость и внезапная смерть.
               </p>
+
+              {/* Список пород ДКМП */}
+              <div className="mt-3 rounded-xl border-2 border-slate-200 bg-white/80 p-3">
+                <div className="mb-2 flex items-center gap-2">
+                  <Bone className="h-4 w-4 text-slate-700" />
+                  <div className="text-[10px] font-black uppercase tracking-wide text-slate-700">Породы группы риска ДКМП</div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Доберман (особенно!)', 'Немецкий дог', 'Ирландский волкодав', 'Ньюфаундленд', 'Боксёр', 'Кокер-спаниель'].map((b) => (
+                    <span key={b} className="rounded-md bg-slate-200 px-2 py-0.5 text-[11px] font-bold text-slate-800">{b}</span>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Таблица 4: MMVD vs ДКМП */}
@@ -789,6 +1567,59 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
                 сжаться», оно «не может наполниться». Кошка долго выглядит здоровой, а потом
                 внезапно — отёк лёгких или тромбоэмболия.
               </p>
+
+              {/* Список пород ГКМП */}
+              <div className="mt-3 rounded-xl border-2 border-violet-200 bg-white/80 p-3">
+                <div className="mb-2 flex items-center gap-2">
+                  <Bone className="h-4 w-4 text-violet-700" />
+                  <div className="text-[10px] font-black uppercase tracking-wide text-violet-700">Породы группы риска ГКМП</div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Мейн-кун (мутация MyBPC3)', 'Рэгдолл', 'Британская короткошёрстная', 'Персидская', 'Сфинкс', '...но чаще — беспородные кошки!'].map((b) => (
+                    <span key={b} className="rounded-md bg-violet-100 px-2 py-0.5 text-[11px] font-bold text-violet-800">{b}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* РКМП — рестриктивная кардиомиопатия */}
+            <div className="rounded-2xl border-2 border-amber-300 bg-amber-50/60 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md">
+                  <Flame className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-sm font-black uppercase text-amber-700">РКМП — рестриктивная кардиомиопатия</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wide text-amber-700/70">«Сердце в тисках»</div>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                <strong className="text-blue-700">Стенки нормальные или слегка утолщены</strong>,
+                но из-за фиброза миокард становится жёстким, как будто сердце зажато в тиски.
+                Желудочек не может растянуться и наполниться кровью. По симптомам похожа на ГКМП,
+                но на ЭхоКГ стенка НЕ толстая — диагноз сложный. Часто сопровождается фибрилляцией
+                предсердий.
+              </p>
+            </div>
+
+            {/* ДКМП у кошек */}
+            <div className="rounded-2xl border-2 border-slate-300 bg-slate-50/60 p-4">
+              <div className="mb-2 flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-500 to-slate-700 text-white shadow-md">
+                  <Gauge className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="text-sm font-black uppercase text-slate-700">ДКМП у кошек</div>
+                  <div className="text-[10px] font-bold uppercase tracking-wide text-slate-700/70">«Редкий гость»</div>
+                </div>
+              </div>
+              <p className="text-xs leading-relaxed text-blue-900 sm:text-sm">
+                <strong className="text-blue-700">Раньше главная причина — дефицит таурина</strong>{' '}
+                в коммерческих кормах. Сейчас, после добавления таурина в корма, встречается
+                редко. <strong className="text-rose-700">Если видишь ДКМП у кошки — обязательно
+                проверь диету и уровень таурина в крови!</strong> В отличие от собак, у кошек
+                ДКМП часто вторична (кормовая, токсическая, после вирусного миокардита).
+              </p>
             </div>
 
             {/* FATE */}
@@ -827,6 +1658,7 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
                 ['Шум', 'Почти всегда', 'Только 20-30%'],
                 ['Кашель', 'Часто', 'НИКОГДА!'],
                 ['Тромбоэмболия', 'Редко', 'Часто (FATE)'],
+                ['Кардиомиопатии', 'ДКМП (дилат.)', 'ГКМП + РКМП + редко ДКМП'],
                 ['Якорь', '«Про клапаны»', '«Про стенку»'],
               ]}
             />
@@ -899,6 +1731,116 @@ export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { on
               Дирофиляриоз — это живые шнурки в насосе, передающиеся через комаров. Тампонада —
               сердце «плавает» в жидкости и не может наполниться. Первое лечат профилактикой,
               второе — пункцией. И то, и другое может убить пациента, если пропустить.
+            </Callout>
+          </div>
+        </SectionWrapper>
+
+        {/* ============= РАЗДЕЛ 14: КЛИНИЧЕСКИЕ СЛУЧАИ ============= */}
+        <SectionWrapper delay={0.3}>
+          <SectionHeader number="14" title="КЛИНИЧЕСКИЕ СЛУЧАИ" subtitle="Детективная практика — три истории" icon={Search} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Три классических случая, которые обязан узнать каждый ветеринар. Активируй свой
+              «якорь детектива» — сожми подушечки указательного и среднего пальцев — и
+              попробуй сначала поставить диагноз сам. Ответы спрятаны под спойлером, чтобы
+              можно было проверить себя.
+            </p>
+
+            {/* Кейс 1 — Cavalier с MMVD */}
+            <CaseCard
+              number="1"
+              signalment="10-летний кавалер-кинг-чарльз-спаниель, кобель"
+              complaint="Кашель по ночам, особенно под утро. Одышка при небольшой нагрузке. Снижение аппетита."
+              findings="Аускультация: громкий голосистолический шум IV° слева в 5-м межреберье. Рентген: левое предсердие значительно увеличено, давит на главный бронх. На ЭхоКГ — утолщение митрального клапана, регургитация."
+              questions={[
+                'Какой диагноз наиболее вероятен?',
+                'На какой стадии MMVD находится пациент?',
+                'Какое лечение назначить?',
+              ]}
+              answers={[
+                'Хроническая болезнь митрального клапана (MMVD) — типичная картина для кавалера 10 лет.',
+                'Стадия C — есть симптомы сердечной недостаточности (кашель, одышка) + увеличено левое предсердие.',
+                'Фуросемид (снять отёк) + пимобендан (инотроп) + АПФ-ингибитор (блок РААС). Контроль через 7–14 дней.',
+              ]}
+              tagColor="rose"
+            />
+
+            {/* Кейс 2 — Cat with FATE */}
+            <CaseCard
+              number="2"
+              signalment="5-летняя беспородная кошка, indoors only"
+              complaint="Внезапно закричала, не может стоять на задних лапах. Сидит, прижав задние лапы к телу."
+              findings="Задние лапы холодные как лёд, подушечки бледные. Пульс на бедренной артерии не определяется. На аускультации — ритм галопа (S3). На ЭхоКГ — тромб в левом предсердии, на рентгене — увеличенное левое предсердие."
+              questions={[
+                'Что это за синдром?',
+                'Все ли «5 P» присутствуют?',
+                'Какой прогноз?',
+              ]}
+              answers={[
+                'FATE — тромбоэмболия бифуркации аорты у кошки с кардиомиопатией.',
+                'Все 5 P налицо: Pain (кошка кричит), Paralysis (паралич задних лап), Pallor (бледные подушечки), Pulselessness (нет пульса), Poikilothermia (холодные лапы).',
+                'Осторожный до плохого. Даже при агрессивном лечении выживаемость 30–50%. Часть кошек рецидивирует. Обсудить с владельцем эвтаназию как опцию.',
+              ]}
+              tagColor="violet"
+            />
+
+            {/* Кейс 3 — Irish Wolfhound with DCM */}
+            <CaseCard
+              number="3"
+              signalment="6-летний ирландский волкодав, кобель"
+              complaint="Слабость после нагрузки, два эпизода синкопе за последний месяц. Иногда тяжело дышит."
+              findings="Аускультация: шума НЕТ, тоны приглушены, ритм галопа. Рентген: глобальная кардиомегалия (все камеры увеличены). ЭхоКГ: все камеры дилатированы, фракция укорочения FS=12% (норма >25%)."
+              questions={[
+                'Какой диагноз?',
+                'Почему нет шума?',
+                'Какое лечение назначить?',
+              ]}
+              answers={[
+                'ДКМП (дилатационная кардиомиопатия) — типично для крупной породы (ирландский волкодав), сниженная сократимость (FS=12%).',
+                'Потому что проблема не в клапанах, а в миокарде. Стенки растянуты и тонки, но клапаны анатомически нормальные. Шум может появиться вторично из-за растяжения кольца.',
+                'Пимобендан (главный препарат при ДКМП) + фуросемид при застое + АПФ-ингибитор + спиронолактон. Внимательный мониторинг аритмий (холтер).',
+              ]}
+              tagColor="slate"
+            />
+
+            <KeyPhrase>
+              <strong className="uppercase text-blue-700">Запомни паттерны:</strong>{' '}
+              мелкая старая собака + кашель + громкий шум = MMVD. Внезапный паралич задних лап у
+              кошки = FATE. Крупная собака + слабость + нет шума + глобальное сердце = ДКМП.
+              Три случая — три разных подхода.
+            </KeyPhrase>
+          </div>
+        </SectionWrapper>
+
+        {/* ============= РАЗДЕЛ 14.1: ЯКОРЯ МОДУЛЯ 4 (ПАТОЛОГИЯ) ============= */}
+        <SectionWrapper delay={0.35}>
+          <SectionHeader number="14.1" title="ЯКОРЯ — ПАТОЛОГИЯ" subtitle="Сводная шпаргалка по всем болезням" icon={Sparkles} />
+          <div className="space-y-4 px-5 py-5 sm:px-7">
+            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+              Все главные патологии в одной таблице. Один взгляд — и ты помнишь, кто где шумит
+              и какая метафора к какой болезни относится.
+            </p>
+
+            <TableGrid
+              title="Таблица — якоря по патологиям сердца"
+              icon={Sparkles}
+              headers={['Болезнь', 'Метафора', 'Клинический ключ']}
+              rows={[
+                ['PDA', 'Машинный шум', 'Непрерывный жужжащий шум слева 3 м/р'],
+                ['SAS', 'Узкая дверь', 'Грубый систолический + слабый пульс на бедре'],
+                ['MMVD', 'Протекающий кран', 'Старая мелкая собака + громкий шум + кашель'],
+                ['ДКМП', 'Уставший великан', 'Крупная порода + огромное сердце + слабая сократимость'],
+                ['ГКМП', 'Жёсткая губка', 'Кошка + толстая стенка + шум не обязателен'],
+                ['FATE', '5 P', 'Внезапный паралич задних лап + холодные подушечки'],
+                ['Дирофиляриоз', 'Черви в сердце', 'Кашель + лёгочная гипертензия + тест+'],
+                ['Тампонада', 'Сердце в мешке', 'Приглушённые тоны + глобус на рентгене + шок'],
+              ]}
+            />
+
+            <Callout variant="info" emoji="🎭" title="Мини-заключение">
+              Патологии сердца — это «поломки квартиры». Каждая ломает свою часть: клапан, стенку,
+              электрику, перикард. Зная адрес и характер «поломки» — ставишь диагноз до ЭхоКГ.
+              А запомнив метафоры — никогда не перепутаешь MMVD с ДКМП или ГКМП с FATE.
             </Callout>
           </div>
         </SectionWrapper>
@@ -1612,6 +2554,169 @@ function OtherCard({
         <div className="mt-2 rounded-md bg-blue-50/60 px-2 py-1 text-[10px] font-bold uppercase text-blue-700">
           Метафора: {metaphor}
         </div>
+      </div>
+    </div>
+  )
+}
+
+/* ============= STEP CARD (шаги экскурсии по сердцу) ============= */
+function StepCard({
+  step,
+  title,
+  body,
+  sound,
+  color,
+  isFinal,
+}: {
+  step: string
+  title: string
+  body: string
+  sound?: string
+  color: string
+  isFinal?: boolean
+}) {
+  return (
+    <div className={`overflow-hidden rounded-xl bg-gradient-to-br ${color} p-0.5 shadow-md`}>
+      <div className="rounded-[10px] bg-white p-3">
+        <div className="flex items-start gap-3">
+          <div
+            className={`flex h-9 min-w-[2.25rem] flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${color} px-1.5 text-sm font-black text-white shadow`}
+          >
+            {step}
+          </div>
+          <div className="flex-1">
+            <div className={`text-xs font-black uppercase tracking-tight sm:text-sm ${
+              isFinal ? 'text-emerald-700' : 'text-blue-900'
+            }`}>
+              {title}
+            </div>
+            <div className="mt-0.5 text-[11px] leading-relaxed text-blue-900/85 sm:text-xs">
+              {body}
+            </div>
+            {sound && (
+              <div className="mt-1.5 inline-block rounded bg-amber-200 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-amber-900">
+                🔊 {sound}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ============= CASE CARD (клинические случаи) ============= */
+function CaseCard({
+  number,
+  signalment,
+  complaint,
+  findings,
+  questions,
+  answers,
+  tagColor,
+}: {
+  number: string
+  signalment: string
+  complaint: string
+  findings: string
+  questions: string[]
+  answers: string[]
+  tagColor: 'rose' | 'violet' | 'slate'
+}) {
+  const colorMap: Record<string, { border: string; bg: string; tag: string; text: string }> = {
+    rose: {
+      border: 'border-rose-400',
+      bg: 'from-rose-50 to-pink-50',
+      tag: 'from-rose-500 to-pink-600',
+      text: 'text-rose-700',
+    },
+    violet: {
+      border: 'border-violet-400',
+      bg: 'from-violet-50 to-purple-50',
+      tag: 'from-violet-500 to-purple-600',
+      text: 'text-violet-700',
+    },
+    slate: {
+      border: 'border-slate-400',
+      bg: 'from-slate-50 to-zinc-50',
+      tag: 'from-slate-600 to-zinc-800',
+      text: 'text-slate-700',
+    },
+  }
+  const c = colorMap[tagColor]
+  return (
+    <div className={`overflow-hidden rounded-2xl border-2 ${c.border} bg-gradient-to-br ${c.bg} shadow-lg`}>
+      <div className={`flex items-center gap-3 bg-gradient-to-r ${c.tag} px-4 py-3 text-white`}>
+        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
+          <Search className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-white/80">
+            Клинический случай
+          </div>
+          <div className="text-sm font-black uppercase tracking-tight sm:text-base">
+            Кейс №{number}
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 p-4">
+        {/* Сигнальмент */}
+        <div className="rounded-lg border border-blue-100 bg-white/70 p-2.5">
+          <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wide text-blue-700/70">
+            Пациент
+          </div>
+          <div className="text-xs leading-snug font-bold text-blue-900 sm:text-sm">
+            {signalment}
+          </div>
+        </div>
+
+        {/* Жалобы */}
+        <div className="rounded-lg border border-amber-100 bg-amber-50/70 p-2.5">
+          <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">
+            Жалобы
+          </div>
+          <div className="text-xs leading-snug text-blue-900 sm:text-sm">{complaint}</div>
+        </div>
+
+        {/* Находки */}
+        <div className="rounded-lg border border-violet-100 bg-violet-50/70 p-2.5">
+          <div className="mb-0.5 text-[10px] font-bold uppercase tracking-wide text-violet-700">
+            Клинические находки
+          </div>
+          <div className="text-xs leading-snug text-blue-900 sm:text-sm">{findings}</div>
+        </div>
+
+        {/* Вопросы и ответы (collapsible) */}
+        <details className="group rounded-lg border-2 border-dashed border-blue-300 bg-white/70 p-2.5">
+          <summary className="flex cursor-pointer items-center justify-between gap-2 text-xs font-black uppercase tracking-wide text-blue-700 sm:text-sm">
+            <span className="flex items-center gap-1.5">
+              <HelpCircle className="h-4 w-4" />
+              Вопросы — попробуй ответить сам
+            </span>
+            <span className="text-[10px] text-blue-700/60 group-open:hidden">▶ раскрыть</span>
+            <span className="hidden text-[10px] text-blue-700/60 group-open:inline">▼ скрыть</span>
+          </summary>
+          <div className="mt-3 space-y-3">
+            {questions.map((q, i) => (
+              <div key={i} className="rounded-md border border-blue-100 bg-blue-50/40 p-2.5">
+                <div className="flex gap-2 text-xs font-bold text-blue-900 sm:text-sm">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-[10px] font-black text-white">
+                    {i + 1}
+                  </span>
+                  <span className="leading-snug">{q}</span>
+                </div>
+                <div className="mt-1.5 flex gap-2 rounded-md bg-emerald-50/80 p-2 text-xs leading-snug text-blue-900 sm:text-sm">
+                  <CheckCircle className="h-4 w-4 flex-shrink-0 text-emerald-600" />
+                  <span className="leading-snug">
+                    <strong className="uppercase text-emerald-700">Ответ: </strong>
+                    {answers[i]}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
     </div>
   )
