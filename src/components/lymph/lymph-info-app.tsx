@@ -307,54 +307,6 @@ export default function LymphInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: 
               </figcaption>
             </motion.figure>
 
-            {/* Полное описание картинки — топография лимфоузлов */}
-            <div className="rounded-2xl border-2 border-blue-200 bg-blue-50/40 p-4 text-xs leading-relaxed text-blue-900/80 sm:text-sm">
-              <div className="mb-2 text-[10px] font-bold uppercase tracking-wide text-blue-700 sm:text-xs">
-                📋 Описание изображения
-              </div>
-              <p className="mb-3">
-                <strong className="text-blue-700">Левая часть — Собака (Canine):</strong>{' '}
-                Изображён светло-коричневый пёс (похож на лабрадора). Лимфатические узлы выделены
-                бирюзовым (зеленовато-голубым) цветом. Подписаны следующие узлы (сверху вниз):
-              </p>
-              <ul className="mb-3 ml-4 space-y-0.5">
-                <li><strong>Parotid lymph node</strong> — Околоушной лимфоузел (у основания уха)</li>
-                <li><strong>Retropharyngeal lymph node</strong> — Заглоточный лимфоузел (в области глотки/шеи)</li>
-                <li><strong>Mandibular lymph node</strong> — Подчелюстной лимфоузел (под нижней челюстью)</li>
-                <li><strong>Axillary lymph node</strong> — Подмышечный лимфоузел (в области подмышки передних лап)</li>
-                <li><strong>Superficial cervical (prescapular) lymph node</strong> — Поверхностный шейный (предлопаточный) лимфоузел (перед лопаткой)</li>
-                <li><strong>Popliteal lymph node</strong> — Подколенный лимфоузел (за коленным суставом задней лапы)</li>
-                <li><strong>Superficial inguinal lymph node</strong> — Поверхностный паховый лимфоузел (в паховой области)</li>
-                <li><strong>Sternal lymph node</strong> — Грудной лимфоузел (указан стрелкой в области грудины)</li>
-              </ul>
-              <p className="mb-3 rounded-lg bg-white/60 px-3 py-2">
-                В левом нижнем углу есть круглая вставка (крупный план), показывающая грудной лимфоузел более детально.
-                Под собакой находится текстовый блок <strong>«Canine Specifics»</strong> (Особенности собак),
-                где кратко описана локализация узлов: подчелюстные прощупываются вентрально от челюсти,
-                предлопаточные — краниальнее лопатки, подколенные — позади коленного сустава, паховые — рядом
-                с молочными железами.
-              </p>
-              <p className="mb-3">
-                <strong className="text-blue-700">Правая часть — Кошка (Feline):</strong>{' '}
-                Изображена рыжая полосатая кошка. Лимфатические узлы выделены оранжевым (коралловым) цветом.
-                Подписаны те же группы узлов, что и у собаки: Parotid, Retropharyngeal (на схеме показано
-                два узла в этой зоне), Mandibular, Superficial cervical (prescapular), Axillary,
-                Superficial inguinal, Sternal.
-              </p>
-              <p className="mb-3 rounded-lg bg-white/60 px-3 py-2">
-                В правом нижнем углу также есть круглая вставка с детальным видом грудных узлов.
-                Под кошкой находится текстовый блок <strong>«Feline Specifics»</strong> (Особенности кошек),
-                отмечающий различия: подчелюстные узлы меньше и расположены медиальнее, чем у собак;
-                предлопаточные менее выражены; <strong>подколенные узлы постоянно прощупываются</strong> у
-                здоровых кошек; паховые узлы сильно развиты у кормящих самок.
-              </p>
-              <p className="rounded-lg bg-white/60 px-3 py-2">
-                <strong className="text-blue-700">Легенда (внизу по центру):</strong>{' '}
-                Бирюзовый кружок — Canine Lymph Nodes (Лимфатические узлы собаки).
-                Оранжевый кружок — Feline Lymph Nodes (Лимфатические узлы кошки).
-              </p>
-            </div>
-
             <Callout variant="info" emoji="🤪" title="Мини-заключение — правило «Кошачьего колена»">
               Не пугайтесь крупного подколенного узла у кошки: в норме он может достигать 1 см.
               А вот у собаки «подколенка» больше полсантиметра уже подозрительна. Видовые нормы —
