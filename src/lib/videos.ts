@@ -16,7 +16,7 @@ export interface VideoConfig {
 export const VIDEOS: Record<string, VideoConfig> = {
   // ============ БЛОК «СЛИЗИСТЫЕ» ============
   'mucous-intro': {
-    src: 'https://cdn.relaxdev.ru/users/cmuqidv0d00fspn018pp2xupe/vet-kviz/_1080p_caption.mp4',
+    src: 'https://cdn.relaxdev.ru/users/cmuqidv0d00fspn018pp2xupe/vet-kviz/_1080p.mp4',
     title: 'Видео-вступление к гайду',
     subtitle: 'Ольга представляет материал по слизистым оболочкам',
   },
