@@ -34,6 +34,7 @@ const PuzzleApp = dynamic(() => import('@/components/puzzle/puzzle-app'), {
 import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import HydrationInfoApp from '@/components/hydration/hydration-info-app'
 import LymphInfoApp from '@/components/lymph/lymph-info-app'
+import CardioInfoApp from '@/components/cardio-info/cardio-info-app'
 import GlossaryApp from '@/components/glossary/glossary-app'
 import ComingSoonApp from '@/components/placeholder/coming-soon-app'
 import LandingApp from '@/components/landing/landing-app'
@@ -320,7 +321,7 @@ export default function VetKvizApp() {
           )}
 
           {/* HEART BLOCK */}
-          {mode === 'heart-lesson' && <CardioApp />}
+          {mode === 'heart-lesson' && <CardioInfoApp onNavigateToQuiz={() => handleNavigate('heart-quiz')} />}
           {mode === 'heart-quiz' && (
             <QuizApp
               questions={HEART_QUESTIONS}
