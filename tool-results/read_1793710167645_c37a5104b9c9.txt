@@ -1,0 +1,932 @@
+     1→     1→'use client'
+     2→     2→
+     3→     3→import { motion } from 'framer-motion'
+     4→     4→import {
+     5→     5→  Droplets,
+     6→     6→  Activity,
+     7→     7→  Shield,
+     8→     8→  Brain,
+     9→     9→  AlertTriangle,
+    10→    10→  FlaskConical,
+    11→    11→  Heart,
+    12→    12→  Thermometer,
+    13→    13→  BookOpen,
+    14→    14→  Award,
+    15→    15→  Lightbulb,
+    16→    16→  ArrowRight,
+    17→    17→  Zap,
+    18→    18→} from 'lucide-react'
+    19→    19→import VideoPlayer from '@/components/shared/video-player'
+    20→    20→import { VIDEOS } from '@/lib/videos'
+    21→    21→
+    22→    22→// Картинка «Гидратация и электролиты» (ICF/ECF, раствор Рингера, баланс ионов)
+    23→    23→const HYDRATION_ELECTROLYTES_IMG = '/images/hydration-electrolytes.webp'
+    24→    24→
+    25→    25→// Таблица классификации обезвоживания (изотоническая / гипертоническая / гипотоническая)
+    26→    26→const DEHYDRATION_CLASSIFICATION_IMG = '/images/dehydration-classification.webp'
+    27→    27→
+    28→    28→export default function HydrationInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: () => void }) {
+    29→    29→  return (
+    30→    30→    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
+    31→    31→      <BackgroundBubbles />
+    32→    32→
+    33→    33→      <main className="relative z-10 mx-auto max-w-4xl px-4 py-6 pt-16 sm:py-8 sm:pt-20">
+    34→    34→        {/* ============= VIDEO PLAYER (вверху гайда) ============= */}
+    35→    35→        <VideoPlayer
+    36→    36→          src={VIDEOS['hydration-intro'].src}
+    37→    37→          title={VIDEOS['hydration-intro'].title}
+    38→    38→          subtitle={VIDEOS['hydration-intro'].subtitle}
+    39→    39→        />
+    40→    40→
+    41→    41→        {/* ============= HERO ============= */}
+    42→    42→        <motion.section
+    43→    43→          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+    44→    44→          animate={{ opacity: 1, y: 0, scale: 1 }}
+    45→    45→          transition={{ duration: 0.5, ease: 'easeOut' }}
+    46→    46→          className="mb-8 overflow-hidden rounded-3xl border-2 border-blue-300 bg-white/95 shadow-2xl shadow-blue-500/20 backdrop-blur"
+    47→    47→        >
+    48→    48→          <div className="relative bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 px-6 py-10 text-white sm:px-10 sm:py-14">
+    49→    49→            {/* Декоративная капля справа */}
+    50→    50→            <div className="absolute right-6 top-6 opacity-25">
+    51→    51→              <Droplets className="h-32 w-32" />
+    52→    52→            </div>
+    53→    53→            <div className="relative z-10">
+    54→    54→              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur">
+    55→    55→                <FlaskConical className="h-3.5 w-3.5" /> Гайд для будущего ветеринара
+    56→    56→              </span>
+    57→    57→              <h1 className="mt-4 text-4xl font-black uppercase tracking-tight sm:text-5xl">
+    58→    58→                Гидратация
+    59→    59→              </h1>
+    60→    60→              <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-blue-50 sm:text-lg">
+    61→    61→                Водный баланс, дегидратация и электролиты собак и кошек.
+    62→    62→                От формулы «2/3 ICF — 1/3 ECF» до клинического осмотра и жидкостной терапии.
+    63→    63→              </p>
+    64→    64→            </div>
+    65→    65→          </div>
+    66→    66→
+    67→    67→          {/* Key formula chips */}
+    68→    68→          <div className="grid grid-cols-1 gap-3 border-t-2 border-blue-200 p-5 sm:grid-cols-3 sm:p-6">
+    69→    69→            <FormulaChip label="Формула осмотра" value="Тургор + Слизистые + Глаза + ВКН + Пульс" icon={Activity} />
+    70→    70→            <FormulaChip label="Водные секторы" value="2/3 ICF — 1/3 ECF" icon={Droplets} />
+    71→    71→            <FormulaChip label="Поддерживающая терапия" value="30 мл/кг/сут" icon={FlaskConical} />
+    72→    72→          </div>
+    73→    73→        </motion.section>
+    74→    74→
+    75→    75→        {/* ============= РАЗДЕЛ 1: ЧТО ТАКОЕ ГИДРАТАЦИЯ? ============= */}
+    76→    76→        <SectionWrapper delay={0.1}>
+    77→    77→          <SectionHeader number="1" title="ЧТО ТАКОЕ ГИДРАТАЦИЯ?" subtitle="Определение" icon={Droplets} />
+    78→    78→          <div className="space-y-4 px-5 py-5 sm:px-7">
+    79→    79→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+    80→    80→              <strong className="uppercase text-blue-700">Гидратация</strong> — это состояние
+    81→    81→              водного баланса организма: сколько воды поступило, сколько выделилось и как она
+    82→    82→              распределена между клетками и внеклеточным пространством. Вода — это не просто
+    83→    83→              «фон», а <strong className="text-blue-700">среда, в которой идут все биохимические
+    84→    84→              реакции</strong> организма.
+    85→    85→            </p>
+    86→    86→
+    87→    87→            <KeyPhrase>
+    88→    88→              <strong className="uppercase text-blue-700">Где вода — там жизнь.</strong>{' '}
+    89→    89→              Без воды ферменты не работают, электролиты не проводят импульсы, а клетки теряют форму.
+    90→    90→            </KeyPhrase>
+    91→    91→
+    92→    92→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+    93→    93→              У взрослой собаки и кошки вода составляет <strong className="text-blue-700">около 60%
+    94→    94→              массы тела</strong>. У щенков и котят — до 75–80%: они «водянистее» и теряют жидкость
+    95→    95→              быстрее, поэтому дегидратация у них наступает стремительно.
+    96→    96→            </p>
+    97→    97→
+    98→    98→            {/* Картинка: ICF/ECF, раствор Рингера лактатный, электролиты */}
+    99→    99→            <motion.figure
+   100→   100→              initial={{ opacity: 0, y: 20 }}
+   101→   101→              animate={{ opacity: 1, y: 0 }}
+   102→   102→              transition={{ delay: 0.25, duration: 0.5 }}
+   103→   103→              className="overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-lg"
+   104→   104→            >
+   105→   105→              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-2 text-white">
+   106→   106→                <div className="flex items-center gap-2">
+   107→   107→                  <Droplets className="h-4 w-4" />
+   108→   108→                  <span className="text-xs font-bold uppercase tracking-wider">
+   109→   109→                    Водные секторы и электролитный баланс
+   110→   110→                  </span>
+   111→   111→                </div>
+   112→   112→              </div>
+   113→   113→              <img
+   114→   114→                src={HYDRATION_ELECTROLYTES_IMG}
+   115→   115→                alt="Схема распределения воды в организме собаки и кошки: внутриклеточная жидкость (ICF), внеклеточная жидкость (ECF), раствор Рингера лактатный как препарат выбора, баланс электролитов натрия и калия"
+   116→   116→                className="w-full"
+   117→   117→                loading="lazy"
+   118→   118→              />
+   119→   119→              <figcaption className="border-t border-blue-100 bg-blue-50/60 px-4 py-2 text-xs text-blue-900">
+   120→   120→                <strong className="uppercase text-blue-700">Вода делится на два больших сектора:</strong>{' '}
+   121→   121→                внутриклеточный (ICF) и внеклеточный (ECF). Раствор Рингера лактатный — препарат выбора
+   122→   122→                для восстановления баланса, так как его состав близок к плазме крови.
+   123→   123→              </figcaption>
+   124→   124→            </motion.figure>
+   125→   125→
+   126→   126→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   127→   127→              Гидратация — это не «пить или не пить». Это сложный баланс воды между клеткой и
+   128→   128→              пространством вокруг неё. Если вода ушла не туда — пациент чувствует себя как рыба,
+   129→   129→              которую пересадили в солёный рассол.
+   130→   130→            </Callout>
+   131→   131→          </div>
+   132→   132→        </SectionWrapper>
+   133→   133→
+   134→   134→        {/* ============= РАЗДЕЛ 2: ВОДНЫЕ СЕКТОРЫ ОРГАНИЗМА ============= */}
+   135→   135→        <SectionWrapper delay={0.15}>
+   136→   136→          <SectionHeader number="2" title="ВОДНЫЕ СЕКТОРЫ ОРГАНИЗМА" subtitle="ICF и ECF" icon={Brain} />
+   137→   137→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   138→   138→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   139→   139→              Вода в организме распределена между двумя большими «бассейнами». Внутриклеточная
+   140→   140→              жидкость (<strong className="text-blue-700">ICF</strong>) — это вода внутри клеток.
+   141→   141→              Внеклеточная жидкость (<strong className="text-blue-700">ECF</strong>) — это всё, что
+   142→   142→              снаружи: плазма крови, межтканевая жидкость, транссудаты и секреты.
+   143→   143→            </p>
+   144→   144→
+   145→   145→            <FormulaBox title="Золотое правило" formula="2/3 ICF — 1/3 ECF" accent="blue" />
+   146→   146→
+   147→   147→            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+   148→   148→              <SectorCard
+   149→   149→                icon={Brain}
+   150→   150→                title="ICF — внутриклеточная"
+   151→   151→                share="2/3 воды"
+   152→   152→                mass="≈ 40% массы тела"
+   153→   153→                cation="K+ (калий)"
+   154→   154→                color="from-violet-500 to-purple-600"
+   155→   155→              />
+   156→   156→              <SectorCard
+   157→   157→                icon={Droplets}
+   158→   158→                title="ECF — внеклеточная"
+   159→   159→                share="1/3 воды"
+   160→   160→                mass="≈ 20% массы тела"
+   161→   161→                cation="Na+ (натрий)"
+   162→   162→                color="from-cyan-500 to-sky-600"
+   163→   163→              />
+   164→   164→            </div>
+   165→   165→
+   166→   166→            <InfoBox color="blue" title="Na+/K+-ATPase — часовой на границе">
+   167→   167→              <strong className="uppercase text-blue-700">Натриево-калиевый насос</strong> работает
+   168→   168→              в мембране каждой клетки. Он постоянно выкачивает Na+ наружу и возвращает K+ внутрь —
+   169→   169→              против градиента концентрации, тратя АТФ. Именно этот насос поддерживает разделение
+   170→   170→              секторов. Если он остановится — ионы перемешаются, клетка потеряет потенциал покоя и
+   171→   171→              погибнет.
+   172→   172→            </InfoBox>
+   173→   173→
+   174→   174→            <KeyPhrase>
+   175→   175→              <strong className="uppercase text-blue-700">Внутри клетки — калий. Снаружи — натрий.</strong>{' '}
+   176→   176→              Это правило работает в каждой клетке тела пациента, от нейрона до гепатоцита.
+   177→   177→            </KeyPhrase>
+   178→   178→
+   179→   179→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   180→   180→              Клетка — это VIP-зона с охраной на входе. Насос Na+/K+-ATPase стоит на дверях: натрий
+   181→   181→              отправляется гулять снаружи, калий остаётся внутри. Билет на каждый цикл — одна
+   182→   182→              молекула АТФ. Без билета никто не проходит.
+   183→   183→            </Callout>
+   184→   184→          </div>
+   185→   185→        </SectionWrapper>
+   186→   186→
+   187→   187→        {/* ============= РАЗДЕЛ 3: ЭЛЕКТРОЛИТЫ ============= */}
+   188→   188→        <SectionWrapper delay={0.2}>
+   189→   189→          <SectionHeader number="3" title="ЭЛЕКТРОЛИТЫ" subtitle="Главные ионы организма" icon={Zap} />
+   190→   190→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   191→   191→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   192→   192→              <strong className="uppercase text-blue-700">Электролиты</strong> — это ионы, которые
+   193→   193→              проводят электрический ток в жидкостях организма. Они определяют осмолярность, работу
+   194→   194→              нервов, сокращение мышц и ритм сердца. Главные «игроки» — пять ионов.
+   195→   195→            </p>
+   196→   196→
+   197→   197→            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+   198→   198→              <ElectrolyteCard
+   199→   199→                symbol="Na+"
+   200→   200→                name="Натрий"
+   201→   201→                range="140–150 ммоль/л"
+   202→   202→                role="Главный катион ECF. Отвечает за объём внеклеточной воды и осмотическое давление."
+   203→   203→                color="from-cyan-500 to-sky-600"
+   204→   204→              />
+   205→   205→              <ElectrolyteCard
+   206→   206→                symbol="K+"
+   207→   207→                name="Калий"
+   208→   208→                range="3.5–5.5 ммоль/л"
+   209→   209→                role="Главный катион ICF. Отвечает за потенциал покоя клетки и ритм сердца."
+   210→   210→                color="from-violet-500 to-purple-600"
+   211→   211→              />
+   212→   212→              <ElectrolyteCard
+   213→   213→                symbol="Cl−"
+   214→   214→                name="Хлор"
+   215→   215→                range="105–115 ммоль/л"
+   216→   216→                role="Главный анион ECF. Идёт «в паре» с натрием, поддерживает кислотно-щелочной баланс."
+   217→   217→                color="from-emerald-500 to-teal-600"
+   218→   218→              />
+   219→   219→              <ElectrolyteCard
+   220→   220→                symbol="Ca²⁺"
+   221→   221→                name="Кальций"
+   222→   222→                range="1.0–1.3 ммоль/л (иониз.)"
+   223→   223→                role="Сокращение мышц, свёртывание крови, передача сигнала в синапсах."
+   224→   224→                color="from-amber-500 to-orange-600"
+   225→   225→              />
+   226→   226→              <ElectrolyteCard
+   227→   227→                symbol="HPO₄²⁻"
+   228→   228→                name="Фосфат"
+   229→   229→                range="0.8–1.6 ммоль/л"
+   230→   230→                role="Главный внутриклеточный анион. Костная ткань, АТФ, клеточные мембраны."
+   231→   231→                color="from-rose-500 to-pink-600"
+   232→   232→              />
+   233→   233→            </div>
+   234→   234→
+   235→   235→            <FormulaBox title="Правило насоса" formula="Na+ снаружи • K+ внутри • Cl− следует за Na+" accent="blue" />
+   236→   236→
+   237→   237→            <InfoBox color="amber" title="Клиническая подсказка">
+   238→   238→              <strong className="uppercase text-blue-700">Калий — самый «капризный» ион.</strong>{' '}
+   239→   239→              Даже небольшое отклонение K+ от нормы грозит аритмией. Перед инфузией калия всегда
+   240→   240→              оценивайте диурез: «no pee, no K» — нет мочи, нет калия.
+   241→   241→            </InfoBox>
+   242→   242→
+   243→   243→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   244→   244→              Натрий — командир внеклеточной воды, калий — командир внутриклеточной. Хлор — его тень,
+   245→   245→              всегда рядом с натрием. Кальций и фосфат — строительный материал и энергия. Пятёрка, без
+   246→   246→              которой не запускается ни одно сокращение сердца.
+   247→   247→            </Callout>
+   248→   248→          </div>
+   249→   249→        </SectionWrapper>
+   250→   250→
+   251→   251→        {/* ============= РАЗДЕЛ 4: КЛАССИФИКАЦИЯ ДЕГИДРАТАЦИИ ============= */}
+   252→   252→        <SectionWrapper delay={0.25}>
+   253→   253→          <SectionHeader number="4" title="КЛАССИФИКАЦИЯ ДЕГИДРАТАЦИИ" subtitle="По осмолярности" icon={AlertTriangle} />
+   254→   254→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   255→   255→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   256→   256→              <strong className="uppercase text-blue-700">Дегидратация</strong> — это дефицит воды в
+   257→   257→              организме. По соотношению потерянной воды и электролитов (то есть по осмолярности
+   258→   258→              плазмы) она делится на три типа.
+   259→   259→            </p>
+   260→   260→
+   261→   261→            {/* Таблица классификации обезвоживания */}
+   262→   262→            <motion.figure
+   263→   263→              initial={{ opacity: 0, y: 20 }}
+   264→   264→              animate={{ opacity: 1, y: 0 }}
+   265→   265→              transition={{ delay: 0.3, duration: 0.5 }}
+   266→   266→              className="overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-lg"
+   267→   267→            >
+   268→   268→              <div className="bg-gradient-to-r from-blue-600 to-cyan-500 px-4 py-2 text-white">
+   269→   269→                <div className="flex items-center gap-2">
+   270→   270→                  <AlertTriangle className="h-4 w-4" />
+   271→   271→                  <span className="text-xs font-bold uppercase tracking-wider">
+   272→   272→                    Таблица — классификация обезвоживания
+   273→   273→                  </span>
+   274→   274→                </div>
+   275→   275→              </div>
+   276→   276→              <img
+   277→   277→                src={DEHYDRATION_CLASSIFICATION_IMG}
+   278→   278→                alt="Таблица классификации обезвоживания: изотоническая (вода и электролиты теряются равномерно), гипертоническая (воды теряется больше, чем солей), гипотоническая (солей теряется больше, чем воды)"
+   279→   279→                className="w-full"
+   280→   280→                loading="lazy"
+   281→   281→              />
+   282→   282→              <figcaption className="border-t border-blue-100 bg-blue-50/60 px-4 py-2 text-xs text-blue-900">
+   283→   283→                <strong className="uppercase text-blue-700">Три типа дегидратации:</strong>{' '}
+   284→   284→                изотоническая — вода и электролиты теряются одинаково (осмолярность в норме);
+   285→   285→                гипертоническая — воды уходит больше, чем солей (осмолярность ↑);
+   286→   286→                гипотоническая — солей уходит больше, чем воды (осмолярность ↓).
+   287→   287→              </figcaption>
+   288→   288→            </motion.figure>
+   289→   289→
+   290→   290→            <InfoBox color="amber" title="Клиническая подсказка по причинам">
+   291→   291→              <strong className="uppercase text-blue-700">Изотоническая</strong> дегидратация — самая
+   292→   292→              частая (рвота, диарея).{' '}
+   293→   293→              <strong className="text-blue-700">Гипертоническая</strong> возникает при потере чистой
+   294→   294→              воды (лихорадка, одышка, нехватка питья).{' '}
+   295→   295→              <strong className="text-blue-700">Гипотоническая</strong> — при избыточной потере солей
+   296→   296→              (хроническая рвота, приём диуретиков, гипоальбуминемия).
+   297→   297→            </InfoBox>
+   298→   298→
+   299→   299→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   300→   300→              Потеряли воду и соль поровну — изотоническая. Потеряли только воду — гипертоническая
+   301→   301→              (клетки сморщиваются). Потеряли больше соли — гипотоническая (клетки набухают). У каждого
+   302→   302→              типа своё лечение, поэтому «капать всё подряд» — плохая стратегия.
+   303→   303→            </Callout>
+   304→   304→          </div>
+   305→   305→        </SectionWrapper>
+   306→   306→
+   307→   307→        {/* ============= РАЗДЕЛ 5: СТЕПЕНИ ДЕГИДРАТАЦИИ ============= */}
+   308→   308→        <SectionWrapper delay={0.3}>
+   309→   309→          <SectionHeader number="5" title="СТЕПЕНИ ДЕГИДРАТАЦИИ" subtitle="По проценту потери массы тела" icon={Activity} />
+   310→   310→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   311→   311→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   312→   312→              Степень дегидратации оценивают по <strong className="text-blue-700">проценту потери
+   313→   313→              массы тела</strong> относительно исходного веса животного. Чем больше процент — тем
+   314→   314→              тяжелее клинические признаки и тем быстрее нужно начинать инфузионную терапию.
+   315→   315→            </p>
+   316→   316→
+   317→   317→            <div className="space-y-3">
+   318→   318→              <SeverityCard
+   319→   319→                level="Лёгкая"
+   320→   320→                range="< 5%"
+   321→   321→                color="emerald"
+   322→   322→                signs={[
+   323→   323→                  'Слизистые слегка суховаты',
+   324→   324→                  'Тургор кожи в норме или чуть снижен',
+   325→   325→                  'Поведение обычное, пациент активен',
+   326→   326→                  'Глаза не западают',
+   327→   327→                ]}
+   328→   328→              />
+   329→   329→              <SeverityCard
+   330→   330→                level="Умеренная"
+   331→   331→                range="5–8%"
+   332→   332→                color="amber"
+   333→   333→                signs={[
+   334→   334→                  'Слизистые сухие и липкие',
+   335→   335→                  'Тургор кожи замедлен (складка расправляется > 2 сек)',
+   336→   336→                  'Западение глаз умеренное',
+   337→   337→                  'ВКН 2–3 сек',
+   338→   338→                  'Угнетение, снижение эластичности кожи',
+   339→   339→                ]}
+   340→   340→              />
+   341→   341→              <SeverityCard
+   342→   342→                level="Тяжёлая"
+   343→   343→                range="> 8%"
+   344→   344→                color="rose"
+   345→   345→                signs={[
+   346→   346→                  'Слизистые сухие, тусклые, иногда «тестообразные»',
+   347→   347→                  'Тургор кожи резко снижен (складка стоит > 5 сек)',
+   348→   348→                  'Выраженное западение глаз',
+   349→   349→                  'ВКН > 3 сек, пульс нитевидный',
+   350→   350→                  'Шок, гипотермия, угроза жизни',
+   351→   351→                ]}
+   352→   352→              />
+   353→   353→            </div>
+   354→   354→
+   355→   355→            <InfoBox color="rose" title="Тяжёлая дегидратация — экстренное состояние">
+   356→   356→              <strong className="uppercase text-blue-700">Потеря &gt; 12% массы тела</strong> — это уже
+   357→   357→              состояние, совместимое с жизнью лишь короткое время. Требуется немедленное внутривенное
+   358→   358→              введение солевых растворов под контролем врача, желательно с мониторингом центрального
+   359→   359→              венозного давления и диуреза.
+   360→   360→            </InfoBox>
+   361→   361→
+   362→   362→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   363→   363→              Лёгкая степень — пациент «просто хочет пить». Умеренная — пациент уже понятно даёт
+   364→   364→              понять, что ему плохо. Тяжёлая — пациент не даёт понять ничего, потому что почти без
+   365→   365→              сознания. Никогда не ждите третьей стадии, чтобы начать лечение.
+   366→   366→            </Callout>
+   367→   367→          </div>
+   368→   368→        </SectionWrapper>
+   369→   369→
+   370→   370→        {/* ============= РАЗДЕЛ 6: КЛИНИЧЕСКИЙ ОСМОТР ============= */}
+   371→   371→        <SectionWrapper delay={0.35}>
+   372→   372→          <SectionHeader number="6" title="КЛИНИЧЕСКИЙ ОСМОТР" subtitle="Оценка гидратации" icon={Shield} />
+   373→   373→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   374→   374→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   375→   375→              Гидратацию оценивают <strong className="text-blue-700">комплексно</strong>: один признак
+   376→   376→              не доказателен. Используйте формулу из пяти шагов — она занимает 30 секунд и работает
+   377→   377→              на любом пациенте.
+   378→   378→            </p>
+   379→   379→
+   380→   380→            <FormulaBox title="Формула осмотра" formula="Тургор + Слизистые + Глаза + ВКН + Пульс" accent="blue" />
+   381→   381→
+   382→   382→            <div className="space-y-2">
+   383→   383→              <AssessmentRow
+   384→   384→                icon={Activity}
+   385→   385→                name="Кожная складка (тургор)"
+   386→   386→                desc="Оттяните кожу на холке. В норме расправляется мгновенно. Замедленное расправление — признак дегидратации."
+   387→   387→              />
+   388→   388→              <AssessmentRow
+   389→   389→                icon={Droplets}
+   390→   390→                name="Слизистые оболочки"
+   391→   391→                desc="Осмотрите дёсны. В норме влажные и блестящие. Сухость и липкость — потеря жидкости."
+   392→   392→              />
+   393→   393→              <AssessmentRow
+   394→   394→                icon={Brain}
+   395→   395→                name="Глаза"
+   396→   396→                desc="Западение глазных яблок — тяжёлая дегидратация. Сухость роговицы и конъюнктивы — сниженная секреция."
+   397→   397→              />
+   398→   398→              <AssessmentRow
+   399→   399→                icon={Shield}
+   400→   400→                name="ВКН (время капиллярного наполнения)"
+   401→   401→                desc="Надавите на десну, отпустите. Норма 1–2 сек. > 2 сек — нарушение перфузии."
+   402→   402→              />
+   403→   403→              <AssessmentRow
+   404→   404→                icon={Heart}
+   405→   405→                name="Частота и качество пульса"
+   406→   406→                desc="Учащённый, нитевидный или слабый пульс — признак гиповолемии и компенсаторной тахикардии."
+   407→   407→              />
+   408→   408→              <AssessmentRow
+   409→   409→                icon={Thermometer}
+   410→   410→                name="Температура конечностей"
+   411→   411→                desc="Холодные подушечки лап и уши — нарушена периферическая перфузия, характерно для шока."
+   412→   412→              />
+   413→   413→            </div>
+   414→   414→
+   415→   415→            <KeyPhrase>
+   416→   416→              <strong className="uppercase text-blue-700">Один признак — наблюдение. Пять признаков — диагноз.</strong>{' '}
+   417→   417→              Не интерпретируйте тургор кожи отдельно от слизистых и ВКН.
+   418→   418→            </KeyPhrase>
+   419→   419→
+   420→   420→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   421→   421→              Клинический осмотр гидратации — это не один «волшебный» приём, а пять простых шагов.
+   422→   422→              Кожу оттянул, слизистые посмотрел, глаза оценил, ВКН замерил, пульс пощупал. Через
+   423→   423→              30 секунд врач знает больше, чем владелец за две недели наблюдений.
+   424→   424→            </Callout>
+   425→   425→          </div>
+   426→   426→        </SectionWrapper>
+   427→   427→
+   428→   428→        {/* ============= РАЗДЕЛ 7: ЖИДКОСТНАЯ ТЕРАПИЯ ============= */}
+   429→   429→        <SectionWrapper delay={0.4}>
+   430→   430→          <SectionHeader number="7" title="ЖИДКОСТНАЯ ТЕРАПИЯ" subtitle="Основы инфузионной терапии" icon={FlaskConical} />
+   431→   431→          <div className="space-y-4 px-5 py-5 sm:px-7">
+   432→   432→            <p className="text-sm leading-relaxed text-blue-900 sm:text-base">
+   433→   433→              <strong className="uppercase text-blue-700">Жидкостная терапия</strong> восстанавливает
+   434→   434→              объём, состав и распределение жидкостей организма. Главное правило — выбрать правильный
+   435→   435→              препарат и рассчитать нужный объём. Не капайте «наугад».
+   436→   436→            </p>
+   437→   437→
+   438→   438→            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+   439→   439→              <FluidCard
+   440→   440→                icon={FlaskConical}
+   441→   441→                name="Раствор Рингера лактатный"
+   442→   442→                role="Препарат выбора"
+   443→   443→                desc="Сбалансированный кристаллоид. Содержит Na+, K+, Ca²⁺, Cl− и лактат (превращается в бикарбонат). Состав близок к плазме."
+   444→   444→                color="from-blue-500 to-cyan-600"
+   445→   445→              />
+   446→   446→              <FluidCard
+   447→   447→                icon={Droplets}
+   448→   448→                name="0.9% NaCl"
+   449→   449→                role="Физиологический раствор"
+   450→   450→                desc="Простой кристаллоид. Только натрий и хлор. Применяется при гипонатриемии и шоке. Не содержит буфера."
+   451→   451→                color="from-sky-500 to-blue-600"
+   452→   452→              />
+   453→   453→              <FluidCard
+   454→   454→                icon={Activity}
+   455→   455→                name="Кристаллоиды"
+   456→   456→                role="Основа терапии"
+   457→   457→                desc="Растворы малых молекул. Быстро уходят в интерстиций: через 1 час в сосудах остаётся лишь 1/4 введённого объёма."
+   458→   458→                color="from-emerald-500 to-teal-600"
+   459→   459→              />
+   460→   460→              <FluidCard
+   461→   461→                icon={Shield}
+   462→   462→                name="Коллоиды"
+   463→   463→                role="Удержание в сосудах"
+   464→   464→                desc="Крупные молекулы (гидроксиэтилкрахмал и др.). Долго остаются в сосудистом русле. Применяются при тяжёлом шоке."
+   465→   465→                color="from-violet-500 to-purple-600"
+   466→   466→              />
+   467→   467→            </div>
+   468→   468→
+   469→   469→            <FormulaBox title="Поддерживающая потребность" formula="30 мл/кг/сут" accent="blue" />
+   470→   470→
+   471→   471→            <InfoBox color="amber" title="Правило расчёта дефицита">
+   472→   472→              <strong className="uppercase text-blue-700">Поддерживающий объём</strong> — 30 мл/кг/сут.
+   473→   473→              Для собаки 10 кг: 300 мл/сут. При дегидратации к поддерживающему объёму прибавляют{' '}
+   474→   474→              <strong className="text-blue-700">дефицит</strong>: % дегидратации × масса тела (кг) × 10.
+   475→   475→              Половину дефицита дают в первые сутки, остальное — во вторые.
+   476→   476→            </InfoBox>
+   477→   477→
+   478→   478→            <Callout variant="info" emoji="😂" title="Мини-заключение">
+   479→   479→              Раствор Рингера лактатный — это «умная вода»: состав почти как у плазмы. Кристаллоиды
+   480→   480→              работают быстро, но ненадолго. Коллоиды держат объём в сосудах. Формула «30 мл/кг/сут» —
+   481→   481→              это минимум, без которого ни один пациент не выйдет из стационара живым.
+   482→   482→            </Callout>
+   483→   483→          </div>
+   484→   484→        </SectionWrapper>
+   485→   485→
+   486→   486→        {/* ============= ФИНАЛЬНАЯ ФОРМУЛА ============= */}
+   487→   487→        <motion.section
+   488→   488→          initial={{ opacity: 0, y: 20 }}
+   489→   489→          animate={{ opacity: 1, y: 0 }}
+   490→   490→          transition={{ duration: 0.4, delay: 0.45 }}
+   491→   491→          className="mb-8 overflow-hidden rounded-3xl border-2 border-blue-400 bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 p-1 shadow-2xl"
+   492→   492→        >
+   493→   493→          <div className="rounded-[22px] bg-white px-6 py-7 sm:px-8">
+   494→   494→            <div className="mb-4 flex items-center gap-3">
+   495→   495→              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg">
+   496→   496→                <Award className="h-6 w-6" />
+   497→   497→              </div>
+   498→   498→              <div>
+   499→   499→                <h2 className="text-xl font-black uppercase tracking-tight text-blue-700 sm:text-2xl">
+   500→   500→                  Финальная формула
+   501→   501→                </h2>
+   502→   502→                <p className="text-xs font-medium text-blue-700/70">Итог по гидратации</p>
+   503→   503→              </div>
+   504→   504→            </div>
+   505→   505→
+   506→   506→            <div className="rounded-2xl bg-blue-50/60 p-4 text-center">
+   507→   507→              <div className="text-base font-black uppercase tracking-tight text-blue-700 sm:text-xl">
+   508→   508→                2/3 ICF — 1/3 ECF — 30 мл/кг/сут
+   509→   509→              </div>
+   510→   510→            </div>
+   511→   511→
+   512→   512→            <p className="mt-4 text-sm font-bold uppercase tracking-wide text-blue-700 sm:text-base">
+   513→   513→              Запомните пять ключевых положений:
+   514→   514→            </p>
+   515→   515→            <ul className="mt-2 space-y-2 text-sm text-blue-900 sm:text-base">
+   516→   516→              <li className="flex gap-2">
+   517→   517→                <span className="text-blue-700">✓</span>
+   518→   518→                <span>Вода делится на внутриклеточную (2/3) и внеклеточную (1/3) — Na+/K+-ATPase их разделяет.</span>
+   519→   519→              </li>
+   520→   520→              <li className="flex gap-2">
+   521→   521→                <span className="text-blue-700">✓</span>
+   522→   522→                <span>Na+ — главный ион снаружи клетки, K+ — внутри. Cl− всегда «в паре» с Na+.</span>
+   523→   523→              </li>
+   524→   524→              <li className="flex gap-2">
+   525→   525→                <span className="text-blue-700">✓</span>
+   526→   526→                <span>Дегидратация бывает изотонической, гипертонической и гипотонической — у каждой своё лечение.</span>
+   527→   527→              </li>
+   528→   528→              <li className="flex gap-2">
+   529→   529→                <span className="text-blue-700">✓</span>
+   530→   530→                <span>Осмотр гидратации — это Тургор + Слизистые + Глаза + ВКН + Пульс.</span>
+   531→   531→              </li>
+   532→   532→              <li className="flex gap-2">
+   533→   533→                <span className="text-blue-700">✓</span>
+   534→   534→                <span>Раствор Рингера лактатный — препарат выбора. Поддерживающая доза — 30 мл/кг/сут.</span>
+   535→   535→              </li>
+   536→   536→            </ul>
+   537→   537→
+   538→   538→            <p className="mt-4 text-sm leading-relaxed text-blue-900 sm:text-base">
+   539→   539→              <strong className="uppercase text-blue-700">Гидратация</strong> — это не просто «вода
+   540→   540→              в организме». Это баланс секторов, электролитов, осмолярности и перфузии. Без понимания
+   541→   541→              этих связей жидкостная терапия превращается в «капание наугад».
+   542→   542→            </p>
+   543→   543→
+   544→   544→            <div className="mt-5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 p-4 text-sm text-blue-900">
+   545→   545→              <div className="mb-1 flex items-center gap-2">
+   546→   546→                <Lightbulb className="h-4 w-4 text-amber-500" />
+   547→   547→                <span className="font-bold uppercase text-amber-700">😂 Финальная шутка</span>
+   548→   548→              </div>
+   549→   549→              Хороший ветеринар знает: капать раствор «потому что так положено» — плохая стратегия.
+   550→   550→              Сначала осмотр, потом расчёт, и только потом — инфузия.{' '}
+   551→   551→              <strong className="text-blue-700">НЕ КАПАЙТЕ ОБЪЁМ — КАПАЙТЕ ПАЦИЕНТА!</strong> 🐾
+   552→   552→            </div>
+   553→   553→          </div>
+   554→   554→        </motion.section>
+   555→   555→
+   556→   556→        {/* CTA: переход к тесту */}
+   557→   557→        <motion.button
+   558→   558→          initial={{ opacity: 0, y: 20 }}
+   559→   559→          animate={{ opacity: 1, y: 0 }}
+   560→   560→          transition={{ duration: 0.4, delay: 0.5 }}
+   561→   561→          onClick={onNavigateToQuiz}
+   562→   562→          disabled={!onNavigateToQuiz}
+   563→   563→          className="group mb-8 w-full rounded-3xl border-2 border-blue-300 bg-white p-6 text-center shadow-lg transition-all hover:border-blue-400 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] disabled:cursor-default disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-lg"
+   564→   564→        >
+   565→   565→          <BookOpen className="mx-auto h-10 w-10 text-blue-600 transition-transform group-hover:scale-110" />
+   566→   566→          <h3 className="mt-3 text-xl font-black uppercase text-blue-700">
+   567→   567→            Готов проверить себя?
+   568→   568→          </h3>
+   569→   569→          <p className="mt-2 text-sm text-blue-900/80">
+   570→   570→            5 вопросов по гидратации — на закрепление материала. Нажми, чтобы пройти тест
+   571→   571→            <strong className="text-blue-700"> «Гидратация — проверь себя»</strong>.
+   572→   572→          </p>
+   573→   573→          <div className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-3 text-sm font-bold text-white shadow-md transition-all group-hover:from-blue-600 group-hover:to-cyan-600 group-hover:shadow-lg">
+   574→   574→            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+   575→   575→            <span className="uppercase tracking-wide">Перейти к тесту</span>
+   576→   576→            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+   577→   577→          </div>
+   578→   578→        </motion.button>
+   579→   579→
+   580→   580→        {/* Footer */}
+   581→   581→        <footer className="mt-6 text-center text-xs text-blue-700/60">
+   582→   582→          Гайд по гидратации собак и кошек • Водный баланс, дегидратация и электролиты •
+   583→   583→          Для ветеринарных специалистов и студентов
+   584→   584→        </footer>
+   585→   585→      </main>
+   586→   586→    </div>
+   587→   587→  )
+   588→   588→}
+   589→   589→
+   590→   590→/* ============= SUB-COMPONENTS ============= */
+   591→   591→function SectionWrapper({ children, delay }: { children: React.ReactNode; delay: number }) {
+   592→   592→  return (
+   593→   593→    <motion.section
+   594→   594→      initial={{ opacity: 0, y: 20 }}
+   595→   595→      animate={{ opacity: 1, y: 0 }}
+   596→   596→      transition={{ duration: 0.4, delay }}
+   597→   597→      className="mb-8 overflow-hidden rounded-3xl border-2 border-blue-300 bg-white/95 shadow-xl shadow-blue-500/10 backdrop-blur"
+   598→   598→    >
+   599→   599→      {children}
+   600→   600→    </motion.section>
+   601→   601→  )
+   602→   602→}
+   603→   603→
+   604→   604→function SectionHeader({
+   605→   605→  number,
+   606→   606→  title,
+   607→   607→  subtitle,
+   608→   608→  icon: Icon,
+   609→   609→}: {
+   610→   610→  number: string
+   611→   611→  title: string
+   612→   612→  subtitle: string
+   613→   613→  icon: typeof Droplets
+   614→   614→}) {
+   615→   615→  return (
+   616→   616→    <div className="flex items-center gap-3 border-b-2 border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50 px-5 py-4 sm:px-7">
+   617→   617→      <div className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg">
+   618→   618→        <span className="absolute -left-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-[10px] font-black text-white shadow">
+   619→   619→          {number}
+   620→   620→        </span>
+   621→   621→        <Icon className="h-6 w-6" />
+   622→   622→      </div>
+   623→   623→      <div>
+   624→   624→        <h2 className="text-lg font-black uppercase tracking-tight text-blue-700 sm:text-2xl">
+   625→   625→          {title}
+   626→   626→        </h2>
+   627→   627→        <p className="text-xs font-medium text-blue-700/70 sm:text-sm">{subtitle}</p>
+   628→   628→      </div>
+   629→   629→    </div>
+   630→   630→  )
+   631→   631→}
+   632→   632→
+   633→   633→function FormulaChip({ label, value, icon: Icon }: { label: string; value: string; icon: typeof Droplets }) {
+   634→   634→  return (
+   635→   635→    <div className="rounded-2xl bg-blue-50/60 p-3">
+   636→   636→      <div className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide text-blue-700">
+   637→   637→        <Icon className="h-3 w-3" />
+   638→   638→        {label}
+   639→   639→      </div>
+   640→   640→      <div className="text-sm font-bold text-blue-900">{value}</div>
+   641→   641→    </div>
+   642→   642→  )
+   643→   643→}
+   644→   644→
+   645→   645→function FormulaBox({
+   646→   646→  title,
+   647→   647→  formula,
+   648→   648→  accent,
+   649→   649→}: {
+   650→   650→  title: string
+   651→   651→  formula: string
+   652→   652→  accent: 'blue' | 'emerald' | 'rose'
+   653→   653→}) {
+   654→   654→  const colorMap = {
+   655→   655→    blue: 'border-blue-300 bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700',
+   656→   656→    emerald: 'border-emerald-300 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700',
+   657→   657→    rose: 'border-rose-300 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700',
+   658→   658→  }
+   659→   659→  return (
+   660→   660→    <div className={`rounded-2xl border-2 p-4 ${colorMap[accent]}`}>
+   661→   661→      <div className="text-[10px] font-bold uppercase tracking-wide opacity-80">{title}</div>
+   662→   662→      <div className="mt-1 text-base font-black uppercase tracking-tight sm:text-lg">
+   663→   663→        {formula}
+   664→   664→      </div>
+   665→   665→    </div>
+   666→   666→  )
+   667→   667→}
+   668→   668→
+   669→   669→function KeyPhrase({ children }: { children: React.ReactNode }) {
+   670→   670→  return (
+   671→   671→    <div className="rounded-xl border-l-4 border-blue-500 bg-blue-50/40 px-4 py-3 text-sm leading-relaxed text-blue-900 sm:text-base">
+   672→   672→      {children}
+   673→   673→    </div>
+   674→   674→  )
+   675→   675→}
+   676→   676→
+   677→   677→function InfoBox({ color, title, children }: { color: 'amber' | 'rose' | 'blue'; title: string; children: React.ReactNode }) {
+   678→   678→  const colorMap = {
+   679→   679→    amber: 'border-amber-300 bg-amber-50/80',
+   680→   680→    rose: 'border-rose-300 bg-rose-50/80',
+   681→   681→    blue: 'border-blue-300 bg-blue-50/80',
+   682→   682→  }
+   683→   683→  const textColor = color === 'amber' ? 'text-amber-700' : color === 'rose' ? 'text-rose-700' : 'text-blue-700'
+   684→   684→  return (
+   685→   685→    <div className={`rounded-2xl border-2 p-4 ${colorMap[color]}`}>
+   686→   686→      <div className={`mb-1.5 text-xs font-bold uppercase tracking-wide ${textColor}`}>
+   687→   687→        ℹ️ {title}
+   688→   688→      </div>
+   689→   689→      <div className="text-sm leading-relaxed text-blue-900">{children}</div>
+   690→   690→    </div>
+   691→   691→  )
+   692→   692→}
+   693→   693→
+   694→   694→function Callout({
+   695→   695→  variant,
+   696→   696→  emoji,
+   697→   697→  title,
+   698→   698→  children,
+   699→   699→}: {
+   700→   700→  variant: 'info' | 'warning'
+   701→   701→  emoji: string
+   702→   702→  title: string
+   703→   703→  children: React.ReactNode
+   704→   704→}) {
+   705→   705→  const bg = variant === 'info' ? 'bg-blue-50/80 border-blue-300' : 'bg-amber-50/80 border-amber-300'
+   706→   706→  const headerColor = variant === 'info' ? 'text-blue-700' : 'text-amber-700'
+   707→   707→  return (
+   708→   708→    <div className={`rounded-2xl border-2 ${bg} p-4`}>
+   709→   709→      <div className="mb-1.5 flex items-center gap-2">
+   710→   710→        <span className="text-xl">{emoji}</span>
+   711→   711→        <h4 className={`text-sm font-bold uppercase tracking-wide ${headerColor}`}>{title}</h4>
+   712→   712→      </div>
+   713→   713→      <p className="text-sm leading-relaxed text-blue-900/90">{children}</p>
+   714→   714→    </div>
+   715→   715→  )
+   716→   716→}
+   717→   717→
+   718→   718→function SectorCard({
+   719→   719→  icon: Icon,
+   720→   720→  title,
+   721→   721→  share,
+   722→   722→  mass,
+   723→   723→  cation,
+   724→   724→  color,
+   725→   725→}: {
+   726→   726→  icon: typeof Brain
+   727→   727→  title: string
+   728→   728→  share: string
+   729→   729→  mass: string
+   730→   730→  cation: string
+   731→   731→  color: string
+   732→   732→}) {
+   733→   733→  return (
+   734→   734→    <div className={`overflow-hidden rounded-2xl bg-gradient-to-br ${color} p-0.5 shadow-md`}>
+   735→   735→      <div className="rounded-[14px] bg-white p-4">
+   736→   736→        <div className="mb-2 flex items-center gap-2">
+   737→   737→          <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-md`}>
+   738→   738→            <Icon className="h-5 w-5" />
+   739→   739→          </div>
+   740→   740→          <div className="text-sm font-black uppercase text-blue-900">{title}</div>
+   741→   741→        </div>
+   742→   742→        <div className="grid grid-cols-3 gap-2 text-center">
+   743→   743→          <div className="rounded-lg bg-blue-50/60 py-2">
+   744→   744→            <div className="text-[10px] font-bold uppercase text-blue-700/70">Доля воды</div>
+   745→   745→            <div className="text-xs font-black text-blue-900 sm:text-sm">{share}</div>
+   746→   746→          </div>
+   747→   747→          <div className="rounded-lg bg-blue-50/60 py-2">
+   748→   748→            <div className="text-[10px] font-bold uppercase text-blue-700/70">Масса тела</div>
+   749→   749→            <div className="text-xs font-black text-blue-900 sm:text-sm">{mass}</div>
+   750→   750→          </div>
+   751→   751→          <div className="rounded-lg bg-blue-50/60 py-2">
+   752→   752→            <div className="text-[10px] font-bold uppercase text-blue-700/70">Катион</div>
+   753→   753→            <div className="text-xs font-black text-blue-900 sm:text-sm">{cation}</div>
+   754→   754→          </div>
+   755→   755→        </div>
+   756→   756→      </div>
+   757→   757→    </div>
+   758→   758→  )
+   759→   759→}
+   760→   760→
+   761→   761→function ElectrolyteCard({
+   762→   762→  symbol,
+   763→   763→  name,
+   764→   764→  range,
+   765→   765→  role,
+   766→   766→  color,
+   767→   767→}: {
+   768→   768→  symbol: string
+   769→   769→  name: string
+   770→   770→  range: string
+   771→   771→  role: string
+   772→   772→  color: string
+   773→   773→}) {
+   774→   774→  return (
+   775→   775→    <div className={`overflow-hidden rounded-2xl bg-gradient-to-br ${color} p-0.5 shadow-md`}>
+   776→   776→      <div className="rounded-[14px] bg-white p-4">
+   777→   777→        <div className="mb-2 flex items-center gap-3">
+   778→   778→          <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${color} text-base font-black text-white shadow-md`}>
+   779→   779→            {symbol}
+   780→   780→          </div>
+   781→   781→          <div>
+   782→   782→            <div className="text-sm font-black uppercase text-blue-900">{name}</div>
+   783→   783→            <div className="text-[10px] font-mono font-bold text-blue-700">{range}</div>
+   784→   784→          </div>
+   785→   785→        </div>
+   786→   786→        <p className="text-xs text-blue-900/80">{role}</p>
+   787→   787→      </div>
+   788→   788→    </div>
+   789→   789→  )
+   790→   790→}
+   791→   791→
+   792→   792→function SeverityCard({
+   793→   793→  level,
+   794→   794→  range,
+   795→   795→  color,
+   796→   796→  signs,
+   797→   797→}: {
+   798→   798→  level: string
+   799→   799→  range: string
+   800→   800→  color: 'emerald' | 'amber' | 'rose'
+   801→   801→  signs: string[]
+   802→   802→}) {
+   803→   803→  const colorMap = {
+   804→   804→    emerald: 'border-emerald-300 bg-emerald-50/60',
+   805→   805→    amber: 'border-amber-300 bg-amber-50/60',
+   806→   806→    rose: 'border-rose-300 bg-rose-50/60',
+   807→   807→  }
+   808→   808→  const badgeMap = {
+   809→   809→    emerald: 'bg-emerald-500',
+   810→   810→    amber: 'bg-amber-500',
+   811→   811→    rose: 'bg-rose-500',
+   812→   812→  }
+   813→   813→  const textMap = {
+   814→   814→    emerald: 'text-emerald-700',
+   815→   815→    amber: 'text-amber-700',
+   816→   816→    rose: 'text-rose-700',
+   817→   817→  }
+   818→   818→  return (
+   819→   819→    <div className={`rounded-2xl border-2 p-4 ${colorMap[color]}`}>
+   820→   820→      <div className="mb-2 flex items-center gap-2">
+   821→   821→        <span className={`flex h-8 w-8 items-center justify-center rounded-xl text-white shadow-md ${badgeMap[color]}`}>
+   822→   822→          <Droplets className="h-4 w-4" />
+   823→   823→        </span>
+   824→   824→        <div>
+   825→   825→          <div className={`text-sm font-black uppercase ${textMap[color]}`}>{level}</div>
+   826→   826→          <div className="text-[10px] font-mono text-blue-700">потеря массы тела: {range}</div>
+   827→   827→        </div>
+   828→   828→      </div>
+   829→   829→      <ul className="space-y-1 text-xs text-blue-900/90 sm:text-sm">
+   830→   830→        {signs.map((s) => (
+   831→   831→          <li key={s} className="flex gap-1.5">
+   832→   832→            <span className={`flex-shrink-0 ${textMap[color]}`}>•</span>
+   833→   833→            <span>{s}</span>
+   834→   834→          </li>
+   835→   835→        ))}
+   836→   836→      </ul>
+   837→   837→    </div>
+   838→   838→  )
+   839→   839→}
+   840→   840→
+   841→   841→function AssessmentRow({
+   842→   842→  icon: Icon,
+   843→   843→  name,
+   844→   844→  desc,
+   845→   845→}: {
+   846→   846→  icon: typeof Brain
+   847→   847→  name: string
+   848→   848→  desc: string
+   849→   849→}) {
+   850→   850→  return (
+   851→   851→    <div className="flex items-start gap-3 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
+   852→   852→      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-md">
+   853→   853→        <Icon className="h-5 w-5" />
+   854→   854→      </div>
+   855→   855→      <div>
+   856→   856→        <div className="text-sm font-bold uppercase text-blue-700">{name}</div>
+   857→   857→        <div className="text-xs leading-relaxed text-blue-900/80">{desc}</div>
+   858→   858→      </div>
+   859→   859→    </div>
+   860→   860→  )
+   861→   861→}
+   862→   862→
+   863→   863→function FluidCard({
+   864→   864→  icon: Icon,
+   865→   865→  name,
+   866→   866→  role,
+   867→   867→  desc,
+   868→   868→  color,
+   869→   869→}: {
+   870→   870→  icon: typeof FlaskConical
+   871→   871→  name: string
+   872→   872→  role: string
+   873→   873→  desc: string
+   874→   874→  color: string
+   875→   875→}) {
+   876→   876→  return (
+   877→   877→    <div className={`overflow-hidden rounded-2xl bg-gradient-to-br ${color} p-0.5 shadow-md`}>
+   878→   878→      <div className="rounded-[14px] bg-white p-4">
+   879→   879→        <div className="mb-2 flex items-center gap-2">
+   880→   880→          <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${color} text-white shadow-md`}>
+   881→   881→            <Icon className="h-5 w-5" />
+   882→   882→          </div>
+   883→   883→          <div>
+   884→   884→            <div className="text-sm font-black uppercase text-blue-900">{name}</div>
+   885→   885→            <div className="text-[10px] font-bold uppercase tracking-wide text-blue-700">{role}</div>
+   886→   886→          </div>
+   887→   887→        </div>
+   888→   888→        <p className="text-xs text-blue-900/80">{desc}</p>
+   889→   889→      </div>
+   890→   890→    </div>
+   891→   891→  )
+   892→   892→}
+   893→   893→
+   894→   894→/* ============= BACKGROUND BUBBLES ============= */
+   895→   895→function BackgroundBubbles() {
+   896→   896→  const bubbles = Array.from({ length: 8 }, (_, i) => ({
+   897→   897→    id: i,
+   898→   898→    size: 30 + (i * 17) % 80,
+   899→   899→    x: (i * 13) % 100,
+   900→   900→    delay: i * 0.7,
+   901→   901→    duration: 14 + (i * 3) % 16,
+   902→   902→    drift: (i * 7) % 40 - 20,
+   903→   903→  }))
+   904→   904→  return (
+   905→   905→    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+   906→   906→      {bubbles.map((b) => (
+   907→   907→        <motion.div
+   908→   908→          key={b.id}
+   909→   909→          className="absolute rounded-full bg-gradient-to-br from-white/40 to-blue-200/30 backdrop-blur-sm"
+   910→   910→          style={{
+   911→   911→            width: b.size,
+   912→   912→            height: b.size,
+   913→   913→            left: `${b.x}%`,
+   914→   914→            bottom: -b.size,
+   915→   915→          }}
+   916→   916→          animate={{
+   917→   917→            y: ['0vh', '-110vh'],
+   918→   918→            x: [0, b.drift, 0],
+   919→   919→            opacity: [0, 0.6, 0.6, 0],
+   920→   920→          }}
+   921→   921→          transition={{
+   922→   922→            duration: b.duration,
+   923→   923→            delay: b.delay,
+   924→   924→            repeat: Infinity,
+   925→   925→            ease: 'easeInOut',
+   926→   926→          }}
+   927→   927→        />
+   928→   928→      ))}
+   929→   929→    </div>
+   930→   930→  )
+   931→   931→}
+   932→   932→
