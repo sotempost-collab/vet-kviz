@@ -16,6 +16,7 @@ import {
   Puzzle,
   Droplets,
   FlaskConical,
+  Wind,
 } from 'lucide-react'
 
 interface LandingProps {
@@ -25,7 +26,7 @@ interface LandingProps {
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 
 interface BlockFeature {
-  id: 'mucous' | 'temperature' | 'heart'
+  id: 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'respiratory'
   blockLabel: string
   icon: typeof Shield
   description: string
@@ -107,6 +108,20 @@ const BLOCKS: BlockFeature[] = [
       { id: 'glossary', label: 'Глоссарий', mode: 'lymph-glossary', icon: Brain },
     ],
   },
+  {
+    id: 'respiratory',
+    blockLabel: 'Дыхание',
+    icon: Wind,
+    description: 'Два отдела (шоссе + цех), гистология альвеол, ЧДД и SRR, типы дыхания (парадоксальное, Куссмауль, Чейн-Стокс, Биот), плейлист 7 дыхательных шумов, 4 типа кашля.',
+    gradient: 'from-sky-500 to-emerald-600',
+    glow: 'shadow-sky-500/30',
+    defaultMode: 'respiratory-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'respiratory-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'respiratory-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'respiratory-glossary', icon: Brain },
+    ],
+  },
 ]
 
 export default function LandingApp({ onNavigate }: LandingProps) {
@@ -134,16 +149,16 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Вет-Квиз
               </h1>
               <p className="mt-3 text-base font-medium text-blue-50 sm:text-xl">
-                Пять основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема</strong>.
+                Шесть основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема, Дыхание</strong>.
                 Каждый блок: <strong className="uppercase">Урок → Тест → Глоссарий</strong>.
               </p>
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={Shield} value="5" label="основных блоков" />
-                <Stat icon={BookOpen} value="5" label="уроков" />
-                <Stat icon={HelpCircle} value="20" label="вопросов в тестах" />
-                <Stat icon={Brain} value="5" label="глоссариев" />
+                <Stat icon={Shield} value="6" label="основных блоков" />
+                <Stat icon={BookOpen} value="6" label="уроков" />
+                <Stat icon={HelpCircle} value="25" label="вопросов в тестах" />
+                <Stat icon={Brain} value="6" label="глоссариев" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
@@ -223,12 +238,12 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Выбери блок
               </h2>
               <p className="text-xs text-blue-700/70">
-                Три основных направления изучения
+                Шесть основных направлений изучения
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {BLOCKS.map((block, i) => (
               <motion.button
                 key={block.id}
@@ -332,7 +347,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
         {/* FOOTER */}
         <footer className="mt-6 text-center text-xs text-blue-700/60">
           Вет-Квиз — ветеринарный обучающий лендинг •
-          Слизистые • Температура • Сердце • Урок → Тест → Глоссарий
+          Слизистые • Температура • Сердце • Гидратация • Лимфосистема • Дыхание • Урок → Тест → Глоссарий
         </footer>
       </main>
     </div>

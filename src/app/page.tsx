@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical } from 'lucide-react'
+import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Wind } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import QuizApp from '@/components/quiz/quiz-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
@@ -34,6 +34,7 @@ const PuzzleApp = dynamic(() => import('@/components/puzzle/puzzle-app'), {
 import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import HydrationInfoApp from '@/components/hydration/hydration-info-app'
 import LymphInfoApp from '@/components/lymph/lymph-info-app'
+import RespiratoryInfoApp from '@/components/respiratory/respiratory-info-app'
 import GlossaryApp from '@/components/glossary/glossary-app'
 import ComingSoonApp from '@/components/placeholder/coming-soon-app'
 import LandingApp from '@/components/landing/landing-app'
@@ -50,6 +51,9 @@ import {
   LYMPH_QUESTIONS,
   LYMPH_TITLE,
   LYMPH_SUBTITLE,
+  RESPIRATORY_QUESTIONS,
+  RESPIRATORY_TITLE,
+  RESPIRATORY_SUBTITLE,
 } from '@/lib/quiz-data'
 import {
   MUCOUS_GLOSSARY_TERMS,
@@ -57,10 +61,11 @@ import {
   HEART_GLOSSARY_TERMS,
   HYDRATION_GLOSSARY_TERMS,
   LYMPH_GLOSSARY_TERMS,
+  RESPIRATORY_GLOSSARY_TERMS,
 } from '@/lib/glossary-data'
 
 // ============= Mode definitions =============
-type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph'
+type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'respiratory'
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 type Mode = 'landing' | `${Block}-${Section}`
 
@@ -134,6 +139,15 @@ const BLOCKS: BlockMeta[] = [
     icon: FlaskConical,
     color: 'from-indigo-500 to-blue-700',
     defaultMode: 'lymph-lesson',
+    sections: ['lesson', 'quiz', 'glossary'],
+  },
+  {
+    id: 'respiratory',
+    label: 'Дыхание',
+    shortLabel: '🌬️',
+    icon: Wind,
+    color: 'from-sky-500 to-emerald-600',
+    defaultMode: 'respiratory-lesson',
     sections: ['lesson', 'quiz', 'glossary'],
   },
 ]
@@ -391,6 +405,30 @@ export default function VetKvizApp() {
               accentColor="blue"
               onNavigateToQuiz={() => handleNavigate('lymph-quiz')}
               quizLabel="5 вопросов по лимфосистеме"
+            />
+          )}
+
+          {/* RESPIRATORY BLOCK */}
+          {mode === 'respiratory-lesson' && (
+            <RespiratoryInfoApp onNavigateToQuiz={() => handleNavigate('respiratory-quiz')} />
+          )}
+          {mode === 'respiratory-quiz' && (
+            <QuizApp
+              questions={RESPIRATORY_QUESTIONS}
+              title={RESPIRATORY_TITLE}
+              subtitle={RESPIRATORY_SUBTITLE}
+              introDescription="5 вопросов по дыхательной системе: ЧДД и SRR, мелкопузырчатые хрипы, правая средняя доля кошек, кардиогенный кашель, дыхание во сне. Выбери режим и проверь свои знания."
+              topicsCount={5}
+            />
+          )}
+          {mode === 'respiratory-glossary' && (
+            <GlossaryApp
+              title="Глоссарий по дыхательной системе"
+              subtitle="Словарь терминов: анатомия, гистология, шумы, патологии"
+              terms={RESPIRATORY_GLOSSARY_TERMS}
+              accentColor="blue"
+              onNavigateToQuiz={() => handleNavigate('respiratory-quiz')}
+              quizLabel="5 вопросов по дыхательной системе"
             />
           )}
         </motion.div>
