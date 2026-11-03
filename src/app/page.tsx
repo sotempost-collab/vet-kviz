@@ -50,6 +50,9 @@ import {
   LYMPH_QUESTIONS,
   LYMPH_TITLE,
   LYMPH_SUBTITLE,
+  HEART_QUESTIONS,
+  HEART_TITLE,
+  HEART_SUBTITLE,
 } from '@/lib/quiz-data'
 import {
   MUCOUS_GLOSSARY_TERMS,
@@ -57,6 +60,7 @@ import {
   HEART_GLOSSARY_TERMS,
   HYDRATION_GLOSSARY_TERMS,
   LYMPH_GLOSSARY_TERMS,
+  HEART_GLOSSARY_TERMS_EXTENDED,
 } from '@/lib/glossary-data'
 
 // ============= Mode definitions =============
@@ -111,7 +115,7 @@ const BLOCKS: BlockMeta[] = [
   },
   {
     id: 'heart',
-    label: 'Сердце',
+    label: 'Сердечно-сосудистая',
     shortLabel: '🫀',
     icon: Heart,
     color: 'from-rose-500 to-red-600',
@@ -318,31 +322,22 @@ export default function VetKvizApp() {
           {/* HEART BLOCK */}
           {mode === 'heart-lesson' && <CardioApp />}
           {mode === 'heart-quiz' && (
-            <ComingSoonApp
-              title="Тест по сердцу"
-              subtitle="Квиз «Проверь себя» — скоро будет добавлен"
-              icon={Heart}
-              color="from-rose-500 to-red-600"
-              bgClass="bg-gradient-to-br from-rose-50 via-pink-50 to-red-100"
-              textClass="text-rose-700"
-              features={[
-                '5 ключевых вопросов по анатомии сердца',
-                'Сердечный цикл: фазы и клапаны',
-                'Большой и малый круги кровообращения',
-                'Патологии: пороки клапанов, ДКМ',
-                'ЭКГ и аускультация — основы',
-              ]}
-              onGoToLesson={() => handleNavigate('heart-lesson')}
+            <QuizApp
+              questions={HEART_QUESTIONS}
+              title={HEART_TITLE}
+              subtitle={HEART_SUBTITLE}
+              introDescription="5 вопросов по сердечно-сосудистой системе: топография, точки аускультации, гемодинамика, патологии собак и кошек. Выбери режим и проверь свои знания."
+              topicsCount={5}
             />
           )}
           {mode === 'heart-glossary' && (
             <GlossaryApp
-              title="Глоссарий по сердцу"
-              subtitle="Словарь терминов по сердечно-сосудистой системе"
-              terms={HEART_GLOSSARY_TERMS}
+              title="Глоссарий по сердечно-сосудистой системе"
+              subtitle="Словарь терминов: анатомия, гемодинамика, патологии"
+              terms={HEART_GLOSSARY_TERMS_EXTENDED}
               accentColor="purple"
               onNavigateToQuiz={() => handleNavigate('heart-quiz')}
-              quizLabel="Скоро: тест по анатомии сердца"
+              quizLabel="5 вопросов по сердечно-сосудистой системе"
             />
           )}
 

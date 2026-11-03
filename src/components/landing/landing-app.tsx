@@ -67,7 +67,7 @@ const BLOCKS: BlockFeature[] = [
   },
   {
     id: 'heart',
-    blockLabel: 'Сердце',
+    blockLabel: 'Сердечно-сосудистая',
     icon: Heart,
     description: 'Интерактивная 3D-модель сердца собаки с 4 камерами, 8 сосудами, 4 клапанами и M-mode. Пульсация синхронна с ЧСС, клапаны анимированы.',
     gradient: 'from-rose-500 to-red-600',
