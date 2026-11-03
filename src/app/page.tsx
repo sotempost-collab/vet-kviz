@@ -66,7 +66,7 @@ import {
 
 // ============= Mode definitions =============
 type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph'
-type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
+type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle' | '3d'
 type Mode = 'landing' | `${Block}-${Section}`
 
 // Helpers
@@ -121,7 +121,7 @@ const BLOCKS: BlockMeta[] = [
     icon: Heart,
     color: 'from-rose-500 to-red-600',
     defaultMode: 'heart-lesson',
-    sections: ['lesson', 'quiz', 'glossary'],
+    sections: ['lesson', 'quiz', 'glossary', '3d'],
   },
   {
     id: 'hydration',
@@ -153,6 +153,7 @@ const SECTION_LABELS: SectionMeta[] = [
   { id: 'lesson', label: 'Урок', icon: BookOpen },
   { id: 'quiz', label: 'Тест', icon: HelpCircle },
   { id: 'glossary', label: 'Глоссарий', icon: Brain },
+  { id: '3d', label: '3D', icon: Heart },
   { id: 'puzzle', label: 'Пазл', icon: Puzzle },
 ]
 
@@ -321,14 +322,14 @@ export default function VetKvizApp() {
           )}
 
           {/* HEART BLOCK */}
-          {mode === 'heart-lesson' && <CardioInfoApp onNavigateToQuiz={() => handleNavigate('heart-quiz')} />}
+          {mode === 'heart-lesson' && <CardioInfoApp onNavigateToQuiz={() => handleNavigate('heart-quiz')} onNavigateTo3D={() => handleNavigate('heart-3d')} />}
           {mode === 'heart-quiz' && (
             <QuizApp
               questions={HEART_QUESTIONS}
               title={HEART_TITLE}
               subtitle={HEART_SUBTITLE}
-              introDescription="5 вопросов по сердечно-сосудистой системе: топография, точки аускультации, гемодинамика, патологии собак и кошек. Выбери режим и проверь свои знания."
-              topicsCount={5}
+              introDescription="16 вопросов по сердечно-сосудистой системе: анатомия, гемодинамика, патологии собак и кошек. Выбери режим и проверь свои знания."
+              topicsCount={8}
             />
           )}
           {mode === 'heart-glossary' && (
@@ -338,9 +339,10 @@ export default function VetKvizApp() {
               terms={HEART_GLOSSARY_TERMS_EXTENDED}
               accentColor="purple"
               onNavigateToQuiz={() => handleNavigate('heart-quiz')}
-              quizLabel="5 вопросов по сердечно-сосудистой системе"
+              quizLabel="16 вопросов по сердечно-сосудистой системе"
             />
           )}
+          {mode === 'heart-3d' && <CardioApp />}
 
           {/* HYDRATION BLOCK */}
           {mode === 'hydration-lesson' && (

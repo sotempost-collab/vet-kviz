@@ -25,7 +25,7 @@ import {
   Waves,
 } from 'lucide-react'
 
-export default function CardioInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: () => void }) {
+export default function CardioInfoApp({ onNavigateToQuiz, onNavigateTo3D }: { onNavigateToQuiz?: () => void; onNavigateTo3D?: () => void }) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
       <BackgroundBubbles />
@@ -439,33 +439,35 @@ export default function CardioInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?:
               столько и ушло». Работает без нервной системы, на уровне самих кардиомиоцитов.
             </InfoBox>
 
-            {/* 3D-модели сердца — placeholder card (на месте «Видео гемодинамики») */}
-            <motion.div
+            {/* 3D-модели сердца — кликабельная кнопка (на месте «Видео гемодинамики») */}
+            <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-lg"
+              onClick={onNavigateTo3D}
+              disabled={!onNavigateTo3D}
+              className="group w-full overflow-hidden rounded-2xl border-2 border-blue-300 bg-white text-left shadow-lg transition-all hover:border-blue-400 hover:shadow-xl active:scale-[0.99] disabled:opacity-60"
             >
               <div className="relative bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 px-5 py-8 text-center text-white">
                 <div className="absolute right-4 top-4 opacity-30">
                   <Heart className="h-16 w-16" />
                 </div>
                 <div className="relative z-10 mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
-                  <Heart className="h-7 w-7" />
+                  <Heart className="h-7 w-7 transition-transform group-hover:scale-110" />
                 </div>
                 <h3 className="text-base font-black uppercase tracking-tight sm:text-lg">
                   🎥 3D-модели сердца
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-blue-50 sm:text-sm">
-                  Интерактивные 3D-модели сердца доступны во вкладке «Урок» в блоке
-                  «Сердечно-сосудистая». Покрутите анатомию в пространстве, увидите
-                  предсердия, желудочки и клапаны со всех сторон.
+                  Интерактивные 3D-модели сердца собаки. Покрутите анатомию в пространстве,
+                  увидите предсердия, желудочки и клапаны со всех сторон. Переключайтесь между
+                  двумя видами модели.
                 </p>
-                <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur">
-                  <Play className="h-3 w-3" /> Перейти к 3D-моделям
+                <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider backdrop-blur transition-transform group-hover:translate-x-1">
+                  <Play className="h-3 w-3" /> Открыть 3D-визуализацию
                 </div>
               </div>
-            </motion.div>
+            </motion.button>
 
             <Callout variant="info" emoji="🤪" title="Мини-заключение">
               Гемодинамика держится на трёх столбах: резинке (preload), педали газа
