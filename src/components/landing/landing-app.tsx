@@ -94,17 +94,17 @@ const BLOCKS: BlockFeature[] = [
     ],
   },
   {
-    id: 'lymph',
-    blockLabel: 'Лимфосистема',
-    icon: FlaskConical,
-    description: 'Анатомия лимфоузлов (топография у собак и кошек), гистология (кора, паракортекс, медулла), физиология без сердца-насоса, патологии (лимфома, хилоторакс), пальпация.',
-    gradient: 'from-indigo-500 to-blue-700',
-    glow: 'shadow-indigo-500/30',
-    defaultMode: 'lymph-lesson',
+    id: 'pulse',
+    blockLabel: 'Пульс и давление',
+    icon: Activity,
+    description: 'Пульс (волна давления) и артериальное давление (сила потока). 8 патологий пульса, гипертензия (ГЛПС), гипотензия, шум I-VI, SRR, NT-proBNP, патологоанатомия.',
+    gradient: 'from-teal-500 to-cyan-600',
+    glow: 'shadow-teal-500/30',
+    defaultMode: 'pulse-lesson',
     sections: [
-      { id: 'lesson', label: 'Урок', mode: 'lymph-lesson', icon: BookOpen },
-      { id: 'quiz', label: 'Тест', mode: 'lymph-quiz', icon: HelpCircle },
-      { id: 'glossary', label: 'Глоссарий', mode: 'lymph-glossary', icon: Brain },
+      { id: 'lesson', label: 'Урок', mode: 'pulse-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'pulse-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'pulse-glossary', icon: Brain },
     ],
   },
 ]
@@ -134,16 +134,16 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Вет-Квиз
               </h1>
               <p className="mt-3 text-base font-medium text-blue-50 sm:text-xl">
-                Пять основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема</strong>.
+                Шесть основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема, Пульс</strong>.
                 Каждый блок: <strong className="uppercase">Урок → Тест → Глоссарий</strong>.
               </p>
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={Shield} value="5" label="основных блоков" />
-                <Stat icon={BookOpen} value="5" label="уроков" />
-                <Stat icon={HelpCircle} value="20" label="вопросов в тестах" />
-                <Stat icon={Brain} value="5" label="глоссариев" />
+                <Stat icon={Shield} value="6" label="основных блоков" />
+                <Stat icon={BookOpen} value="6" label="уроков" />
+                <Stat icon={HelpCircle} value="41" label="вопросов в тестах" />
+                <Stat icon={Brain} value="6" label="глоссариев" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
@@ -228,7 +228,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {BLOCKS.map((block, i) => (
               <motion.button
                 key={block.id}

@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical } from 'lucide-react'
+import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Activity } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import QuizApp from '@/components/quiz/quiz-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
@@ -35,6 +35,7 @@ import MucousInfoApp from '@/components/mucous-info/mucous-info-app'
 import HydrationInfoApp from '@/components/hydration/hydration-info-app'
 import LymphInfoApp from '@/components/lymph/lymph-info-app'
 import CardioInfoApp from '@/components/cardio-info/cardio-info-app'
+import PulseInfoApp from '@/components/pulse-info/pulse-info-app'
 import GlossaryApp from '@/components/glossary/glossary-app'
 import ComingSoonApp from '@/components/placeholder/coming-soon-app'
 import LandingApp from '@/components/landing/landing-app'
@@ -54,6 +55,9 @@ import {
   HEART_QUESTIONS,
   HEART_TITLE,
   HEART_SUBTITLE,
+  PULSE_QUESTIONS,
+  PULSE_TITLE,
+  PULSE_SUBTITLE,
 } from '@/lib/quiz-data'
 import {
   MUCOUS_GLOSSARY_TERMS,
@@ -62,10 +66,11 @@ import {
   HYDRATION_GLOSSARY_TERMS,
   LYMPH_GLOSSARY_TERMS,
   HEART_GLOSSARY_TERMS_EXTENDED,
+  PULSE_GLOSSARY_TERMS,
 } from '@/lib/glossary-data'
 
 // ============= Mode definitions =============
-type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph'
+type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'pulse'
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle' | '3d'
 type Mode = 'landing' | `${Block}-${Section}`
 
@@ -133,12 +138,12 @@ const BLOCKS: BlockMeta[] = [
     sections: ['lesson', 'quiz', 'glossary'],
   },
   {
-    id: 'lymph',
-    label: 'Лимфосистема',
-    shortLabel: '🛡️',
-    icon: FlaskConical,
-    color: 'from-indigo-500 to-blue-700',
-    defaultMode: 'lymph-lesson',
+    id: 'pulse',
+    label: 'Пульс и давление',
+    shortLabel: '🩺',
+    icon: Activity,
+    color: 'from-teal-500 to-cyan-600',
+    defaultMode: 'pulse-lesson',
     sections: ['lesson', 'quiz', 'glossary'],
   },
 ]
@@ -343,6 +348,30 @@ export default function VetKvizApp() {
             />
           )}
           {mode === 'heart-3d' && <CardioApp />}
+
+          {/* PULSE BLOCK */}
+          {mode === 'pulse-lesson' && (
+            <PulseInfoApp onNavigateToQuiz={() => handleNavigate('pulse-quiz')} />
+          )}
+          {mode === 'pulse-quiz' && (
+            <QuizApp
+              questions={PULSE_QUESTIONS}
+              title={PULSE_TITLE}
+              subtitle={PULSE_SUBTITLE}
+              introDescription="16 вопросов по пульсу и давлению: пальпация, патофизиология, гипертензия, гипотензия, клинический осмотр, аускультация, патологоанатомия. Выбери режим и проверь свои знания."
+              topicsCount={8}
+            />
+          )}
+          {mode === 'pulse-glossary' && (
+            <GlossaryApp
+              title="Глоссарий по пульсу и давлению"
+              subtitle="Словарь терминов: гемодинамика, аускультация, диагностика"
+              terms={PULSE_GLOSSARY_TERMS}
+              accentColor="blue"
+              onNavigateToQuiz={() => handleNavigate('pulse-quiz')}
+              quizLabel="16 вопросов по пульсу и давлению"
+            />
+          )}
 
           {/* HYDRATION BLOCK */}
           {mode === 'hydration-lesson' && (
