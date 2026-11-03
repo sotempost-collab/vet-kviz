@@ -26,7 +26,7 @@ interface LandingProps {
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 
 interface BlockFeature {
-  id: 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'respiratory'
+  id: 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'pulse' | 'respiratory'
   blockLabel: string
   icon: typeof Shield
   description: string
@@ -109,6 +109,20 @@ const BLOCKS: BlockFeature[] = [
     ],
   },
   {
+    id: 'pulse',
+    blockLabel: 'Пульс и давление',
+    icon: Activity,
+    description: 'Волна давления (пульс) и сила потока (АД). 8 патологий пульса, гипертензия (ГЛПС), гипотензия, шум I–VI, SRR, NT-proBNP, патологоанатомия.',
+    gradient: 'from-teal-500 to-cyan-600',
+    glow: 'shadow-teal-500/30',
+    defaultMode: 'pulse-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'pulse-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'pulse-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'pulse-glossary', icon: Brain },
+    ],
+  },
+  {
     id: 'respiratory',
     blockLabel: 'Дыхание',
     icon: Wind,
@@ -149,16 +163,16 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Вет-Квиз
               </h1>
               <p className="mt-3 text-base font-medium text-blue-50 sm:text-xl">
-                Шесть основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема, Дыхание</strong>.
+                Семь основных блоков — <strong className="uppercase">Слизистые, Температура, Сердце, Гидратация, Лимфосистема, Пульс, Дыхание</strong>.
                 Каждый блок: <strong className="uppercase">Урок → Тест → Глоссарий</strong>.
               </p>
 
               {/* Quick stats */}
               <div className="mt-6 flex flex-wrap gap-3">
-                <Stat icon={Shield} value="6" label="основных блоков" />
-                <Stat icon={BookOpen} value="6" label="уроков" />
-                <Stat icon={HelpCircle} value="25" label="вопросов в тестах" />
-                <Stat icon={Brain} value="6" label="глоссариев" />
+                <Stat icon={Shield} value="7" label="основных блоков" />
+                <Stat icon={BookOpen} value="7" label="уроков" />
+                <Stat icon={HelpCircle} value="41" label="вопросов в тестах" />
+                <Stat icon={Brain} value="7" label="глоссариев" />
               </div>
 
               <div className="mt-7 flex flex-wrap gap-3">
@@ -238,7 +252,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Выбери блок
               </h2>
               <p className="text-xs text-blue-700/70">
-                Шесть основных направлений изучения
+                Семь основных направлений изучения
               </p>
             </div>
           </div>
@@ -347,7 +361,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
         {/* FOOTER */}
         <footer className="mt-6 text-center text-xs text-blue-700/60">
           Вет-Квиз — ветеринарный обучающий лендинг •
-          Слизистые • Температура • Сердце • Гидратация • Лимфосистема • Дыхание • Урок → Тест → Глоссарий
+          Слизистые • Температура • Сердце • Гидратация • Лимфосистема • Пульс • Дыхание • Урок → Тест → Глоссарий
         </footer>
       </main>
     </div>
