@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Activity } from 'lucide-react'
+import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Activity, Waypoints } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import QuizApp from '@/components/quiz/quiz-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
@@ -135,6 +135,15 @@ const BLOCKS: BlockMeta[] = [
     icon: Droplets,
     color: 'from-cyan-500 to-blue-600',
     defaultMode: 'hydration-lesson',
+    sections: ['lesson', 'quiz', 'glossary'],
+  },
+  {
+    id: 'lymph',
+    label: 'Лимфосистема',
+    shortLabel: '🛡️',
+    icon: Waypoints,
+    color: 'from-indigo-500 to-violet-600',
+    defaultMode: 'lymph-lesson',
     sections: ['lesson', 'quiz', 'glossary'],
   },
   {

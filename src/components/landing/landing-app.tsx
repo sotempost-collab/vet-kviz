@@ -16,6 +16,7 @@ import {
   Puzzle,
   Droplets,
   FlaskConical,
+  Waypoints,
 } from 'lucide-react'
 
 interface LandingProps {
@@ -25,7 +26,7 @@ interface LandingProps {
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 
 interface BlockFeature {
-  id: 'mucous' | 'temperature' | 'heart'
+  id: 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'pulse'
   blockLabel: string
   icon: typeof Shield
   description: string
@@ -94,6 +95,20 @@ const BLOCKS: BlockFeature[] = [
     ],
   },
   {
+    id: 'lymph',
+    blockLabel: 'Лимфосистема',
+    icon: Waypoints,
+    description: '«Тайная полиция» организма: дренаж, транспорт жиров и иммунитет. Карта лимфоузлов, гистология, пальпация (5 параметров) и патологии собак и кошек.',
+    gradient: 'from-indigo-500 to-violet-600',
+    glow: 'shadow-indigo-500/30',
+    defaultMode: 'lymph-lesson',
+    sections: [
+      { id: 'lesson', label: 'Урок', mode: 'lymph-lesson', icon: BookOpen },
+      { id: 'quiz', label: 'Тест', mode: 'lymph-quiz', icon: HelpCircle },
+      { id: 'glossary', label: 'Глоссарий', mode: 'lymph-glossary', icon: Brain },
+    ],
+  },
+  {
     id: 'pulse',
     blockLabel: 'Пульс и давление',
     icon: Activity,
@@ -142,7 +157,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
               <div className="mt-6 flex flex-wrap gap-3">
                 <Stat icon={Shield} value="6" label="основных блоков" />
                 <Stat icon={BookOpen} value="6" label="уроков" />
-                <Stat icon={HelpCircle} value="41" label="вопросов в тестах" />
+                <Stat icon={HelpCircle} value="52" label="вопросов в тестах" />
                 <Stat icon={Brain} value="6" label="глоссариев" />
               </div>
 
@@ -223,7 +238,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
                 Выбери блок
               </h2>
               <p className="text-xs text-blue-700/70">
-                Три основных направления изучения
+                Шесть основных направлений изучения
               </p>
             </div>
           </div>
@@ -332,7 +347,7 @@ export default function LandingApp({ onNavigate }: LandingProps) {
         {/* FOOTER */}
         <footer className="mt-6 text-center text-xs text-blue-700/60">
           Вет-Квиз — ветеринарный обучающий лендинг •
-          Слизистые • Температура • Сердце • Урок → Тест → Глоссарий
+          Слизистые • Температура • Сердце • Гидратация • Лимфосистема • Пульс • Урок → Тест → Глоссарий
         </footer>
       </main>
     </div>
