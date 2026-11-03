@@ -237,9 +237,73 @@ export default function LymphInfoApp({ onNavigateToQuiz }: { onNavigateToQuiz?: 
                 className="w-full"
                 loading="lazy"
               />
-              <figcaption className="border-t border-blue-100 bg-blue-50/60 px-4 py-2 text-xs text-blue-900">
-                <strong className="uppercase text-blue-700">Топография лимфоузлов у собаки и кошки.</strong>{' '}
-                Пальпируйте узлы системно, по зонам — от головы к хвосту, симметрично с двух сторон.
+              <figcaption className="space-y-3 border-t border-blue-100 bg-blue-50/60 px-4 py-3 text-xs text-blue-900">
+                <div>
+                  <strong className="uppercase text-blue-700">Топография лимфоузлов у собаки и кошки.</strong>{' '}
+                  Пальпируйте узлы системно, по зонам — от головы к хвосту, симметрично с двух сторон.
+                </div>
+
+                {/* Подробное описание картинки */}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {/* Собака */}
+                  <div className="rounded-xl border border-cyan-200 bg-cyan-50/50 p-3">
+                    <div className="mb-1.5 flex items-center gap-1.5">
+                      <span className="inline-block h-3 w-3 rounded-full bg-cyan-400" />
+                      <strong className="uppercase text-cyan-700">Собака (Canine)</strong>
+                    </div>
+                    <p className="mb-1.5 text-blue-900/80">
+                      Светло-коричневый пёс, узлы выделены бирюзовым цветом. Подписаны (сверху вниз):
+                    </p>
+                    <ul className="space-y-0.5 text-[11px] text-blue-900/70">
+                      <li><strong>Parotid</strong> — околоушной (у основания уха)</li>
+                      <li><strong>Retropharyngeal</strong> — заглоточный (глотка/шея)</li>
+                      <li><strong>Mandibular</strong> — подчелюстной (под челюстью)</li>
+                      <li><strong>Axillary</strong> — подмышечный (подмышка передних лап)</li>
+                      <li><strong>Superficial cervical</strong> — предлопаточный (перед лопаткой)</li>
+                      <li><strong>Popliteal</strong> — подколенный (за коленом задней лапы)</li>
+                      <li><strong>Superficial inguinal</strong> — паховый (паховая область)</li>
+                      <li><strong>Sternal</strong> — грудной (стрелка в области грудины)</li>
+                    </ul>
+                    <div className="mt-1.5 rounded bg-white/60 px-2 py-1 text-[10px] text-cyan-900/80">
+                      <strong>Canine Specifics:</strong> подчелюстные — вентрально от челюсти; предлопаточные — краниальнее лопатки; подколенные — позади коленного сустава; паховые — рядом с молочными железами.
+                    </div>
+                  </div>
+
+                  {/* Кошка */}
+                  <div className="rounded-xl border border-orange-200 bg-orange-50/50 p-3">
+                    <div className="mb-1.5 flex items-center gap-1.5">
+                      <span className="inline-block h-3 w-3 rounded-full bg-orange-400" />
+                      <strong className="uppercase text-orange-700">Кошка (Feline)</strong>
+                    </div>
+                    <p className="mb-1.5 text-blue-900/80">
+                      Рыжая полосатая кошка, узлы выделены оранжевым (коралловым) цветом. Те же группы узлов:
+                    </p>
+                    <ul className="space-y-0.5 text-[11px] text-blue-900/70">
+                      <li><strong>Parotid</strong> — околоушной</li>
+                      <li><strong>Retropharyngeal</strong> — заглоточный (два узла в зоне)</li>
+                      <li><strong>Mandibular</strong> — подчелюстной</li>
+                      <li><strong>Superficial cervical</strong> — предлопаточный</li>
+                      <li><strong>Axillary</strong> — подмышечный</li>
+                      <li><strong>Superficial inguinal</strong> — паховый</li>
+                      <li><strong>Sternal</strong> — грудной</li>
+                    </ul>
+                    <div className="mt-1.5 rounded bg-white/60 px-2 py-1 text-[10px] text-orange-900/80">
+                      <strong>Feline Specifics:</strong> подчелюстные — меньше и медиальнее, чем у собак; предлопаточные — менее выражены; <strong>подколенные постоянно прощупываются</strong> у здоровых кошек; паховые — сильно развиты у кормящих самок.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Легенда */}
+                <div className="flex items-center justify-center gap-4 rounded-lg bg-white/60 px-3 py-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-block h-3 w-3 rounded-full bg-cyan-400" />
+                    <span className="text-[11px] font-medium text-blue-900/80">Canine Lymph Nodes</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="inline-block h-3 w-3 rounded-full bg-orange-400" />
+                    <span className="text-[11px] font-medium text-blue-900/80">Feline Lymph Nodes</span>
+                  </div>
+                </div>
               </figcaption>
             </motion.figure>
 
