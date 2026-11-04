@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Wind, Activity } from 'lucide-react'
+import { Home, Heart, Thermometer, Shield, BookOpen, HelpCircle, Puzzle, Brain, Droplets, FlaskConical, Wind, Activity, Utensils } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import QuizApp from '@/components/quiz/quiz-app'
 import TemperatureApp from '@/components/temperature/temperature-app'
@@ -36,6 +36,7 @@ import HydrationInfoApp from '@/components/hydration/hydration-info-app'
 import LymphInfoApp from '@/components/lymph/lymph-info-app'
 import RespiratoryInfoApp from '@/components/respiratory/respiratory-info-app'
 import PulseInfoApp from '@/components/pulse-info/pulse-info-app'
+import GitInfoApp from '@/components/git/git-info-app'
 import GlossaryApp from '@/components/glossary/glossary-app'
 import ComingSoonApp from '@/components/placeholder/coming-soon-app'
 import LandingApp from '@/components/landing/landing-app'
@@ -58,6 +59,9 @@ import {
   PULSE_QUESTIONS,
   PULSE_TITLE,
   PULSE_SUBTITLE,
+  GIT_QUESTIONS,
+  GIT_TITLE,
+  GIT_SUBTITLE,
 } from '@/lib/quiz-data'
 import {
   MUCOUS_GLOSSARY_TERMS,
@@ -67,10 +71,11 @@ import {
   LYMPH_GLOSSARY_TERMS,
   RESPIRATORY_GLOSSARY_TERMS,
   PULSE_GLOSSARY_TERMS,
+  GIT_GLOSSARY_TERMS,
 } from '@/lib/glossary-data'
 
 // ============= Mode definitions =============
-type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'pulse' | 'respiratory'
+type Block = 'mucous' | 'temperature' | 'heart' | 'hydration' | 'lymph' | 'pulse' | 'respiratory' | 'git'
 type Section = 'lesson' | 'quiz' | 'glossary' | 'puzzle'
 type Mode = 'landing' | `${Block}-${Section}`
 
@@ -162,6 +167,15 @@ const BLOCKS: BlockMeta[] = [
     icon: Wind,
     color: 'from-sky-500 to-emerald-600',
     defaultMode: 'respiratory-lesson',
+    sections: ['lesson', 'quiz', 'glossary'],
+  },
+  {
+    id: 'git',
+    label: 'ЖКТ',
+    shortLabel: '🍽️',
+    icon: Utensils,
+    color: 'from-amber-500 to-rose-600',
+    defaultMode: 'git-lesson',
     sections: ['lesson', 'quiz', 'glossary'],
   },
 ]
@@ -467,6 +481,30 @@ export default function VetKvizApp() {
               accentColor="blue"
               onNavigateToQuiz={() => handleNavigate('pulse-quiz')}
               quizLabel="16 вопросов по пульсу и давлению"
+            />
+          )}
+
+          {/* GIT BLOCK */}
+          {mode === 'git-lesson' && (
+            <GitInfoApp onNavigateToQuiz={() => handleNavigate('git-quiz')} />
+          )}
+          {mode === 'git-quiz' && (
+            <QuizApp
+              questions={GIT_QUESTIONS}
+              title={GIT_TITLE}
+              subtitle={GIT_SUBTITLE}
+              introDescription="50 вопросов по ЖКТ: анатомия и гистология, рвота, печень и селезёнка, аппетит и жажда, поджелудочная, толстая кишка, клинический осмотр. Два режима: быстрый (10) и полный (50)."
+              topicsCount={8}
+            />
+          )}
+          {mode === 'git-glossary' && (
+            <GlossaryApp
+              title="Глоссарий по ЖКТ"
+              subtitle="Словарь терминов: анатомия, гистология, гормоны, патологии печени/селезёнки/ПЖ"
+              terms={GIT_GLOSSARY_TERMS}
+              accentColor="blue"
+              onNavigateToQuiz={() => handleNavigate('git-quiz')}
+              quizLabel="50 вопросов по ЖКТ"
             />
           )}
         </motion.div>
